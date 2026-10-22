@@ -7,11 +7,12 @@ import {
   HelpCircle,
   FileText,
   Users,
-  UserCheck
+  UserCheck,
+  Camera
 } from 'lucide-react';
 import { WeddingSide } from '../types/wedding';
 
-export type TabType = 'month-tracker' | 'rentals' | 'dresses' | 'itinerary' | 'decisions' | 'notes';
+export type TabType = 'month-tracker' | 'pre-wedding' | 'rentals' | 'dresses' | 'itinerary' | 'decisions' | 'notes';
 
 interface NavigationProps {
   activeTab: TabType;
@@ -19,6 +20,7 @@ interface NavigationProps {
   activeSide: WeddingSide;
   onSideChange: (side: WeddingSide) => void;
   tasksRemainingCount: number;
+  preWeddingRemainingCount?: number;
   rentalsPendingCount: number;
   dressesToBuyCount: number;
   decisionsPendingCount: number;
@@ -32,6 +34,7 @@ export const Navigation: React.FC<NavigationProps> = ({
   activeSide,
   onSideChange,
   tasksRemainingCount,
+  preWeddingRemainingCount = 0,
   rentalsPendingCount,
   dressesToBuyCount,
   decisionsPendingCount,
@@ -45,6 +48,13 @@ export const Navigation: React.FC<NavigationProps> = ({
       icon: CalendarRange,
       countBadge: tasksRemainingCount > 0 ? `${tasksRemainingCount} left` : 'All done',
       badgeColor: tasksRemainingCount > 0 ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'
+    },
+    {
+      id: 'pre-wedding' as TabType,
+      label: 'Pre-Wedding Shoot (2–7 Days Trip)',
+      icon: Camera,
+      countBadge: preWeddingRemainingCount > 0 ? `${preWeddingRemainingCount} tasks` : 'Shoot Trip',
+      badgeColor: 'bg-indigo-100 text-indigo-800'
     },
     {
       id: 'itinerary' as TabType,

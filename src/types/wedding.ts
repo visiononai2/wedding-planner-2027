@@ -125,3 +125,42 @@ export interface PlanningNote {
   tags?: string[];
   updatedAt: string;
 }
+
+export type PreWeddingTripType = 'NATIONAL' | 'INTERNATIONAL' | 'REGIONAL';
+
+export interface PreWeddingLook {
+  id: string;
+  themeTitle: string;
+  groomOutfit: string;
+  brideOutfit: string;
+  locationBackdrop: string;
+  status: 'Planning' | 'Outfits Ready' | 'Shot Done';
+}
+
+export interface PreWeddingChecklistItem {
+  id: string;
+  stage: string;
+  title: string;
+  completed: boolean;
+  notes?: string;
+}
+
+export interface PreWeddingTripPlan {
+  tripType: PreWeddingTripType;
+  destination: string;
+  durationLabel: string;
+  targetDates: string;
+  flightStatus: 'To Book' | 'Booked' | 'Not Needed';
+  hotelStatus: 'To Book' | 'Booked' | 'Not Needed';
+  passportVisaStatus: 'Not Needed' | 'Check Validity' | 'Visa Applied' | 'Visa Approved';
+  photographerAgency: string;
+  contactPerson: string;
+  phone: string;
+  crewCount: number;
+  totalEstimatedCost: number;
+  advancePaid: number;
+  deliverables: string[];
+  looks: PreWeddingLook[];
+  checklist: PreWeddingChecklistItem[];
+  notes: string;
+}

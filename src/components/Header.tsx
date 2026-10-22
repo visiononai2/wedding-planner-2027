@@ -11,7 +11,7 @@ import {
   RefreshCw,
   AlertCircle
 } from 'lucide-react';
-import { Task, RentalItem, DressItem, DecisionPoint, PlanningNote, WeddingSide } from '../types/wedding';
+import { Task, RentalItem, DressItem, DecisionPoint, PlanningNote, WeddingSide, PreWeddingTripPlan } from '../types/wedding';
 
 interface HeaderProps {
   tasks: Task[];
@@ -19,6 +19,7 @@ interface HeaderProps {
   dresses: DressItem[];
   decisions: DecisionPoint[];
   notes?: PlanningNote[];
+  preWeddingPlan?: PreWeddingTripPlan;
   activeSide?: WeddingSide;
   weddingYear: number;
   onResetData: () => void;
@@ -30,6 +31,7 @@ export const Header: React.FC<HeaderProps> = ({
   dresses,
   decisions,
   notes = [],
+  preWeddingPlan,
   activeSide = 'ALL',
   weddingYear,
   onResetData
@@ -111,6 +113,7 @@ export const Header: React.FC<HeaderProps> = ({
       weddingDate: '2027-02-21',
       activeSide,
       tasks,
+      preWeddingPlan,
       rentals,
       dresses,
       decisions,

@@ -181,7 +181,7 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
         <div className="p-3 rounded-xl bg-blue-50 border border-blue-200 text-xs text-blue-900 flex items-center space-x-2">
           <Clock className="w-4 h-4 text-blue-600 shrink-0" />
           <span>
-            <strong>PRE-WEDDING PROTOCOL (18 Feb):</strong> 8:00 AM Randel sthapana at Groom home • 10–11 AM Lagan Lakhan at Bride home • 11 AM Bride brothers bring Lagan to Groom home (~100 present) • 12–1 PM Boy Lunch • 4 PM Boy Haldi & Groom photo visit to Girl Mehndi • 6–7 PM Evening Jamanvar.
+            <strong>HOME RITUALS (18 Feb):</strong> 8:00 AM Randel sthapana at Groom home • 10–11 AM Lagan Lakhan at Bride home • 11 AM Bride brothers bring Lagan to Groom home (~100 present) • 12–1 PM Boy Lunch • 4 PM Boy Haldi & Groom photo visit to Girl Mehndi • 6–7 PM Evening Jamanvar. <em>(Note: Couple pre-wedding shoot is planned separately in Nov/Dec as a 2–3 day national or 1-week international trip).</em>
           </span>
         </div>
       )}

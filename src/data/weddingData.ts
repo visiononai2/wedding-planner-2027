@@ -5,7 +5,11 @@ import {
   DressItem, 
   EventDaySchedule,
   DecisionPoint,
-  PlanningNote 
+  PlanningNote,
+  PreWeddingTripPlan,
+  PreWeddingTripType,
+  PreWeddingLook,
+  PreWeddingChecklistItem
 } from '../types/wedding';
 
 export const INITIAL_MILESTONES: MonthMilestone[] = [
@@ -54,14 +58,25 @@ export const INITIAL_TASKS: Task[] = [
   },
   { 
     id: 't-oct-4', 
-    title: 'Find location for couple pre-wedding photoshoot', 
+    title: 'Pre-Wedding Shoot: Decide Trip Scope (National 2–3 Days in Udaipur/Goa vs International 1 Week in Dubai/Bali)', 
     category: 'outfits', 
     assignedTo: 'Both', 
     side: 'Both',
     monthId: 'oct-2026', 
     completed: false, 
     priority: 'high',
-    notes: 'Direct from user notes: Photo graphy - find location (we find).'
+    notes: 'Direct from user notes: Photo graphy - find location (we find). Multi-day travel shoot, independent from Feb 18 home rituals.'
+  },
+  { 
+    id: 't-oct-4b', 
+    title: 'Shortlist Photography & Cinematography Crew with Drone for Pre-Wedding Shoot trip', 
+    category: 'outfits', 
+    assignedTo: 'Both', 
+    side: 'Both',
+    monthId: 'oct-2026', 
+    completed: false, 
+    priority: 'high',
+    notes: 'Confirm package: 1 cinematic film, 2 Instagram reels, 40 edited photos, teaser, and Feb 20 Garba LED cut.'
   },
   { 
     id: 't-oct-5', 
@@ -772,7 +787,7 @@ export const INITIAL_DAY_SCHEDULES: EventDaySchedule[] = [
     id: 'feb-18',
     dateString: '2027-02-18',
     dayName: 'Thursday / 18 Feb (17 or 18 Feb)',
-    title: 'Pre-Wedding: Randel, Lagan Lakhan & Haldi',
+    title: 'Lagan Lakhan, Haldi & Home Rituals',
     location: 'Groom & Bride Respective Homes',
     items: [
       {
@@ -1013,6 +1028,18 @@ export const INITIAL_DAY_SCHEDULES: EventDaySchedule[] = [
 
 export const INITIAL_DECISION_POINTS: DecisionPoint[] = [
   {
+    id: 'dec-prewed',
+    question: 'Pre-Wedding Couple Shoot: Destination Scope & Trip Duration?',
+    options: [
+      'National Trip (2-3 Days: Udaipur Palaces / Goa Beaches / Jaipur)',
+      'International Trip (5-7 Days / 1 Week: Dubai Desert & Marina / Bali Villas)',
+      'Regional Gujarat (1-2 Days: Vadodara Laxmi Vilas / Dumas / Surat Film Sets)'
+    ],
+    status: 'Pending',
+    decision: '',
+    side: 'Both'
+  },
+  {
     id: 'dec-1',
     question: 'Ask elders: Annual function timing in first half or second half?',
     options: ['First Half (Morning)', 'Second Half (Evening)'],
@@ -1056,8 +1083,43 @@ export const INITIAL_DECISION_POINTS: DecisionPoint[] = [
 
 export const INITIAL_NOTES: PlanningNote[] = [
   {
+    id: 'note-prewed',
+    title: 'Pre-Wedding Photography Shoot Trip (National vs. International Blueprint)',
+    category: 'Rituals & Traditions',
+    side: 'Both',
+    content: `• Standalone Couple Photography Project:
+  The pre-wedding shoot is completely separate from the Feb 17/18 home rituals (Randel, Lagan Lakhan, Haldi). It is an independent 2-3 day (national) or 1-week (international) travel project conducted in November or December 2026.
+
+• Scope & Duration Options:
+  1. National Trip (2–3 Days): Udaipur (Lake Pichola, heritage courtyards), Goa (South Goa cliffs & beaches), or Jaipur. Fast weekend trip, budget ~₹1.2L–₹1.8L.
+  2. International Trip (5–7 Days / 1 Week): Dubai (desert dunes, downtown skyline, luxury yacht), Bali (Canggu villas, waterfalls, beaches), or Thailand. Rich cinematic diversity, budget ~₹2.8L–₹4L.
+  3. Regional Gujarat (1–2 Days): Vadodara Laxmi Vilas Palace, Dumas beach, or high-end film studio sets in Surat/Ahmedabad (~₹50k–₹80k).
+
+• Key Deliverables:
+  1. 1 Cinematic Film (3–4 mins 4K with romantic soundtrack)
+  2. 2 Instagram Reels (9:16 vertical cuts for social media)
+  3. 40–50 Color-graded High-Res Master Photos
+  4. 1 Teaser Trailer (30–45s) for Save-The-Date digital invitations
+  5. Full HD Landscape Cut formatted for LED Wall display on Feb 20 Garba Night!
+
+• Wardrobe Themes (4 Looks):
+  1. Royal Heritage (Jodhpuri Bandhgala & Regal Embroidered Lehenga)
+  2. Western Glamour (Black Tuxedo & Dramatic Evening Trail Gown)
+  3. Breezy Casual Chic (Pastel linen & Flowy sundress / co-ord)
+  4. Contemporary Night (Modern Indo-western fusion under fairy lights)
+
+• Timelines:
+  - Oct 2026: Lock destination & book photography crew
+  - Nov 2026: Book flights, stay, and fit 4 outfits
+  - Dec 2026: Shoot trip execution
+  - Jan 2027: Teaser for invitations & video ready for Feb 20 Garba LED wall!`,
+    pinned: true,
+    tags: ['Pre-Wedding', 'Photography', 'National vs International', 'Outfits', 'LED Display'],
+    updatedAt: '2026-10-22'
+  },
+  {
     id: 'note-1',
-    title: 'Pre-Wedding Schedule: 17/18 Feb (Randel, Lagan Lakhan & Haldi)',
+    title: '17/18 Feb Home Rituals: Randel, Lagan Lakhan, Haldi & Mehndi',
     category: 'Rituals & Traditions',
     side: 'Both',
     content: `• Date: 17 or 18 Feb (Gor Maharaj at Girl's house decides exact date):
@@ -1134,3 +1196,354 @@ export const INITIAL_NOTES: PlanningNote[] = [
     updatedAt: '2026-10-22'
   }
 ];
+
+
+// Pre-Wedding Shoot Presets & Initial State
+export const NATIONAL_PREWEDDING_PRESET: PreWeddingTripPlan = {
+  tripType: 'NATIONAL',
+  destination: 'Udaipur, Rajasthan (Lake Pichola & Heritage Palaces) OR Goa Beach',
+  durationLabel: '2–3 Days Trip',
+  targetDates: 'Dec 11 – Dec 14, 2026',
+  flightStatus: 'To Book',
+  hotelStatus: 'To Book',
+  passportVisaStatus: 'Not Needed',
+  photographerAgency: 'To Book (Candid + Cinematography + Drone)',
+  contactPerson: 'Lead Cinematographer',
+  phone: '',
+  crewCount: 3,
+  totalEstimatedCost: 150000,
+  advancePaid: 0,
+  deliverables: [
+    '1 Cinematic Pre-Wedding Film (3-4 mins 4K with custom music soundtrack)',
+    '2 Instagram Reels (9:16 vertical cuts for social media announcements)',
+    '40-50 Color-graded High-Res Master Photos (framed portraits & digital)',
+    '1 Teaser Trailer (30-45s) for Save-The-Date digital invitations',
+    'Full HD Landscape Cut formatted for LED Wall display on Feb 20 Garba Night'
+  ],
+  looks: [
+    {
+      id: 'pw-look-1',
+      themeTitle: 'Royal Heritage / Palace Elegance',
+      groomOutfit: 'Royal Navy / Emerald Jodhpuri Bandhgala Suit with pocket square & formal shoes',
+      brideOutfit: 'Heavy Embroidered Royal Heritage Lehenga / Anarkali with royal dupatta',
+      locationBackdrop: 'Heritage palace courtyards, grand archways, marble jharokhas, or fort walls',
+      status: 'Planning'
+    },
+    {
+      id: 'pw-look-2',
+      themeTitle: 'Western Glamour & Golden Hour Sunset',
+      groomOutfit: 'Classic Black Tuxedo with bowtie or sleek Charcoal 3-piece Suit',
+      brideOutfit: 'Dramatic Evening Gown / Satin Silk Trail Dress in wine red or emerald',
+      locationBackdrop: 'Lakeside sunset, rooftop infinity pool, or palace terrace at twilight',
+      status: 'Planning'
+    },
+    {
+      id: 'pw-look-3',
+      themeTitle: 'Breezy Romantic / Casual Chic',
+      groomOutfit: 'Pastel Linen shirt (Sky Blue / White / Sage), slim chinos, loafers',
+      brideOutfit: 'Flowy floral sundress, pastel resort-wear, or chic co-ord set',
+      locationBackdrop: 'Lake promenade, scenic waterfront, blooming gardens, or desert dunes',
+      status: 'Planning'
+    },
+    {
+      id: 'pw-look-4',
+      themeTitle: 'Contemporary Coordinated / Cinematic Night',
+      groomOutfit: 'Smart casual layered blazer or textured knit with dark trousers',
+      brideOutfit: 'Modern draped saree / contemporary Indo-western fusion gown',
+      locationBackdrop: 'Fairy lights night installation, candle-lit courtyard, or boat cruise',
+      status: 'Planning'
+    }
+  ],
+  checklist: [
+    {
+      id: 'pw-chk-1',
+      stage: 'Scope & Destination',
+      title: 'Decide Trip Scope: National (2-3 days in Udaipur/Goa) vs International (1 week in Dubai/Bali)',
+      completed: false,
+      notes: 'Evaluate leave availability, budget, flight travel times, and photography permits.'
+    },
+    {
+      id: 'pw-chk-2',
+      stage: 'Scope & Destination',
+      title: 'Shortlist top 2 destination choices & check seasonal weather / photography permit guidelines',
+      completed: false,
+      notes: 'Dec / Jan is peak pleasant weather for Rajasthan, Goa, and UAE.'
+    },
+    {
+      id: 'pw-chk-3',
+      stage: 'Photography Crew',
+      title: 'Interview & book Photography + Cinematography crew (Lead shooter, Cinematographer, Drone pilot)',
+      completed: false,
+      notes: 'Ensure drone camera permits are handled by the crew in designated zones.'
+    },
+    {
+      id: 'pw-chk-4',
+      stage: 'Photography Crew',
+      title: 'Confirm deliverable package: 1 cinematic film, 2 reels, 40 photos, 1 teaser, and Garba LED cut',
+      completed: false,
+      notes: 'Lock turnaround times: Teaser within 10 days, full video before mid-January.'
+    },
+    {
+      id: 'pw-chk-5',
+      stage: 'Travel & Lodging',
+      title: 'Book return flight / train tickets for Couple and photography team',
+      completed: false,
+      notes: 'Coordinate baggage allowances for camera gear, drone batteries, and wedding gowns.'
+    },
+    {
+      id: 'pw-chk-6',
+      stage: 'Travel & Lodging',
+      title: 'Book picturesque heritage resort / villa with shoot permissions included in room stay',
+      completed: false,
+      notes: 'Many palace hotels include courtyard shooting rights for resident guests.'
+    },
+    {
+      id: 'pw-chk-7',
+      stage: 'Travel & Lodging',
+      title: 'Arrange dedicated local SUV / transportation for moving props and gear between locations',
+      completed: false,
+      notes: 'Allows fast outfit changes on location.'
+    },
+    {
+      id: 'pw-chk-8',
+      stage: 'Wardrobe & Styling',
+      title: 'Curate and buy/tailor 4 distinct looks for Groom & Bride (Royal, Western Gown/Tux, Casual, Modern)',
+      completed: false,
+      notes: 'Steam iron outfits in advance; pack portable garment steamer.'
+    },
+    {
+      id: 'pw-chk-9',
+      stage: 'Wardrobe & Styling',
+      title: 'Book travel Makeup Artist & Hair Stylist (or pack comprehensive travel bridal vanity kit)',
+      completed: false,
+      notes: 'Waterproof makeup essential for outdoor and humid shoots.'
+    },
+    {
+      id: 'pw-chk-10',
+      stage: 'Shoot Execution',
+      title: 'Execute Pre-Wedding Shoot Trip: Golden hour shoots, drone sweeps, and romantic candid clips',
+      completed: false,
+      notes: 'Schedule early morning 6:30 AM sunrise shoot to beat crowds!'
+    },
+    {
+      id: 'pw-chk-11',
+      stage: 'Post-Production',
+      title: 'Review raw photo proofs and shortlist 40 master photos for retouching and album',
+      completed: false,
+      notes: 'Select photos for digital Save-The-Date cards and Instagram announcements.'
+    },
+    {
+      id: 'pw-chk-12',
+      stage: 'Post-Production',
+      title: 'Receive edited Pre-Wedding Teaser video and share digital wedding invitation with family',
+      completed: false,
+      notes: 'Deliver before Jan 15 for digital distribution.'
+    },
+    {
+      id: 'pw-chk-13',
+      stage: 'Post-Production',
+      title: 'Receive 4K horizontal master cut ready for projection on Feb 20 Raas-Garba night LED screen',
+      completed: false,
+      notes: 'Hand over file to Dhaval Jajenwala\'s LED wall operator at Silver Farm!'
+    }
+  ],
+  notes: 'Pre-wedding shoot is an independent multi-day trip planned for Nov/Dec 2026. Totally distinct from Feb 18 home rituals (Randel, Lagan Lakhan, Haldi & Mehndi).'
+};
+
+export const INTERNATIONAL_PREWEDDING_PRESET: PreWeddingTripPlan = {
+  tripType: 'INTERNATIONAL',
+  destination: 'Dubai, UAE (Desert Safari, Downtown Skyline & Luxury Yacht) OR Bali, Indonesia',
+  durationLabel: '1 Week / 5–7 Days Trip',
+  targetDates: 'Nov 25 – Dec 02, 2026',
+  flightStatus: 'To Book',
+  hotelStatus: 'To Book',
+  passportVisaStatus: 'Check Validity',
+  photographerAgency: 'To Book (Destination Specialist Crew)',
+  contactPerson: 'Lead Destination Photographer',
+  phone: '',
+  crewCount: 3,
+  totalEstimatedCost: 320000,
+  advancePaid: 0,
+  deliverables: [
+    '1 Cinematic Pre-Wedding Film (4-5 mins 4K with international landscape & aerial drone cuts)',
+    '3 Instagram Reels (9:16 vertical 4K edits)',
+    '50 Color-graded Master Photos (High-res print & digital)',
+    '1 Teaser Trailer (45s) for Save-The-Date cards',
+    'Full 4K Horizontal Cut for Feb 20 Raas-Garba LED screen projection'
+  ],
+  looks: [
+    {
+      id: 'pw-intl-1',
+      themeTitle: 'Desert Dunes & Sunset Romance',
+      groomOutfit: 'Breezy Linen suit or crisp white open-collar shirt with camel trousers',
+      brideOutfit: 'Flying red trail dress / flowing chiffon gown with dramatic wind sweep',
+      locationBackdrop: 'Red sand dunes at sunset, camel safari camp, or desert resort oasis',
+      status: 'Planning'
+    },
+    {
+      id: 'pw-intl-2',
+      themeTitle: 'Metropolitan Luxury / Evening Skyline',
+      groomOutfit: 'Tailored Black Tuxedo with satin lapel & cufflinks',
+      brideOutfit: 'Sparkling cocktail evening gown or high-slit metallic gown',
+      locationBackdrop: 'Dubai Marina rooftop, illuminated Burj Khalifa skyline, or private yacht',
+      status: 'Planning'
+    },
+    {
+      id: 'pw-intl-3',
+      themeTitle: 'Beachfront / Resort Tropical Glam',
+      groomOutfit: 'Pastel resort-wear polo / linen shirt & espadrilles',
+      brideOutfit: 'Boho chic crochet maxi dress or tropical resort co-ord',
+      locationBackdrop: 'Private beach cabana, infinity pool edge, or cliffside coastline',
+      status: 'Planning'
+    },
+    {
+      id: 'pw-intl-4',
+      themeTitle: 'Royal Traditional Heritage',
+      groomOutfit: 'Handcrafted Indo-Western Bandhgala in royal beige / ivory gold',
+      brideOutfit: 'Rich pastel embroidered designer lehenga',
+      locationBackdrop: 'Traditional Arabic palace courtyard / heritage souk architecture',
+      status: 'Planning'
+    }
+  ],
+  checklist: [
+    {
+      id: 'pw-intl-chk-1',
+      stage: 'Scope & Destination',
+      title: 'Confirm Passports have minimum 6 months validity from travel date',
+      completed: false,
+      notes: 'Check both Groom and Bride passports immediately.'
+    },
+    {
+      id: 'pw-intl-chk-2',
+      stage: 'Scope & Destination',
+      title: 'Apply for tourist e-visas (Dubai 30-day visa / Bali VoA)',
+      completed: false,
+      notes: 'Takes 3-5 working days.'
+    },
+    {
+      id: 'pw-intl-chk-3',
+      stage: 'Travel & Lodging',
+      title: 'Book international flight tickets (Surat/Ahmedabad/Mumbai to destination)',
+      completed: false,
+      notes: 'Coordinate crew baggage for heavy lenses and gimbal gear.'
+    },
+    {
+      id: 'pw-intl-chk-4',
+      stage: 'Travel & Lodging',
+      title: 'Book 5–7 nights hotel/resort stay + private luxury yacht / desert safari camp charter',
+      completed: false,
+      notes: 'Charter 2-hour private yacht for sunset golden hour shoot.'
+    },
+    {
+      id: 'pw-intl-chk-5',
+      stage: 'Photography Crew',
+      title: 'Contract destination cinema crew & verify commercial drone flying permissions',
+      completed: false,
+      notes: 'Verify local UAE GCAA or Indonesian drone laws.'
+    },
+    {
+      id: 'pw-intl-chk-6',
+      stage: 'Wardrobe & Styling',
+      title: 'Pack 4-5 luxury looks including flying dress, tuxedo, and beachwear',
+      completed: false,
+      notes: 'Pack portable steamer and safety pins.'
+    },
+    {
+      id: 'pw-intl-chk-7',
+      stage: 'Shoot Execution',
+      title: 'Execute 5-7 days international pre-wedding shoot & holiday trip!',
+      completed: false,
+      notes: 'Combine couple leisure time with scheduled morning and sunset shoot slots.'
+    },
+    {
+      id: 'pw-intl-chk-8',
+      stage: 'Post-Production',
+      title: 'Deliver Save-the-Date video trailer and final 4K cut for Feb 20 Garba LED wall',
+      completed: false,
+      notes: 'Ensure files delivered by Jan 15 for invitations.'
+    }
+  ],
+  notes: '1-week international pre-wedding travel experience. Combines photoshoot with couple getaway in Nov/Dec 2026.'
+};
+
+export const REGIONAL_PREWEDDING_PRESET: PreWeddingTripPlan = {
+  tripType: 'REGIONAL',
+  destination: 'Vadodara (Laxmi Vilas Palace), Dumas Coastline & Surat Film City Studios',
+  durationLabel: '1–2 Days Trip',
+  targetDates: 'Dec 05 – Dec 06, 2026',
+  flightStatus: 'Not Needed',
+  hotelStatus: 'To Book',
+  passportVisaStatus: 'Not Needed',
+  photographerAgency: 'To Book (Local Surat/Gujarat Specialists)',
+  contactPerson: 'Lead Photographer',
+  phone: '',
+  crewCount: 2,
+  totalEstimatedCost: 65000,
+  advancePaid: 0,
+  deliverables: [
+    '1 Cinematic Pre-Wedding Highlight Video (2-3 mins 4K)',
+    '2 Instagram Reels (9:16 vertical cuts)',
+    '30-40 Color-graded High-Res Master Photos',
+    '1 Teaser Trailer for digital invitation cards',
+    'Full HD Landscape Cut for Feb 20 Garba LED screen'
+  ],
+  looks: [
+    {
+      id: 'pw-reg-1',
+      themeTitle: 'Royal Palace Heritage',
+      groomOutfit: 'Regal Bandhgala / Jodhpuri',
+      brideOutfit: 'Heritage Royal Lehenga',
+      locationBackdrop: 'Laxmi Vilas Palace grounds / Champaner stepwell',
+      status: 'Planning'
+    },
+    {
+      id: 'pw-reg-2',
+      themeTitle: 'Western Glamour Sunset',
+      groomOutfit: 'Tailored Blazer with crisp shirt',
+      brideOutfit: 'Evening Gown',
+      locationBackdrop: 'Dumas coast golden hour or luxury hotel terrace',
+      status: 'Planning'
+    },
+    {
+      id: 'pw-reg-3',
+      themeTitle: 'Film Studio Set Variety',
+      groomOutfit: 'Casual chic jacket / shirt',
+      brideOutfit: 'Trendy fusion dress',
+      locationBackdrop: 'European street / Santorini sets at photography film city',
+      status: 'Planning'
+    }
+  ],
+  checklist: [
+    {
+      id: 'pw-reg-chk-1',
+      stage: 'Scope & Destination',
+      title: 'Book photography slots at Laxmi Vilas Palace / Surat set studio',
+      completed: false,
+      notes: 'Pay photography entry camera fee.'
+    },
+    {
+      id: 'pw-reg-chk-2',
+      stage: 'Wardrobe & Styling',
+      title: 'Finalize 3 coordinated looks for Groom & Bride',
+      completed: false,
+      notes: 'Prepare vanity makeup kit.'
+    },
+    {
+      id: 'pw-reg-chk-3',
+      stage: 'Shoot Execution',
+      title: 'Complete 1-2 days shoot schedule across heritage and set locations',
+      completed: false,
+      notes: 'Quick weekend shoot without long-distance flights.'
+    },
+    {
+      id: 'pw-reg-chk-4',
+      stage: 'Post-Production',
+      title: 'Receive teaser video and Garba LED screen master cut',
+      completed: false,
+      notes: 'Ready for Save-the-date cards.'
+    }
+  ],
+  notes: 'Budget-friendly 1-2 days regional Gujarat shoot with minimal travel fatigue.'
+};
+
+export const INITIAL_PREWEDDING_PLAN = NATIONAL_PREWEDDING_PRESET;

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Header } from './components/Header';
 import { Navigation, TabType } from './components/Navigation';
 import { MonthTracker } from './components/MonthTracker';
+import { PreWeddingPlanner } from './components/PreWeddingPlanner';
 import { RentalsTracker } from './components/RentalsTracker';
 import { DressesTracker } from './components/DressesTracker';
 import { EventItinerary } from './components/EventItinerary';
@@ -15,7 +16,11 @@ import {
   INITIAL_DRESSES, 
   INITIAL_DAY_SCHEDULES, 
   INITIAL_DECISION_POINTS,
-  INITIAL_NOTES
+  INITIAL_NOTES,
+  INITIAL_PREWEDDING_PLAN,
+  NATIONAL_PREWEDDING_PRESET,
+  INTERNATIONAL_PREWEDDING_PRESET,
+  REGIONAL_PREWEDDING_PRESET
 } from './data/weddingData';
 import { loadFromStorage, saveToStorage } from './utils/storage';
 import { 
@@ -26,7 +31,9 @@ import {
   ScheduleEvent, 
   EventDaySchedule,
   PlanningNote,
-  WeddingSide
+  WeddingSide,
+  PreWeddingTripPlan,
+  PreWeddingTripType
 } from './types/wedding';
 
 export const App: React.FC = () => {
@@ -97,6 +104,10 @@ export const App: React.FC = () => {
     loadFromStorage('vivah_year_v5', 2027)
   );
 
+  const [preWeddingPlan, setPreWeddingPlan] = useState<PreWeddingTripPlan>(() => 
+    loadFromStorage<PreWeddingTripPlan>('vivah_prewedding_v5', INITIAL_PREWEDDING_PLAN)
+  );
+
   const [activeTab, setActiveTab] = useState<TabType>('month-tracker');
 
   // LocalStorage Persistence
@@ -104,6 +115,7 @@ export const App: React.FC = () => {
     saveToStorage('vivah_tasks_v5', tasks); 
     saveToStorage('vivah_tasks_v4', tasks); 
   }, [tasks]);
+  useEffect(() => { saveToStorage('vivah_prewedding_v5', preWeddingPlan); }, [preWeddingPlan]);
   useEffect(() => { saveToStorage('vivah_rentals_v5', rentals); }, [rentals]);
   useEffect(() => { saveToStorage('vivah_dresses_v5', dresses); }, [dresses]);
   useEffect(() => { saveToStorage('vivah_days_v5', days); }, [days]);
@@ -111,6 +123,17 @@ export const App: React.FC = () => {
   useEffect(() => { saveToStorage('vivah_notes_v5', notes); }, [notes]);
   useEffect(() => { saveToStorage('vivah_year_v5', weddingYear); }, [weddingYear]);
   useEffect(() => { saveToStorage('vivah_side_v5', activeSide); }, [activeSide]);
+
+  // Pre-Wedding Handlers
+  const handleUpdatePreWeddingPlan = (updates: Partial<PreWeddingTripPlan>) => {
+    setPreWeddingPlan(prev => ({ ...prev, ...updates }));
+  };
+
+  const handleResetPreWeddingPreset = (presetType: PreWeddingTripType) => {
+    if (presetType === 'NATIONAL') setPreWeddingPlan(NATIONAL_PREWEDDING_PRESET);
+    else if (presetType === 'INTERNATIONAL') setPreWeddingPlan(INTERNATIONAL_PREWEDDING_PRESET);
+    else if (presetType === 'REGIONAL') setPreWeddingPlan(REGIONAL_PREWEDDING_PRESET);
+  };
 
   // Task Handlers (Interactive, Editable, Deletable)
   const handleToggleTask = (taskId: string) => {
@@ -224,8 +247,9 @@ export const App: React.FC = () => {
 
   // Global Reset
   const handleResetData = () => {
-    if (window.confirm('Reset all tasks, rentals, dresses, cues, decisions, and notes back to clean defaults?')) {
+    if (window.confirm('Reset all tasks, pre-wedding shoot plans, rentals, dresses, cues, decisions, and notes back to clean defaults?')) {
       setTasks(INITIAL_TASKS);
+      setPreWeddingPlan(INITIAL_PREWEDDING_PLAN);
       setRentals(INITIAL_RENTALS);
       setDresses(INITIAL_DRESSES);
       setDays(INITIAL_DAY_SCHEDULES);
@@ -271,6 +295,7 @@ export const App: React.FC = () => {
 
   // Smooth live numerical calculations
   const tasksRemainingCount = filteredTasks.filter(t => !t.completed).length;
+  const preWeddingRemainingCount = preWeddingPlan.checklist.filter(c => !c.completed).length;
   const rentalsPendingCount = filteredRentals.filter(r => r.status === 'To Book' || r.status === 'Reserved').length;
   const dressesToBuyCount = filteredDresses.filter(d => d.status !== 'Ready').length;
   const decisionsPendingCount = decisions.filter(d => d.status === 'Pending').length;
@@ -286,6 +311,7 @@ export const App: React.FC = () => {
         dresses={dresses}
         decisions={decisions}
         notes={notes}
+        preWeddingPlan={preWeddingPlan}
         activeSide={activeSide}
         weddingYear={weddingYear}
         onResetData={handleResetData}
@@ -298,6 +324,7 @@ export const App: React.FC = () => {
         activeSide={activeSide}
         onSideChange={setActiveSide}
         tasksRemainingCount={tasksRemainingCount}
+        preWeddingRemainingCount={preWeddingRemainingCount}
         rentalsPendingCount={rentalsPendingCount}
         dressesToBuyCount={dressesToBuyCount}
         decisionsPendingCount={decisionsPendingCount}
@@ -316,6 +343,15 @@ export const App: React.FC = () => {
             onAddTask={handleAddTask}
             onEditTask={handleEditTask}
             onDeleteTask={handleDeleteTask}
+          />
+        )}
+
+        {activeTab === 'pre-wedding' && (
+          <PreWeddingPlanner
+            plan={preWeddingPlan}
+            activeSide={activeSide}
+            onUpdatePlan={handleUpdatePreWeddingPlan}
+            onResetPlanToPreset={handleResetPreWeddingPreset}
           />
         )}
 
