@@ -11,7 +11,7 @@ import {
   RefreshCw,
   AlertCircle
 } from 'lucide-react';
-import { Task, RentalItem, DressItem, DecisionPoint, PlanningNote } from '../types/wedding';
+import { Task, RentalItem, DressItem, DecisionPoint, PlanningNote, WeddingSide } from '../types/wedding';
 
 interface HeaderProps {
   tasks: Task[];
@@ -19,6 +19,7 @@ interface HeaderProps {
   dresses: DressItem[];
   decisions: DecisionPoint[];
   notes?: PlanningNote[];
+  activeSide?: WeddingSide;
   weddingYear: number;
   onResetData: () => void;
 }
@@ -29,6 +30,7 @@ export const Header: React.FC<HeaderProps> = ({
   dresses,
   decisions,
   notes = [],
+  activeSide = 'ALL',
   weddingYear,
   onResetData
 }) => {
@@ -37,11 +39,11 @@ export const Header: React.FC<HeaderProps> = ({
     hours: number;
     minutes: number;
     seconds: number;
-  }>({ days: 122, hours: 1, minutes: 47, seconds: 0 });
+  }>({ days: 121, hours: 19, minutes: 30, seconds: 0 });
 
   useEffect(() => {
-    // Target: Feb 21, 2027, 05:00 AM IST
-    const targetDate = new Date(`2027-02-21T05:00:00+05:30`).getTime();
+    // Target: Feb 21, 2027, 04:00 PM IST (4 PM Jaan to Katargam)
+    const targetDate = new Date(`2027-02-21T16:00:00+05:30`).getTime();
 
     const updateCountdown = () => {
       const now = new Date().getTime();
@@ -65,20 +67,37 @@ export const Header: React.FC<HeaderProps> = ({
     return () => clearInterval(interval);
   }, []);
 
-  // Real-time calculations
-  const totalTasks = tasks.length;
-  const completedTasks = tasks.filter(t => t.completed).length;
+  // Filter tasks dynamically based on active perspective
+  const filteredTasks = tasks.filter(task => {
+    if (activeSide === 'BOY') {
+      return task.side === 'Boy' || task.side === 'Both' || !task.side || task.assignedTo === 'Groom' || task.assignedTo === 'Both' || task.assignedTo === 'Family';
+    }
+    if (activeSide === 'GIRL') {
+      return task.side === 'Girl' || task.side === 'Both' || !task.side || task.assignedTo === 'Bride' || task.assignedTo === 'Both' || task.assignedTo === 'Family';
+    }
+    return true;
+  });
+
+  const totalTasks = filteredTasks.length;
+  const completedTasks = filteredTasks.filter(t => t.completed).length;
   const remainingTasks = totalTasks - completedTasks;
   const progressPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+  // Filter dresses based on perspective
+  const filteredDresses = dresses.filter(d => {
+    if (activeSide === 'BOY') return d.person === 'Groom';
+    if (activeSide === 'GIRL') return d.person === 'Bride';
+    return true;
+  });
 
   const totalRentals = rentals.reduce((acc, r) => acc + (r.totalCost || 0), 0);
   const totalRentalAdvance = rentals.reduce((acc, r) => acc + (r.advancePaid || 0), 0);
   const rentalsPendingPickup = rentals.filter(r => r.status === 'To Book' || r.status === 'Reserved').length;
   const rentalsBalanceDue = totalRentals - totalRentalAdvance;
 
-  const totalDresses = dresses.reduce((acc, d) => acc + (d.costEstimated || 0), 0);
-  const totalDressAdvance = dresses.reduce((acc, d) => acc + (d.advancePaid || 0), 0);
-  const dressesToFinish = dresses.filter(d => d.status !== 'Ready').length;
+  const totalDresses = filteredDresses.reduce((acc, d) => acc + (d.costEstimated || 0), 0);
+  const totalDressAdvance = filteredDresses.reduce((acc, d) => acc + (d.advancePaid || 0), 0);
+  const dressesToFinish = filteredDresses.filter(d => d.status !== 'Ready').length;
   const dressesBalanceDue = totalDresses - totalDressAdvance;
 
   const grandTotalCost = totalRentals + totalDresses;
@@ -90,6 +109,7 @@ export const Header: React.FC<HeaderProps> = ({
       exportedAt: new Date().toISOString(),
       currentDate: '2026-10-22',
       weddingDate: '2027-02-21',
+      activeSide,
       tasks,
       rentals,
       dresses,
@@ -106,36 +126,59 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <header className="bg-white border-b border-gray-200 shadow-sm">
+    <header className="bg-white border-b border-gray-200 shadow-xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         {/* Top Header Row */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-gray-100">
           <div>
-            <div className="flex items-center space-x-2">
+            <div className="flex flex-wrap items-center gap-2">
               <h1 className="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">
                 Wedding Dashboard
               </h1>
               <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">
-                Feb 20–21, 2027
+                Feb 18–21, 2027
               </span>
+
+              {/* Active Side Badge */}
+              {activeSide === 'BOY' && (
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-600 text-white shadow-2xs flex items-center gap-1">
+                  <span>👦</span>
+                  <span>Boy's Side Tracking</span>
+                </span>
+              )}
+              {activeSide === 'GIRL' && (
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-600 text-white shadow-2xs flex items-center gap-1">
+                  <span>👧</span>
+                  <span>Girl's Side Tracking</span>
+                </span>
+              )}
+              {activeSide === 'ALL' && (
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-gray-100 text-gray-700 border border-gray-300 flex items-center gap-1">
+                  <span>👥</span>
+                  <span>Joint (Both Sides)</span>
+                </span>
+              )}
             </div>
 
             <div className="flex flex-wrap items-center gap-2 text-xs text-gray-500 mt-1">
               <span className="font-medium text-gray-700">Today: Oct 22, 2026</span>
               <span>•</span>
-              <span>Marriage: Feb 21, 2027</span>
+              <span>18 Feb: Randel & Haldi</span>
               <span>•</span>
-              <span>Silver Farm, Surat</span>
+              <span>20 Feb: Mandvo & Garba</span>
+              <span>•</span>
+              <span>21 Feb: 4 PM Jaan to Katargam & Lagan</span>
+              <span>•</span>
+              <span>Silver Farm & Katargam, Surat</span>
             </div>
           </div>
 
-          {/* Clean Countdown & Utility Actions */}
-          <div className="flex items-center space-x-3">
-            {/* Countdown Badge */}
-            <div className="bg-gray-900 text-white px-3 py-1.5 rounded-lg flex items-center space-x-2 text-xs font-semibold">
+          {/* Countdown & Utility Actions */}
+          <div className="flex items-center space-x-2 sm:space-x-3">
+            <div className="bg-gray-900 text-white px-3 py-1.5 rounded-lg flex items-center space-x-2 text-xs font-semibold shadow-2xs">
               <Clock className="w-3.5 h-3.5 text-blue-400" />
               <span>
-                <strong>{timeLeft.days} days</strong>, {timeLeft.hours}h {timeLeft.minutes}m to Feb 21, 2027
+                <strong>{timeLeft.days} days</strong>, {timeLeft.hours}h to Feb 21
               </span>
             </div>
 
@@ -159,7 +202,7 @@ export const Header: React.FC<HeaderProps> = ({
 
             <button
               onClick={onResetData}
-              title="Reset data back to defaults"
+              title="Reset data back to clean defaults"
               className="p-1.5 rounded-lg border border-gray-300 text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition"
             >
               <RefreshCw className="w-3.5 h-3.5" />
@@ -167,12 +210,14 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         </div>
 
-        {/* 4 Clean Metric Cards */}
+        {/* 4 Clean Metric Cards (Dynamically Reflecting Active Perspective) */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 pt-3">
           {/* Tasks Summary */}
           <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
             <div className="flex items-center justify-between text-xs text-gray-500 font-medium">
-              <span>Tasks Progress</span>
+              <span>
+                {activeSide === 'BOY' ? "Boy's Tasks" : activeSide === 'GIRL' ? "Girl's Tasks" : "Tasks Progress"}
+              </span>
               <CheckCircle2 className="w-4 h-4 text-emerald-600" />
             </div>
             <div className="text-lg font-bold text-gray-900 mt-1">
@@ -186,7 +231,7 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Rentals Summary */}
           <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
             <div className="flex items-center justify-between text-xs text-gray-500 font-medium">
-              <span>Rentals (Pickups & Drops)</span>
+              <span>Rentals & Sound Rigs</span>
               <Truck className="w-4 h-4 text-blue-600" />
             </div>
             <div className="text-lg font-bold text-gray-900 mt-1">
@@ -200,11 +245,13 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Outfits Summary */}
           <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
             <div className="flex items-center justify-between text-xs text-gray-500 font-medium">
-              <span>Dresses & Tailoring</span>
+              <span>
+                {activeSide === 'BOY' ? "Groom Outfits" : activeSide === 'GIRL' ? "Bride Outfits" : "Outfits & Tailoring"}
+              </span>
               <ShoppingBag className="w-4 h-4 text-purple-600" />
             </div>
             <div className="text-lg font-bold text-gray-900 mt-1">
-              {dressesToFinish} / {dresses.length} <span className="text-xs text-gray-500 font-normal">To Finish</span>
+              {dressesToFinish} / {filteredDresses.length} <span className="text-xs text-gray-500 font-normal">To Finish</span>
             </div>
             <div className="text-xs text-gray-600 mt-0.5">
               ₹{dressesBalanceDue.toLocaleString('en-IN')} pending at tailors

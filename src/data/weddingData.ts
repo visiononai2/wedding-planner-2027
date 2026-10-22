@@ -13,8 +13,8 @@ export const INITIAL_MILESTONES: MonthMilestone[] = [
   { id: 'nov-2026', name: 'November 2026', monthLabel: 'Nov 2026', timeframe: '3 Months to Go', badge: 'Nov 2026: Outfits & Makeup' },
   { id: 'dec-2026', name: 'December 2026', monthLabel: 'Dec 2026', timeframe: '2 Months to Go', badge: 'Dec 2026: Catering & Staff' },
   { id: 'jan-2027', name: 'January 2027', monthLabel: 'Jan 2027', timeframe: '1 Month to Go', badge: 'Jan 2027: Chab & Envelopes' },
-  { id: 'feb-prep', name: 'Feb 1 - 18, 2027', monthLabel: 'Feb 1-18', timeframe: 'Wedding Month Prep', badge: 'Feb 1-18: Final Fittings & ICER' },
-  { id: 'feb-days', name: 'Feb 19 - 21, 2027', monthLabel: 'Feb 19-21', timeframe: 'Wedding Days', badge: 'Event Days: Mandvo, Garba & Jaan' }
+  { id: 'feb-prep', name: 'Feb 1 - 16, 2027', monthLabel: 'Feb 1-16', timeframe: 'Wedding Month Prep', badge: 'Feb 1-16: Final Fittings & ICER' },
+  { id: 'feb-days', name: 'Feb 18 - 21, 2027', monthLabel: 'Feb 18-21', timeframe: 'Wedding Days', badge: 'Event Days: Randel, Mandvo, Garba & Jaan' }
 ];
 
 export const INITIAL_TASKS: Task[] = [
@@ -24,6 +24,7 @@ export const INITIAL_TASKS: Task[] = [
     title: 'Ask elders: Annual function in first half or second half?', 
     category: 'rituals', 
     assignedTo: 'Family', 
+    side: 'Both',
     monthId: 'oct-2026', 
     completed: false, 
     priority: 'high',
@@ -34,6 +35,7 @@ export const INITIAL_TASKS: Task[] = [
     title: 'Ask elders: Marriage together at Silver Farm or separate mandvos?', 
     category: 'rituals', 
     assignedTo: 'Family', 
+    side: 'Both',
     monthId: 'oct-2026', 
     completed: false, 
     priority: 'high',
@@ -44,6 +46,7 @@ export const INITIAL_TASKS: Task[] = [
     title: 'Call Dhaval Jajenwala to get generator rental contact number', 
     category: 'rentals', 
     assignedTo: 'Groom', 
+    side: 'Boy',
     monthId: 'oct-2026', 
     completed: false, 
     priority: 'high',
@@ -54,6 +57,7 @@ export const INITIAL_TASKS: Task[] = [
     title: 'Find location for couple pre-wedding photoshoot', 
     category: 'outfits', 
     assignedTo: 'Both', 
+    side: 'Both',
     monthId: 'oct-2026', 
     completed: false, 
     priority: 'high',
@@ -64,6 +68,7 @@ export const INITIAL_TASKS: Task[] = [
     title: 'Check Silver Farm for dome availability vs constructing standalone mandvo', 
     category: 'venue', 
     assignedTo: 'Family', 
+    side: 'Both',
     monthId: 'oct-2026', 
     completed: false, 
     priority: 'high',
@@ -74,6 +79,7 @@ export const INITIAL_TASKS: Task[] = [
     title: 'Lock DJ & Sound package with Dhaval Jajenwala (Haldi ₹4k, Garba ₹24k, Jaan ICER ₹15k, Lagan ₹4k)', 
     category: 'sound_dj', 
     assignedTo: 'Groom', 
+    side: 'Boy',
     monthId: 'oct-2026', 
     completed: false, 
     priority: 'high',
@@ -86,6 +92,7 @@ export const INITIAL_TASKS: Task[] = [
     title: 'Groom: Buy Haldi kurta pajama (Blue / White / Lavender color theme)', 
     category: 'outfits', 
     assignedTo: 'Groom', 
+    side: 'Boy',
     monthId: 'nov-2026', 
     completed: false, 
     priority: 'high',
@@ -96,6 +103,7 @@ export const INITIAL_TASKS: Task[] = [
     title: 'Groom: Order or tailor Varghodo Jodhpuri / Suit (Feb 19 evening)', 
     category: 'outfits', 
     assignedTo: 'Groom', 
+    side: 'Boy',
     monthId: 'nov-2026', 
     completed: false, 
     priority: 'high',
@@ -106,6 +114,7 @@ export const INITIAL_TASKS: Task[] = [
     title: 'Groom: Order or tailor Lagan Wedding Suit (Feb 21 morning)', 
     category: 'outfits', 
     assignedTo: 'Groom', 
+    side: 'Boy',
     monthId: 'nov-2026', 
     completed: false, 
     priority: 'high',
@@ -113,9 +122,10 @@ export const INITIAL_TASKS: Task[] = [
   },
   { 
     id: 't-nov-4', 
-    title: 'Groom: Buy traditional coty (bandi) & kurta for Grah Shanti (Feb 20 noon)', 
+    title: 'Groom: Buy traditional coty (bandi) & kurta for Grah Shanti & Mandvo (Feb 20 noon)', 
     category: 'outfits', 
     assignedTo: 'Groom', 
+    side: 'Boy',
     monthId: 'nov-2026', 
     completed: false, 
     priority: 'high',
@@ -123,19 +133,21 @@ export const INITIAL_TASKS: Task[] = [
   },
   { 
     id: 't-nov-5', 
-    title: 'Bride: Book makeup parlour for Feb 20 (Strict slot: start 2-3 PM, finish by 4-5-6 PM)', 
+    title: 'Bride: Book makeup parlour for Feb 20 (Strict morning slot: 11:00 AM – 12:00 PM start)', 
     category: 'outfits', 
     assignedTo: 'Bride', 
+    side: 'Girl',
     monthId: 'nov-2026', 
     completed: false, 
     priority: 'high',
-    notes: 'Direct from user notes: parlour, tayar thavanu, 2-3-4 pm e chalu thay ne 4-5-6 wage pati jay.'
+    notes: 'Direct from user notes: 20 th Feb Parlour: 11 AM or 12 PM start.'
   },
   { 
     id: 't-nov-6', 
     title: 'Bride: Finalize wedding clothes (Lagan-Lakhan, Mehndi, Haldi, Mandvo, Garba chaniya choli, Lagan)', 
     category: 'outfits', 
     assignedTo: 'Bride', 
+    side: 'Girl',
     monthId: 'nov-2026', 
     completed: false, 
     priority: 'high',
@@ -146,6 +158,7 @@ export const INITIAL_TASKS: Task[] = [
     title: 'Execute pre-wedding couple photoshoot at chosen location', 
     category: 'outfits', 
     assignedTo: 'Both', 
+    side: 'Both',
     monthId: 'nov-2026', 
     completed: false, 
     priority: 'medium',
@@ -158,6 +171,7 @@ export const INITIAL_TASKS: Task[] = [
     title: 'Decide caterer & 2 to 3 Jamanvars layout (Optional round tables vs buffet)', 
     category: 'catering', 
     assignedTo: 'Family', 
+    side: 'Both',
     monthId: 'dec-2026', 
     completed: false, 
     priority: 'high',
@@ -168,6 +182,7 @@ export const INITIAL_TASKS: Task[] = [
     title: 'Hire dedicated "Pani valo" (water distributor for hot daytime vidhis)', 
     category: 'catering', 
     assignedTo: 'Family', 
+    side: 'Both',
     monthId: 'dec-2026', 
     completed: false, 
     priority: 'high',
@@ -178,6 +193,7 @@ export const INITIAL_TASKS: Task[] = [
     title: 'Arrange welcome drinks for guest arrival & nasta/snacks for Garba night', 
     category: 'catering', 
     assignedTo: 'Family', 
+    side: 'Both',
     monthId: 'dec-2026', 
     completed: false, 
     priority: 'high',
@@ -188,6 +204,7 @@ export const INITIAL_TASKS: Task[] = [
     title: 'Hire farm saf-safai crew for ongoing cleanliness at Silver Farm', 
     category: 'venue', 
     assignedTo: 'Family', 
+    side: 'Both',
     monthId: 'dec-2026', 
     completed: false, 
     priority: 'medium',
@@ -198,6 +215,7 @@ export const INITIAL_TASKS: Task[] = [
     title: 'Hire 2 gate watchmen for farm parking & security', 
     category: 'venue', 
     assignedTo: 'Family', 
+    side: 'Both',
     monthId: 'dec-2026', 
     completed: false, 
     priority: 'medium',
@@ -208,6 +226,7 @@ export const INITIAL_TASKS: Task[] = [
     title: 'Confirm food servers (pirsava vala) and dish cleaners (vasan utkva vala)', 
     category: 'catering', 
     assignedTo: 'Family', 
+    side: 'Both',
     monthId: 'dec-2026', 
     completed: false, 
     priority: 'medium',
@@ -218,6 +237,7 @@ export const INITIAL_TASKS: Task[] = [
     title: 'Book generator on rent from Dhaval\'s contact for farm sound & lighting backup', 
     category: 'rentals', 
     assignedTo: 'Groom', 
+    side: 'Boy',
     monthId: 'dec-2026', 
     completed: false, 
     priority: 'high',
@@ -227,9 +247,10 @@ export const INITIAL_TASKS: Task[] = [
   // January 2027 (Rituals Preparation & Protocol Checks)
   { 
     id: 't-jan-1', 
-    title: 'Prepare Chab Devani gift baskets (both sides exchange after Mandvo)', 
+    title: 'Prepare Chab Devani gift baskets (both sides exchange after Mandvo on Feb 20)', 
     category: 'rituals', 
     assignedTo: 'Both', 
+    side: 'Both',
     monthId: 'jan-2027', 
     completed: false, 
     priority: 'high',
@@ -240,16 +261,18 @@ export const INITIAL_TASKS: Task[] = [
     title: 'Prepare Paat Utraman cash envelopes & setup boy and girl mandvo seating', 
     category: 'rituals', 
     assignedTo: 'Family', 
+    side: 'Both',
     monthId: 'jan-2027', 
     completed: false, 
     priority: 'high',
-    notes: 'Direct from user notes: mandvo pate pachi paat utraman karvanu hoi, badha cover deva ave, boy ne boys wala side boy na mandvama besvanu ne girl ne girl side.'
+    notes: 'Direct from user notes: mandvo pate pachi paat utraman karvanu hoi, badha cover deva ave.'
   },
   { 
     id: 't-jan-3', 
     title: 'Confirm late-night Garba ice cream arrangement (joint counter or separate for each side)', 
     category: 'catering', 
     assignedTo: 'Both', 
+    side: 'Both',
     monthId: 'jan-2027', 
     completed: false, 
     priority: 'medium',
@@ -257,21 +280,23 @@ export const INITIAL_TASKS: Task[] = [
   },
   { 
     id: 't-jan-4', 
-    title: 'Review 10:00 PM Surat police sound cutoff rule with Dhaval\'s sound operator', 
+    title: 'Review 10:00 PM Surat police sound cutoff rule with Dhaval\'s sound operator (close at 10 PM if police arrives, else till 12 AM)', 
     category: 'sound_dj', 
     assignedTo: 'Both', 
+    side: 'Both',
     monthId: 'jan-2027', 
     completed: false, 
     priority: 'high',
-    notes: 'Direct from user notes: 10 wage function dj police bandh karavshe.'
+    notes: 'Direct from user notes: Close at 10 if police comes else till 12 AM.'
   },
 
-  // February 1 - 18, 2027 (Final Prep & Fittings)
+  // February 1 - 16, 2027 (Final Prep & Fittings)
   { 
     id: 't-feb-1', 
     title: 'Final outfit fittings: Groom (Kurtas, Coty, Jodhpuri, Suits) & Bride (Chaniya Choli, Sarees)', 
     category: 'outfits', 
     assignedTo: 'Both', 
+    side: 'Both',
     monthId: 'feb-prep', 
     completed: false, 
     priority: 'high',
@@ -279,115 +304,181 @@ export const INITIAL_TASKS: Task[] = [
   },
   { 
     id: 't-feb-2', 
-    title: 'Confirm ICER truck assembly at 04:30 AM on Feb 21 with 4 Base 4 Top & flowers', 
+    title: 'Confirm ICER truck assembly for 4:00 PM afternoon Jaan departure to Katargam (Feb 21)', 
     category: 'rentals', 
     assignedTo: 'Groom', 
+    side: 'Boy',
     monthId: 'feb-prep', 
     completed: false, 
     priority: 'high',
-    notes: 'Direct from user notes: Jan: Need icer, 4 base 4 top, One operator for sound, Upper walu thaine 15k, C trust and flowers for decoration.'
+    notes: 'Direct from user notes: Boy ne Bapor pachi jan leine javanu 4 wage, katargam farm thi one km away.'
   },
   { 
     id: 't-feb-3', 
-    title: 'Plan Bride Entry timing for Garba (half-time garba at peer side first, then arrival)', 
+    title: 'Girl side: Confirm Gor Maharaj exact date for Lagan Lakhan (17 or 18 Feb)', 
     category: 'rituals', 
-    assignedTo: 'Both', 
+    assignedTo: 'Bride', 
+    side: 'Girl',
     monthId: 'feb-prep', 
     completed: false, 
-    priority: 'medium',
-    notes: 'Direct from user notes: ras mate girl ne lei avine entry karava(girl half time garba ena peer ma karine ave).'
+    priority: 'high',
+    notes: 'Direct from user notes: 17 or 18 Feb (girl wala jyare lagan lakhvanu decide kare ena gor maharaj pase che).'
   },
   { 
     id: 't-feb-4', 
-    title: 'Confirm slow music / sound system operator for Lagan geet & Varmala', 
-    category: 'sound_dj', 
-    assignedTo: 'Groom', 
+    title: 'Coordinate Joint Jamanvar (Dinner together on Feb 20, 6:00 - 6:30 PM)', 
+    category: 'catering', 
+    assignedTo: 'Family', 
+    side: 'Both',
     monthId: 'feb-prep', 
     completed: false, 
-    priority: 'medium',
-    notes: 'Direct from user notes: lagan geet / sound system (slow music), Lagan 2 base 2 top. Rate 4000.'
+    priority: 'high',
+    notes: 'Direct from user notes: jamanvar (boy and girl nu hare che 6-6:30 PM).'
   },
 
-  // February 19 - 21, 2027 (Wedding Execution Days)
+  // February 18 - 21, 2027 (Wedding Execution Days)
   { 
     id: 't-day-1', 
-    title: 'Feb 19 Morning: Conduct Lagan-Lakhan & Vana rasam at home (Traditional outfit)', 
+    title: 'Feb 18 08:00 AM: Randel Tedva at Groom home & welcome ~100 family guests', 
     category: 'rituals', 
     assignedTo: 'Family', 
+    side: 'Boy',
     monthId: 'feb-days', 
     completed: false, 
     priority: 'high',
-    notes: 'Direct from user notes: Lagan - Lakhan, Vana - rasam, 19 saware traditional.'
+    notes: 'Direct from user notes: Sawar ma ran dal tedvana boy na ghare, Randel tedvanu: 8 AM.'
   },
   { 
     id: 't-day-2', 
-    title: 'Feb 19 Evening: Geet Gunjan ladies sangeet at home & Varghodo (Jodhpuri / Suit)', 
+    title: 'Feb 18 10:00 AM: Gor Maharaj completes Lagan Lakhan at Bride house', 
     category: 'rituals', 
-    assignedTo: 'Family', 
+    assignedTo: 'Bride', 
+    side: 'Girl',
     monthId: 'feb-days', 
     completed: false, 
     priority: 'high',
-    notes: 'Direct from user notes: Geet gunjan at Home, Sanje varghodo jodhpuri jevu ka to suit.'
+    notes: 'Direct from user notes: Gor maharaj girl na ghare lagan lakhavanu patave around 10-11 AM.'
   },
   { 
     id: 't-day-3', 
-    title: 'Feb 20 09:30 AM: Haldi rasam (Blue/White/Lavender Kurta, 2 Base 2 Top DJ sound rig)', 
+    title: 'Feb 18 11:00 AM: Bride brothers (5-6 people) deliver Lagan to Groom home; give shagun covers', 
     category: 'rituals', 
     assignedTo: 'Both', 
+    side: 'Both',
     monthId: 'feb-days', 
     completed: false, 
     priority: 'high',
-    notes: 'Direct from user notes: Haldi: 2 base 2 top Rate 4000, kurta payjama blue theme, white, lavender.'
+    notes: 'Direct from user notes: pachi Lagan laine ave girl wala (pn girl nai, emna brothers) (5-6 people saman leine, boy side around 100 present hoi).'
   },
   { 
     id: 't-day-4', 
-    title: 'Feb 20 01:30 PM: Mandvo (Ganpati & Brahman puja, 2 hrs in dome) + Chab Devani + Paat Utraman', 
-    category: 'rituals', 
+    title: 'Feb 18 12:00 PM: Boy side Jamanvar lunch (~100 guests)', 
+    category: 'catering', 
     assignedTo: 'Family', 
+    side: 'Boy',
     monthId: 'feb-days', 
     completed: false, 
     priority: 'high',
-    notes: 'Direct from user notes: Bapore pachi mandvo (ganpati, bhaman, ne vidhi, 2 kalak, dome ma karvanu dome hoi to nakar mandvo banavano hoi).'
+    notes: 'Direct from user notes: Boy ne emna meman ne jamadvana 12-1 PM.'
   },
   { 
     id: 't-day-5', 
-    title: 'Feb 20 02:00–05:30 PM: Bride parlour makeup & sunset couple photography shoot', 
-    category: 'outfits', 
-    assignedTo: 'Bride', 
+    title: 'Feb 18 04:00 PM: Haldi Rasam at Groom home & Groom visits Bride Mehndi for photos', 
+    category: 'rituals', 
+    assignedTo: 'Both', 
+    side: 'Both',
     monthId: 'feb-days', 
     completed: false, 
     priority: 'high',
-    notes: 'Direct from user notes: parlour, tayar thavanu, 2-3-4 pm e chalu thay ne 4-5-6 wage pati jay, pachi phota pade, ne jamanvar karvanu.'
+    notes: 'Direct from user notes: Haldi Rasam : 4 Wage, meman ne 4 wage bolavana / Girls wala Mehndi Rakhe tya boy ne one two friends leine phota padva javanu.'
   },
   { 
     id: 't-day-6', 
-    title: 'Feb 20 08:30 PM: Raas Garba (6x6 DJ rig, girl peer entry, stop high DJ @ 10 PM, ice cream @ 11:30 PM)', 
-    category: 'sound_dj', 
-    assignedTo: 'Both', 
+    title: 'Feb 18 06:00 PM: Evening Jamanvar (Dinner for guests, Bride side has more guests)', 
+    category: 'catering', 
+    assignedTo: 'Family', 
+    side: 'Both',
     monthId: 'feb-days', 
     completed: false, 
     priority: 'high',
-    notes: 'Direct from user notes: ras garba karvana hare chelle sudhi ne 1 wage ghare, 10 wage police dj bandh karavshe, garba chelle icream.'
+    notes: 'Direct from user notes: Sanj Jamanvar : 6-7 Wage, girl side tyre meman pn vadhare hase.'
   },
   { 
     id: 't-day-7', 
-    title: 'Feb 21 05:00 AM: Jaan leaves on ICER truck with 4 Base 4 Top sound', 
-    category: 'logistics', 
-    assignedTo: 'Groom', 
+    title: 'Feb 20 11:00 AM: Bride Parlour slot starts strictly between 11 AM - 12 PM', 
+    category: 'outfits', 
+    assignedTo: 'Bride', 
+    side: 'Girl',
     monthId: 'feb-days', 
     completed: false, 
     priority: 'high',
-    notes: 'Direct from user notes: 21 feb 5 wage chokra wala jaan leine jay, Jan Need icer 4 base 4 top.'
+    notes: 'Direct from user notes: 20 th Feb Parlour : 11 AM or 12 PM.'
   },
   { 
     id: 't-day-8', 
-    title: 'Feb 21 09:30 AM: Lagan vidhi, Varmala, Phere (2 Base 2 Top slow music) & Wedding Lunch', 
+    title: 'Feb 20 02:00 PM: Mandvo Vidhi (Ganpati & Brahman puja, 2 hrs in dome) + Ek bija na mandvo + Chandlo', 
     category: 'rituals', 
     assignedTo: 'Family', 
+    side: 'Both',
     monthId: 'feb-days', 
     completed: false, 
     priority: 'high',
-    notes: 'Direct from user notes: varmala, lagan geet / sound system (slow music), Lagan 2 base 2 top Rate 4000, 21 lagan ma suit.'
+    notes: 'Direct from user notes: Mandvo - 2 PM (from boys side, need to ask girl’s side). ek bija na mandvo nakhshe, pachi boy ne chandlo karva ave.'
+  },
+  { 
+    id: 't-day-9', 
+    title: 'Feb 20 06:00 PM: JOINT JAMANVAR (Boy & Girl side families dine together 6:00 - 6:30 PM)', 
+    category: 'catering', 
+    assignedTo: 'Family', 
+    side: 'Both',
+    monthId: 'feb-days', 
+    completed: false, 
+    priority: 'high',
+    notes: 'Direct from user notes: jamanvar (boy and girl nu hare che 6-6:30 PM).'
+  },
+  { 
+    id: 't-day-10', 
+    title: 'Feb 20 08:00 PM: Raas Garba starts (Dhaval 6x6 DJ; close at 10 PM if police arrives, else till 12 AM)', 
+    category: 'sound_dj', 
+    assignedTo: 'Both', 
+    side: 'Both',
+    monthId: 'feb-days', 
+    completed: false, 
+    priority: 'high',
+    notes: 'Direct from user notes: Garba - 8 PM, Close at 10 if police comes else till 12 AM.'
+  },
+  { 
+    id: 't-day-11', 
+    title: 'Feb 21 04:00 PM: Boy side leaves with Jaan in afternoon to Katargam (1 km from farm)', 
+    category: 'logistics', 
+    assignedTo: 'Groom', 
+    side: 'Boy',
+    monthId: 'feb-days', 
+    completed: false, 
+    priority: 'high',
+    notes: 'Direct from user notes: Boy ne Bapor pachi jan leine javanu 4 wage, katargam farm thi one km away.'
+  },
+  { 
+    id: 't-day-12', 
+    title: 'Feb 21 Evening: Entry event at Katargam venue, Mandap ma besi javanu & Varmala', 
+    category: 'rituals', 
+    assignedTo: 'Both', 
+    side: 'Both',
+    monthId: 'feb-days', 
+    completed: false, 
+    priority: 'high',
+    notes: 'Direct from user notes: Entry event, Mandap ma besi javanu.'
+  },
+  { 
+    id: 't-day-13', 
+    title: 'Feb 21 12:00 AM Midnight: Lagan vidhi completes around 12 AM -> Visit temple (Mandir) together', 
+    category: 'rituals', 
+    assignedTo: 'Both', 
+    side: 'Both',
+    monthId: 'feb-days', 
+    completed: false, 
+    priority: 'high',
+    notes: 'Direct from user notes: Lagan thay jay 12 wage etle ek mandir e jay avanu.'
   }
 ];
 
@@ -407,6 +498,7 @@ export const INITIAL_RENTALS: RentalItem[] = [
     advancePaid: 0,
     securityDeposit: 0,
     status: 'To Book',
+    side: 'Boy',
     notes: 'Direct from user notes: DJ - generater, Get generator contact from dhaval, available on rent.'
   },
   {
@@ -424,40 +516,43 @@ export const INITIAL_RENTALS: RentalItem[] = [
     advancePaid: 0,
     securityDeposit: 0,
     status: 'Reserved',
-    notes: 'Direct from user notes: Sangit 24,000, 6 base 6 top, 16 led, 6 safi, 4 battle top, 1 sound + 1 light operator, 40ft C-truss. 10 PM police curfew!'
+    side: 'Both',
+    notes: 'Direct from user notes: Sangit 24,000, 6 base 6 top, 16 led, 6 safi, 4 battle top, 1 sound + 1 light operator, 40ft C-truss. Close at 10 PM if police comes, else till 12 AM!'
   },
   {
     id: 'rent-3',
-    item: 'ICER Truck for Jaan (4 Base 4 Top + C-Truss & Floral Decor)',
+    item: 'ICER Truck for 4 PM Jaan (4 Base 4 Top + C-Truss & Floral Decor)',
     vendor: 'ICER Transport & Sound (via Dhaval)',
     contactPerson: 'Truck Operator',
     phone: 'To confirm',
-    pickupDate: '2027-02-20',
-    pickupTime: '10:00 PM (for mounting)',
+    pickupDate: '2027-02-21',
+    pickupTime: '02:30 PM (for mounting)',
     dropDate: '2027-02-21',
-    dropTime: '01:00 PM',
-    pickupLocation: 'Groom Residence Assembly Point',
+    dropTime: '10:00 PM',
+    pickupLocation: 'Groom Residence to Katargam',
     totalCost: 15000,
     advancePaid: 0,
     securityDeposit: 0,
     status: 'Reserved',
-    notes: 'Direct from user notes: Jan Need icer, 4 base 4 top, One operator for sound, Upper walu thaine 15k, C trust and flowers for decoration. Departs 05:00 AM sharp on Feb 21!'
+    side: 'Boy',
+    notes: 'Direct from user notes: Jan Need icer, 4 base 4 top, sound operator, upper body 15k, C-truss & flowers. Jaan leaves at 4:00 PM afternoon to Katargam (1 km from farm)!'
   },
   {
     id: 'rent-4',
     item: 'Haldi Sound Rig (2 Base, 2 Top + 1 Operator)',
     vendor: 'Dhaval Jajenwala',
     contactPerson: 'Dhaval Jajenwala',
-    pickupDate: '2027-02-20',
-    pickupTime: '08:30 AM',
-    dropDate: '2027-02-20',
-    dropTime: '12:00 PM',
-    pickupLocation: 'Silver Farm Lawn',
+    pickupDate: '2027-02-18',
+    pickupTime: '03:30 PM',
+    dropDate: '2027-02-18',
+    dropTime: '08:00 PM',
+    pickupLocation: 'Groom Residence Courtyard',
     totalCost: 4000,
     advancePaid: 0,
     securityDeposit: 0,
     status: 'Reserved',
-    notes: 'Direct from user notes: Haldi: 2 base 2 top. Rate 4000. One operator for sound.'
+    side: 'Boy',
+    notes: 'Direct from user notes: Haldi: 2 base 2 top. Rate 4000. One operator for sound. Haldi starts at 4 PM.'
   },
   {
     id: 'rent-5',
@@ -465,15 +560,16 @@ export const INITIAL_RENTALS: RentalItem[] = [
     vendor: 'Dhaval Jajenwala',
     contactPerson: 'Dhaval Jajenwala',
     pickupDate: '2027-02-21',
-    pickupTime: '08:30 AM',
-    dropDate: '2027-02-21',
-    dropTime: '02:00 PM',
-    pickupLocation: 'Silver Farm Mandap',
+    pickupTime: '05:00 PM',
+    dropDate: '2027-02-22',
+    dropTime: '01:00 AM',
+    pickupLocation: 'Katargam Mandap',
     totalCost: 4000,
     advancePaid: 0,
     securityDeposit: 0,
     status: 'Reserved',
-    notes: 'Direct from user notes: Lagan: 2 base 2 top. Rate 4000. One operator for sound (slow music / lagan geet).'
+    side: 'Both',
+    notes: 'Direct from user notes: Lagan: 2 base 2 top. Rate 4000. One operator for sound (slow music / lagan geet) until Lagan finishes at 12 AM.'
   },
   {
     id: 'rent-6',
@@ -488,7 +584,8 @@ export const INITIAL_RENTALS: RentalItem[] = [
     advancePaid: 0,
     securityDeposit: 0,
     status: 'To Book',
-    notes: 'Direct from user notes: jamanvar = 2 or 3 -> caters nu round table (Optional).'
+    side: 'Both',
+    notes: 'Direct from user notes: jamanvar = 2 or 3 -> caters nu round table (Optional). Joint Jamanvar on Feb 20 from 6:00 - 6:30 PM!'
   },
   {
     id: 'rent-7',
@@ -503,29 +600,30 @@ export const INITIAL_RENTALS: RentalItem[] = [
     advancePaid: 0,
     securityDeposit: 0,
     status: 'To Book',
-    notes: 'Direct from user notes: dome ma karvanu dome hoi to nakar mandvo banavano hoi.'
+    side: 'Both',
+    notes: 'Direct from user notes: dome ma karvanu dome hoi to nakar mandvo banavano hoi. 2 PM mandvo on Feb 20.'
   }
 ];
 
 export const INITIAL_DRESSES: DressItem[] = [
-  // Groom Outfits (Direct from user notes)
+  // Groom Outfits (Boy's Side)
   {
     id: 'dr-1',
-    event: 'Lagan-Lakhan & Vana Rasam',
-    date: 'Feb 19, 2027 Morning',
+    event: 'Randel & Lagan-Lakhan Arrival',
+    date: 'Feb 18, 2027 Morning',
     person: 'Groom',
-    garmentName: 'Traditional Kurta Pajama',
-    colorTheme: 'Traditional colors',
+    garmentName: 'Traditional Cotton Kurta Pajama',
+    colorTheme: 'Traditional auspicious',
     action: 'Buy',
     status: 'To Buy',
     costEstimated: 0,
     advancePaid: 0,
-    notes: 'Direct from user notes: 19 saware traditional.'
+    notes: 'Direct from user notes: Sawar ma ran dal tedvana boy na ghare, 18 feb event.'
   },
   {
     id: 'dr-2',
     event: 'Varghodo & Geet Gunjan',
-    date: 'Feb 19, 2027 Evening',
+    date: 'Pre-Wedding Evening',
     person: 'Groom',
     garmentName: 'Jodhpuri Suit or Formal Blazer',
     colorTheme: 'Festive evening color',
@@ -537,8 +635,8 @@ export const INITIAL_DRESSES: DressItem[] = [
   },
   {
     id: 'dr-3',
-    event: 'Haldi Rasam',
-    date: 'Feb 20, 2027 09:30 AM',
+    event: 'Haldi Rasam & Photo Visit to Mehndi',
+    date: 'Feb 18, 2027 04:00 PM',
     person: 'Groom',
     garmentName: 'Haldi Kurta Pajama',
     colorTheme: 'Blue / White / Lavender theme',
@@ -546,12 +644,12 @@ export const INITIAL_DRESSES: DressItem[] = [
     status: 'To Buy',
     costEstimated: 0,
     advancePaid: 0,
-    notes: 'Direct from user notes: 20 saware haldi ma kurta payjama, blue theme, white, lavender.'
+    notes: 'Direct from user notes: Haldi Rasam 4 Wage, kurta payjama, blue theme, white, lavender.'
   },
   {
     id: 'dr-4',
     event: 'Mandvo & Grah Shanti',
-    date: 'Feb 20, 2027 01:30 PM',
+    date: 'Feb 20, 2027 02:00 PM',
     person: 'Groom',
     garmentName: 'Traditional Coty (Bandi) & Kurta',
     colorTheme: 'Traditional festive shade',
@@ -559,12 +657,12 @@ export const INITIAL_DRESSES: DressItem[] = [
     status: 'To Buy',
     costEstimated: 0,
     advancePaid: 0,
-    notes: 'Direct from user notes: Bapore ghrah shanti traditional coty.'
+    notes: 'Direct from user notes: Mandvo - 2 PM, Bapore ghrah shanti traditional coty.'
   },
   {
     id: 'dr-5',
-    event: 'Sangeet / DJ Night / Reception',
-    date: 'Feb 20, 2027 08:30 PM',
+    event: 'Joint Jamanvar & Raas Garba Night',
+    date: 'Feb 20, 2027 06:00 PM / 08:00 PM',
     person: 'Groom',
     garmentName: 'Kurta Pajama OR Suit OR Shirt-Pant',
     colorTheme: 'Reception festive wear',
@@ -572,12 +670,12 @@ export const INITIAL_DRESSES: DressItem[] = [
     status: 'To Buy',
     costEstimated: 0,
     advancePaid: 0,
-    notes: 'Direct from user notes: Sanje reception suit ka to jodhpuri / Dj ma kurta pajama / 20 sanje shurt pent.'
+    notes: 'Direct from user notes: Dj ma kurta pajama / 20 sanje shurt pent / Sanje reception suit.'
   },
   {
     id: 'dr-6',
-    event: 'Lagan Ceremony & Phere',
-    date: 'Feb 21, 2027 09:30 AM',
+    event: '4 PM Jaan Departure to Katargam & Lagan',
+    date: 'Feb 21, 2027 04:00 PM to Midnight',
     person: 'Groom',
     garmentName: 'Lagan Wedding Suit',
     colorTheme: 'Classic wedding suit',
@@ -585,14 +683,14 @@ export const INITIAL_DRESSES: DressItem[] = [
     status: 'To Buy',
     costEstimated: 0,
     advancePaid: 0,
-    notes: 'Direct from user notes: 21 lagan ma suit.'
+    notes: 'Direct from user notes: 21 lagan ma suit, Boy leaves at 4 PM to Katargam!'
   },
 
-  // Bride Outfits (Direct from user notes)
+  // Bride Outfits (Girl's Side)
   {
     id: 'dr-7',
-    event: 'Lagan-Lakhan & Vana Rasam',
-    date: 'Feb 19, 2027 Morning',
+    event: 'Lagan-Lakhan at Girl\'s Home',
+    date: 'Feb 18, 2027 10:00 AM',
     person: 'Bride',
     garmentName: 'Traditional Ceremony Saree / Outfit',
     colorTheme: 'Traditional auspicious',
@@ -600,25 +698,25 @@ export const INITIAL_DRESSES: DressItem[] = [
     status: 'To Buy',
     costEstimated: 0,
     advancePaid: 0,
-    notes: 'Direct from user notes: GIRLS: Kapda, Lagan - Lakhan, Vana - rasam.'
+    notes: 'Direct from user notes: Gor maharaj girl na ghare lagan lakhavanu patave around 10-11 AM.'
   },
   {
     id: 'dr-8',
-    event: 'Geet Gunjan at Home & Mehndi',
-    date: 'Feb 19, 2027 Evening',
+    event: 'Mehndi Rasam & Couple Photoshoot',
+    date: 'Feb 18, 2027 04:30 PM',
     person: 'Bride',
-    garmentName: 'Mehndi / Sangeet Outfit',
+    garmentName: 'Mehndi Outfit',
     colorTheme: 'Green / Festive bright',
     action: 'Buy',
     status: 'To Buy',
     costEstimated: 0,
     advancePaid: 0,
-    notes: 'Direct from user notes: GIRLS: Mehndi, Geet gunjan at Home.'
+    notes: 'Direct from user notes: Girls wala Mehndi Rakhe tya boy ne one two friends leine phota padva javanu.'
   },
   {
     id: 'dr-9',
     event: 'Haldi Rasam',
-    date: 'Feb 20, 2027 09:30 AM',
+    date: 'Feb 18, 2027',
     person: 'Bride',
     garmentName: 'Haldi Outfit',
     colorTheme: 'Yellow / Lavender / White theme',
@@ -630,8 +728,8 @@ export const INITIAL_DRESSES: DressItem[] = [
   },
   {
     id: 'dr-10',
-    event: 'Mandvo & Chab Devani',
-    date: 'Feb 20, 2027 01:30 PM',
+    event: 'Mandvo & Chandlo Karva Aavu',
+    date: 'Feb 20, 2027 02:00 PM',
     person: 'Bride',
     garmentName: 'Mandvo Traditional Wear',
     colorTheme: 'Traditional Gharchola / Silk',
@@ -639,12 +737,12 @@ export const INITIAL_DRESSES: DressItem[] = [
     status: 'To Buy',
     costEstimated: 0,
     advancePaid: 0,
-    notes: 'Direct from user notes: mando pate pachi eni chab devani hoi.'
+    notes: 'Direct from user notes: pachi boy ne chandlo karva ave, mando pate pachi chab devani.'
   },
   {
     id: 'dr-11',
-    event: 'Raas Garba Night',
-    date: 'Feb 20, 2027 08:30 PM',
+    event: 'Raas Garba (Peer Side to Silver Farm Entry)',
+    date: 'Feb 20, 2027 08:00 PM',
     person: 'Bride',
     garmentName: 'Chaniya Choli (Peer side to Silver Farm)',
     colorTheme: 'Navratri craft / Mirror-work',
@@ -656,8 +754,8 @@ export const INITIAL_DRESSES: DressItem[] = [
   },
   {
     id: 'dr-12',
-    event: 'Lagan Ceremony & Phere',
-    date: 'Feb 21, 2027 09:30 AM',
+    event: 'Lagan Ceremony & Phere at Katargam',
+    date: 'Feb 21, 2027 06:30 PM to Midnight',
     person: 'Bride',
     garmentName: 'Bridal Panetar / Wedding Saree',
     colorTheme: 'Traditional Red & White Panetar',
@@ -665,191 +763,249 @@ export const INITIAL_DRESSES: DressItem[] = [
     status: 'To Buy',
     costEstimated: 0,
     advancePaid: 0,
-    notes: 'Direct from user notes: Lagan ceremony phere.'
+    notes: 'Direct from user notes: Mandap ma besi javanu, lagan thay jay 12 wage etle mandir e jay avanu.'
   }
 ];
 
 export const INITIAL_DAY_SCHEDULES: EventDaySchedule[] = [
   {
-    id: 'feb-19',
-    dateString: '2027-02-19',
-    dayName: 'Friday',
-    title: 'Pre-Wedding Home Rituals',
-    location: 'Home Courtyard',
+    id: 'feb-18',
+    dateString: '2027-02-18',
+    dayName: 'Thursday / 18 Feb (17 or 18 Feb)',
+    title: 'Pre-Wedding: Randel, Lagan Lakhan & Haldi',
+    location: 'Groom & Bride Respective Homes',
     items: [
       {
-        id: 's-19-1',
-        time: '10:00 AM',
-        title: 'Lagan-Lakhan & Vana Rasam',
-        gujaratiTitle: 'લગ્ન લખણ અને વાણા રસમ',
-        location: 'Home Sthapana',
-        actionNotes: 'Auspicious Lagan-Lakhan writing & initial Vana rasam at home with elders.',
-        outfitGroom: 'Traditional Kurta Pajama',
-        outfitBride: 'Traditional Saree'
+        id: 's-18-1',
+        time: '08:00 AM',
+        title: 'Randel Tedva (Groom Home)',
+        gujaratiTitle: 'સવારમાં રાંદલ તેડવા (છોકરાના ઘરે - ૮ વાગે)',
+        location: 'Groom Residence',
+        actionNotes: 'Auspicious Randel sthapana and invocation at Groom\'s residence in the morning.',
+        side: 'Boy',
+        outfitGroom: 'Traditional Cotton Kurta'
       },
       {
-        id: 's-19-2',
-        time: '07:30 PM',
-        title: 'Geet Gunjan (Ladies Sangeet)',
-        gujaratiTitle: 'ગીત ગુંજન (ઘરે ગીતો)',
-        location: 'Home',
-        actionNotes: 'Traditional wedding songs and sangeet with family at home.',
-        outfitGroom: 'Jodhpuri Suit or Kurta'
+        id: 's-18-2',
+        time: '10:00 AM – 11:00 AM',
+        title: 'Lagan Lakhavanu (Bride Home with Gor Maharaj)',
+        gujaratiTitle: 'લગ્ન લખાણ (દીકરીના ઘરે ગોર મહારાજ સાથે - ૧૦ થી ૧૧ વાગે)',
+        location: 'Bride Residence',
+        actionNotes: 'Gor Maharaj completes auspicious Lagan Lakhan writing rituals at Bride\'s house.',
+        side: 'Girl',
+        outfitBride: 'Traditional Bandhani'
+      },
+      {
+        id: 's-18-3',
+        time: '11:00 AM – 12:00 PM',
+        title: 'Lagan Delivery to Groom Home (Bride\'s Brothers)',
+        gujaratiTitle: 'લગ્ન લઈને આવવું (દીકરીના ભાઈઓ ૫-૬ જણા સામાન લઈને આવે, છોકરા પક્ષે ~૧૦૦ હાજર)',
+        location: 'Groom Residence',
+        actionNotes: '5 to 6 brothers of Bride arrive carrying Lagan patrika and ritual saman. Around 100 boy side relatives present. Give shagun covers and hospitality to brothers before they return.',
+        side: 'Both'
+      },
+      {
+        id: 's-18-4',
+        time: '12:00 PM – 01:00 PM',
+        title: 'Boy Side Lunch Feast (Jamanvar)',
+        gujaratiTitle: 'બપોરે જમણવાર (૧૨ થી ૧ વાગે - ૧૦૦ મહેમાન)',
+        location: 'Groom Residence Dining',
+        actionNotes: 'Celebratory feast served to ~100 family members and guests at Groom\'s home.',
+        side: 'Boy'
+      },
+      {
+        id: 's-18-5',
+        time: '04:00 PM',
+        title: 'Haldi Rasam (Groom\'s Side)',
+        gujaratiTitle: 'હળદી રસમ (૪ વાગે મહેમાનોને બોલાવવા)',
+        location: 'Groom Residence Courtyard',
+        actionNotes: 'Guests invited for 4:00 PM. Festive Haldi and Pithi ceremony for Groom.',
+        side: 'Boy',
+        outfitGroom: 'Haldi Kurta Pajama (Blue/White/Lavender)',
+        soundRig: '2 Base, 2 Top sound setup'
+      },
+      {
+        id: 's-18-6',
+        time: '04:30 PM – 05:30 PM',
+        title: 'Mehndi Rasam & Groom Photo Visit',
+        gujaratiTitle: 'મહેંદી રસમ અને ફોટોશૂટ (છોકરો ૧-૨ મિત્રો સાથે ફોટા પડાવવા જાય ને પાછો આવે)',
+        location: 'Bride Residence / Mehndi Lawn',
+        actionNotes: 'Bride side holds Mehndi. Groom visits with 1-2 close friends for couple photoshoot, clicks portraits, and returns back.',
+        side: 'Both',
+        urgentRule: 'Groom visits with 1-2 friends for photoshoot at Bride\'s venue, then returns for dinner!'
+      },
+      {
+        id: 's-18-7',
+        time: '06:00 PM – 07:00 PM',
+        title: 'Evening Jamanvar (Dinner for Both Sides)',
+        gujaratiTitle: 'સાંજનો જમણવાર (૬ થી ૭ વાગે - દીકરી પક્ષે મહેમાન વધારે હશે)',
+        location: 'Respective Family Venues',
+        actionNotes: 'Evening dinner feast for guests. Bride\'s side has a larger guest gathering this evening.',
+        side: 'Both'
       }
     ]
   },
   {
     id: 'feb-20',
     dateString: '2027-02-20',
-    dayName: 'Saturday',
-    title: 'Day 1: Mandvo, Haldi, Chab & 6x6 Garba',
+    dayName: 'Saturday / 20 Feb',
+    title: 'Day 1: Parlour, Mandvo, Joint Dinner & Garba',
     location: 'Silver Farm, Surat',
     items: [
       {
         id: 's-20-1',
-        time: '09:30 AM',
-        title: 'Haldi Rasam',
-        gujaratiTitle: 'પીઠી અને હળદર રસમ',
-        location: 'Silver Farm Lawn',
-        actionNotes: 'Haldi vidhi with family. 2 Base 2 Top sound setup.',
-        soundRig: '2 Base, 2 Top (Dhaval Jajenwala, ₹4,000, 1 operator)',
-        outfitGroom: 'Haldi Kurta Pajama (Blue/White/Lavender)'
+        time: '11:00 AM – 12:00 PM',
+        title: 'Bridal Parlour Prep (Bride Side)',
+        gujaratiTitle: 'પાર્લર તૈયારી (સવારે ૧૧ થી ૧૨ વાગે શરૂ)',
+        location: 'Bridal Parlour',
+        actionNotes: 'Bride arrives at parlour for hair, draping, and makeup prep. Starts between 11 AM – 12 PM so ready in time for afternoon mandvo.',
+        side: 'Girl',
+        urgentRule: 'Parlour slot confirmed for 11 AM - 12 PM start!'
       },
       {
         id: 's-20-2',
-        time: '01:30 PM',
+        time: '02:00 PM',
         title: 'Mandvo Vidhi (Ganpati & Brahman Puja)',
-        gujaratiTitle: 'માંડવો (ગણપતિ અને બ્રાહ્મણ વિધિ - ૨ કલાક)',
-        location: 'Farm Dome (or Mandap)',
-        actionNotes: '2 hours puja. Dome ma karvanu dome hoi to nakar mandvo banavano hoi.',
-        soundRig: 'Soft background sound',
+        gujaratiTitle: 'માંડવો (બપોરે ૨ વાગે - ગણપતિ અને બ્રાહ્મણ વિધિ ૨ કલાક)',
+        location: 'Silver Farm Dome (or Mandap)',
+        actionNotes: '2 hours auspicious Mandvo ceremony from Boy\'s side (re-confirm Girl\'s side mandvo timing). Held in dome if available, otherwise mandap.',
+        side: 'Both',
+        soundRig: 'Soft traditional background music',
         outfitGroom: 'Traditional Coty (Bandi) & Kurta'
       },
       {
         id: 's-20-3',
         time: '03:30 PM',
-        title: 'Chab Devani (Gift Exchange)',
-        gujaratiTitle: 'છાબ દેવાની (બેય સાઈડ એકબીજાને)',
+        title: 'Ek Bija Na Mandvo Nakhshe & Chab Devani',
+        gujaratiTitle: 'એકબીજાના માંડવા નાખવા અને છાબ દેવી',
         location: 'Mandvo Area',
-        actionNotes: 'Mando pate pachi eni chab devani hoi, bei side ek bija ne dei de.',
-        outfitGroom: 'Traditional Coty & Kurta'
+        actionNotes: 'During mandvo, both sides symbolically place mandvo for each other and exchange Chab gift baskets.',
+        side: 'Both'
       },
       {
         id: 's-20-4',
-        time: '04:00 PM',
-        title: 'Paat Utraman (Shagun Envelope Gathering)',
-        gujaratiTitle: 'પાટ ઉતરામણ (કવર દેવા આવે)',
-        location: 'Respective Mandvos',
-        actionNotes: 'Badha cover deva ave. Boy sits in boy mandvo; girl sits in girl mandvo.',
-        outfitGroom: 'Traditional Coty & Kurta'
+        time: '04:30 PM',
+        title: 'Boy Ne Chandlo Karva Aavu & Paat Utraman',
+        gujaratiTitle: 'છોકરાને ચાંદલો કરવા આવવું અને પાટ ઉતરામણ',
+        location: 'Mandvo Platform',
+        actionNotes: 'Girl side family arrives to do Chandlo for Groom. Relatives gather to give shagun envelopes.',
+        side: 'Both'
       },
       {
         id: 's-20-5',
-        time: '02:00 PM – 05:30 PM',
-        title: 'Bride Parlour & Prep',
-        gujaratiTitle: 'પાર્લર તૈયારી (૨ થી ૫:૩૦ strictly)',
-        location: 'Bridal Parlour / Green Room',
-        actionNotes: 'Parlour tayar thavanu starts 2-3 PM, finishes strictly by 5:00-5:30 PM for sunset photos and dinner.',
-        urgentRule: 'Must finish before 5:30 PM to allow sunset portraits before dinner & Garba!'
+        time: '06:00 PM – 06:30 PM',
+        title: 'JOINT JAMANVAR (Boy & Girl Sides Dine Together)',
+        gujaratiTitle: 'ભેગો જમણવાર (છોકરા અને દીકરી પક્ષનો સાથે જમણવાર - સાંજે ૬ થી ૬:૩૦)',
+        location: 'Silver Farm Dining Area',
+        actionNotes: 'Grand dinner served together for both Boy\'s and Girl\'s side families and relatives at Silver Farm round tables!',
+        side: 'Both',
+        urgentRule: 'Both families dine together between 6:00 - 6:30 PM before Garba!'
       },
       {
         id: 's-20-6',
-        time: '06:30 PM',
-        title: 'Sunset Couple Photoshoot & Jamanvar',
-        gujaratiTitle: 'ફોટોશૂટ અને જમણવાર',
-        location: 'Silver Farm Lawn & Dining Area',
-        actionNotes: 'Portraits during golden hour, followed by Jamanvar with caterers round tables.',
-        outfitGroom: 'Evening outfit / Suit'
+        time: '08:00 PM',
+        title: 'Raas Garba Night (Dhaval Jajenwala 6×6 DJ Rig)',
+        gujaratiTitle: 'રાસ ગરબા (રાત્રે ૮ વાગે - ૬ બેઝ ૬ ટોપ DJ)',
+        location: 'Silver Farm Main Ground',
+        actionNotes: 'High-energy Raas Garba starts with 6 Base, 6 Top, 16 LEDs, 6 Safi floodlights, 40ft C-truss.',
+        side: 'Both',
+        soundRig: 'Dhaval Jajenwala 6B+6T, 16 LED, 6 Safi, 40ft C-truss (₹24,000)'
       },
       {
         id: 's-20-7',
-        time: '08:30 PM',
-        title: 'Raas Garba Night Starts',
-        gujaratiTitle: 'રાસ ગરબા (૬ બેઝ ૬ ટોપ)',
-        location: 'Silver Farm Main Ground',
-        actionNotes: 'Garba kicks off. Dhaval Jajenwala 6 Base 6 Top, 16 LED, 6 Safi white lights, 40ft C-truss.',
-        soundRig: '6 Base 6 Top, 16 LED, 6 Safi, 40ft C-truss (₹24,000, 2 operators)'
+        time: '09:15 PM',
+        title: 'Grand Couple Entry & Bride Arrival',
+        gujaratiTitle: 'કપલ એન્ટ્રી (દીકરી પિયરમાં અડધો સમય ગરબા કરીને એન્ટ્રી કરે)',
+        location: 'Main Garba Ground',
+        actionNotes: 'Bride arrives after doing half-time garba at peer side. Grand couple entry with spotlight truss.',
+        side: 'Both'
       },
       {
         id: 's-20-8',
-        time: '09:15 PM',
-        title: 'Couple Entry & Bride Arrival',
-        gujaratiTitle: 'કપલ એન્ટ્રી (દીકરી પિયરમાં અડધો સમય ગરબા કરીને આવે)',
-        location: 'Silver Farm Ground',
-        actionNotes: 'Girl does half-time garba at peer side first, then arrives for grand couple entry before 10 PM.',
-        outfitGroom: 'Kurta pajama OR Reception suit'
+        time: '10:00 PM – 12:00 AM',
+        title: 'Police Sound Cutoff Rule / Late Garba',
+        gujaratiTitle: '૧૦ વાગે જો પોલીસ આવે તો બંધ/ધીમું, નહીંતર રાત્રે ૧૨ વાગ્યા સુધી ગરબા!',
+        location: 'DJ Console',
+        actionNotes: 'If police comes, close high DJ sound at 10 PM. Otherwise, continue garba till 12:00 AM midnight!',
+        side: 'Both',
+        urgentRule: 'Close high DJ at 10 PM if police comes, else continue till 12:00 AM!'
       },
       {
         id: 's-20-9',
-        time: '10:00 PM',
-        title: 'SURAT POLICE SOUND CUTOFF',
-        gujaratiTitle: '૧૦ વાગે પોલીસ DJ બંધ / ધીમું કરાવશે',
-        location: 'DJ Console',
-        actionNotes: 'Turn down loud DJ decibels at 10 PM sharp. Continue with low acoustic music and family garba.',
-        urgentRule: 'Surat police regulation: Turn down loud DJ sound promptly at 10:00 PM!'
-      },
-      {
-        id: 's-20-10',
         time: '11:30 PM',
         title: 'Late Night Ice Cream Service',
         gujaratiTitle: 'ગરબા છેલ્લે આઈસક્રીમ',
         location: 'Catering Counter',
-        actionNotes: 'Ice cream served to all garba guests (joint counter or separate). Wrap up and home by 01:00 AM.'
+        actionNotes: 'Ice cream counter served to all guests before wrapping up and heading home.',
+        side: 'Both'
       }
     ]
   },
   {
     id: 'feb-21',
     dateString: '2027-02-21',
-    dayName: 'Sunday',
-    title: 'Day 2: 5 AM Jaan, Lagan Vidhi & Phere',
-    location: 'Silver Farm, Surat',
+    dayName: 'Sunday / 21 Feb',
+    title: 'Day 2: 4 PM Jaan to Katargam, Mandap, Lagan & Mandir',
+    location: 'Katargam Venue (1 km from Farm)',
     items: [
       {
         id: 's-21-1',
-        time: '04:30 AM',
-        title: 'ICER Truck Assembly & Sound Check',
-        gujaratiTitle: 'આઈસર ટ્રક તૈયારી (૪ બેઝ ૪ ટોપ)',
+        time: '03:30 PM',
+        title: 'ICER Truck & Sound Rig Assembly at Groom Home',
+        gujaratiTitle: 'આઈસર ટ્રક તૈયારી (બપોરે ૩:૩૦ વાગે)',
         location: 'Groom Residence',
-        actionNotes: 'ICER truck arrives with 4 Base 4 Top, C-truss, floral decoration, and sound operator ready.',
+        actionNotes: 'ICER truck mounted with 4 Base 4 Top, C-truss & floral decoration arrives at Groom residence.',
+        side: 'Boy',
         soundRig: 'ICER Truck 4 Base 4 Top + C-truss & flowers (₹15,000)'
       },
       {
         id: 's-21-2',
-        time: '05:00 AM',
-        title: 'JAAN DEPARTURE',
-        gujaratiTitle: '૫ વાગે જાન લઈને નીકળવું',
-        location: 'Groom Residence to Silver Farm',
-        actionNotes: '5 wage chokra wala jaan leine jay promptly at 5:00 AM on ICER truck!',
-        urgentRule: 'Boy side departs strictly at 05:00 AM sharp!',
+        time: '04:00 PM',
+        title: 'JAAN DEPARTURE TO KATARGAM (Afternoon 4 PM Sharp)',
+        gujaratiTitle: 'જાન લઈને જવું (બપોર પછી ૪ વાગે - કતારગામ, ફાર્મથી ૧ કિમી)',
+        location: 'Groom Residence to Katargam Venue',
+        actionNotes: 'Boy side leaves with Jaan at 4:00 PM in the afternoon! Venue is in Katargam, 1 km away from farm.',
+        side: 'Boy',
+        urgentRule: 'Boy leaves with Jaan at 04:00 PM afternoon sharp!',
         outfitGroom: 'Lagan Wedding Suit'
       },
       {
         id: 's-21-3',
-        time: '09:30 AM',
-        title: 'Varmala & Mandap Sthapana',
-        gujaratiTitle: 'વરમાળા અને મંડપ સ્થાપના',
-        location: 'Silver Farm Mandap',
-        actionNotes: 'Varmala entrance with slow music / lagan geet sound system (2 Base, 2 Top).',
-        soundRig: '2 Base, 2 Top (₹4,000, 1 operator for slow music)'
+        time: '05:30 PM',
+        title: 'Grand Entry Event at Katargam Venue',
+        gujaratiTitle: 'એન્ટ્રી ઈવેન્ટ અને પોંખણું (સાંજે ૫:૩૦)',
+        location: 'Katargam Venue Entrance',
+        actionNotes: 'Groom entry & welcoming rituals (Pokhvanu) by Bride\'s mother and elders.',
+        side: 'Both'
       },
       {
         id: 's-21-4',
-        time: '10:30 AM',
-        title: 'Hastamelap, Phere & Kanyadaan',
-        gujaratiTitle: 'હસ્તમેળાપ, ફેરા અને કન્યાદાન',
-        location: 'Silver Farm Mandap',
-        actionNotes: 'Sacred wedding rituals with Bhavnagar elders and family Brahman.',
-        outfitGroom: 'Lagan Wedding Suit',
-        outfitBride: 'Bridal Panetar'
+        time: '06:30 PM',
+        title: 'Mandap Sthapana & Besi Javanu',
+        gujaratiTitle: 'મંડપમાં બેસી જવું અને વરમાળા (સાંજે ૬:૩૦)',
+        location: 'Katargam Mandap',
+        actionNotes: 'Groom and Bride take their seats in the sacred wedding Mandap. Varmala and auspicious rituals begin.',
+        side: 'Both',
+        soundRig: '2 Base 2 Top (₹4,000, slow music / lagan geet)'
       },
       {
         id: 's-21-5',
-        time: '01:00 PM',
-        title: 'Wedding Lunch (Jamanvar) & Vidai',
-        gujaratiTitle: 'લગ્ન જમણવાર અને વિદાય',
-        location: 'Silver Farm Dining Area',
-        actionNotes: 'Final celebratory wedding feast with round tables, followed by heartfelt Vidai.'
+        time: '07:30 PM – 11:30 PM',
+        title: 'Hastamelap, Phere, Kanyadaan & Wedding Jamanvar',
+        gujaratiTitle: 'હસ્તમેળાપ, ફેરા અને લગ્ન જમણવાર',
+        location: 'Katargam Mandap & Dining',
+        actionNotes: 'Sacred Phere, Saptapadi, Kanyadaan rituals, followed by wedding dinner for guests.',
+        side: 'Both'
+      },
+      {
+        id: 's-21-6',
+        time: '12:00 AM (Midnight)',
+        title: 'Lagan Completes & Mandir Darshan (Visit Temple)',
+        gujaratiTitle: 'લગ્ન ૧૨ વાગે પતે એટલે મંદિરે જઈ આવવું અને આશીર્વાદ લેવા',
+        location: 'Holy Temple (Mandir) & Home',
+        actionNotes: 'Wedding rituals complete around 12:00 AM midnight. The newlywed couple visits a holy temple (Mandir e jay avanu) for blessings, followed by Vidai!',
+        side: 'Both',
+        urgentRule: 'Once Lagan completes around 12 AM midnight, couple visits temple (mandir) together!'
       }
     ]
   }
@@ -861,113 +1017,120 @@ export const INITIAL_DECISION_POINTS: DecisionPoint[] = [
     question: 'Ask elders: Annual function timing in first half or second half?',
     options: ['First Half (Morning)', 'Second Half (Evening)'],
     status: 'Pending',
-    decision: ''
+    decision: '',
+    side: 'Both'
   },
   {
     id: 'dec-2',
     question: 'Ask elders: Marriage together at Silver Farm or separate mandvos?',
     options: ['Together at Silver Farm', 'Separate Mandvos'],
     status: 'Pending',
-    decision: ''
+    decision: '',
+    side: 'Both'
   },
   {
     id: 'dec-3',
-    question: 'Mandvo location: Inside Farm Dome (if available) or construct standalone mandvo?',
-    options: ['Inside Farm Dome', 'Construct Standalone Mandap'],
+    question: 'Girl side: Confirm Gor Maharaj decision date for Lagan Lakhan (17 or 18 Feb)?',
+    options: ['17 February', '18 February'],
     status: 'Pending',
-    decision: ''
+    decision: '',
+    side: 'Girl'
   },
   {
     id: 'dec-4',
+    question: 'Mandvo location: Inside Farm Dome (if available) or construct standalone mandvo?',
+    options: ['Inside Farm Dome', 'Construct Standalone Mandap'],
+    status: 'Pending',
+    decision: '',
+    side: 'Both'
+  },
+  {
+    id: 'dec-5',
     question: 'Garba ice cream counter: Joint (bhega) or separate (pot-potani tya)?',
     options: ['Joint Counter (Bhega)', 'Separate Counters (Pot-potani tya)'],
     status: 'Pending',
-    decision: ''
+    decision: '',
+    side: 'Both'
   }
 ];
 
 export const INITIAL_NOTES: PlanningNote[] = [
   {
     id: 'note-1',
-    title: 'Gujarati Rituals & Schedule Notes (Mandvo, Chab, Garba, Jaan)',
+    title: 'Pre-Wedding Schedule: 17/18 Feb (Randel, Lagan Lakhan & Haldi)',
     category: 'Rituals & Traditions',
-    content: `20 Feb:
-• Bapore pachi Mandvo: Ganpati & Brahman puja vidhi (approx 2 hours). To be held inside the dome if available, otherwise construct a dedicated mandvo.
-• Chab Devani: Immediately after mandvo finishes, both sides exchange chab gift baskets.
-• Paat Utraman: Relatives come to hand over shagun covers. Boy sits in boy side mandvo; girl sits in girl side mandvo.
-• Parlour & Prep: Bride makeup starts 2:00–3:00 PM and finishes strictly by 5:00–5:30 PM. Followed by couple portraits, sunset photos, and dinner.
-• Garba & Couple Entry: Girl performs half-time garba at her peer side first, then makes a grand entry at the main venue. Ras garba until end, wind up by 1:00 AM.
-• Ice Cream: Served at the end of garba night (confirm joint or separate counters).
-
-21 Feb:
-• 05:00 AM sharp: Jaan departure from Groom side on ICER truck.`,
+    side: 'Both',
+    content: `• Date: 17 or 18 Feb (Gor Maharaj at Girl's house decides exact date):
+• 08:00 AM: Randel Tedva at Boy's house in morning.
+• 10:00 - 11:00 AM: Gor Maharaj finishes Lagan Lakhan writing at Girl's house.
+• 11:00 AM - 12:00 PM: Girl's brothers (5-6 people) bring Lagan and ritual saman to Boy's house. Boy side has around 100 family members present. Give shagun covers and send brothers back.
+• 12:00 - 01:00 PM: Boy side Jamanvar lunch served to ~100 guests at home.
+• 04:00 PM: Haldi Rasam for Groom (guests invited for 4:00 PM).
+• 04:30 - 05:30 PM: Girl side hosts Mehndi. Groom visits with 1-2 friends for couple photoshoot, clicks portraits, and returns back.
+• 06:00 - 07:00 PM: Evening Jamanvar dinner for guests (Girl side will have more guests present).`,
     pinned: true,
-    tags: ['Bhavnagar Traditions', 'Mandvo', 'Chab', 'Jaan'],
+    tags: ['18 Feb', 'Randel', 'Lagan Lakhan', 'Haldi', 'Mehndi'],
     updatedAt: '2026-10-22'
   },
   {
     id: 'note-2',
-    title: 'Sound System Rig, DJ & Lighting (Dhaval Jajenwala & Silver Farm)',
-    category: 'Sound & Technical',
-    content: `• Haldi (Feb 20 Morning): 2 Base, 2 Top. Rate ₹4,000 with 1 sound operator.
-• Sangeet / Garba Night (Feb 20 Evening): Rate ₹24,000. 6 Base, 6 Top, 16 LED small round lights, 6 Safi (white floodlights), 4 battle top lights. 1 sound operator + 1 lighting operator.
-• Truss & Structure: 40ft length C-truss structure + top square ring. 6 Base 6 Top is plenty of punch for 500–800 guests at Silver Farm.
-• Police 10 PM Curfew: Surat police will strictly stop high DJ sound at 10:00 PM. Bride entry and couple dances must happen before 10 PM.
-• Jaan (Feb 21 05:00 AM): Need ICER truck with 4 Base, 4 Top, sound operator, C-truss & floral decoration. Total ₹15,000.
-• Lagan (Feb 21 Morning): 2 Base, 2 Top. Rate ₹4,000 with 1 operator (slow music / lagan geet).
-• Generator: Available on rent. Get vendor contact number directly from Dhaval Jajenwala.`,
+    title: '20 Feb Schedule: Parlour, Mandvo, Joint Jamanvar & Garba',
+    category: 'Rituals & Traditions',
+    side: 'Both',
+    content: `• Parlour: Starts at 11:00 AM or 12:00 PM strictly for Bride!
+• Mandvo: 02:00 PM from Boy's side (need to ask Girl's side timing).
+• During Mandvo: Both sides place mandvo for each other (ek bija na mandvo nakhshe), then Girl side comes to do Chandlo for Groom, and Chab exchange.
+• Joint Jamanvar: Boy and Girl side families dine TOGETHER from 6:00 - 6:30 PM!
+• Raas Garba: Kicks off at 08:00 PM with Dhaval Jajenwala 6x6 DJ sound rig.
+• Surat Police Curfew: Close loud DJ at 10:00 PM if police comes, otherwise continue rocking till 12:00 AM midnight!
+• Ice Cream: Served at 11:30 PM to all guests.`,
     pinned: true,
-    tags: ['Dhaval Jajenwala', 'DJ', 'Truss', 'ICER'],
+    tags: ['20 Feb', 'Mandvo', 'Joint Jamanvar', 'Garba', 'Police Curfew'],
     updatedAt: '2026-10-22'
   },
   {
     id: 'note-3',
-    title: 'Silver Farm Ground Operations, Food & Staffing Checklist',
-    category: 'Venue & Food',
-    content: `• Venue Staff to Assign:
-  - Farm saf-safai crew (cleaning before, during, and after functions)
-  - 2 Gate watchmen for parking direction and entry security
-  - Dedicated 'Pani valo' (water distributor for hot daytime vidhis)
-  - Pirsava vala (dedicated servers for round dining tables)
-  - Vasan utkva vala (dishwashing / cleaning staff)
-
-• Catering & Food Protocol:
-  - Welcome drinks upon guest arrival
-  - Nasta / hot snacks counter during Garba night
-  - Jamanvar: 2 to 3 seatings with caterer round tables setup (Optional)
-  - Late night ice cream counter at Garba wrap-up (joint or separate)`,
-    pinned: false,
-    tags: ['Silver Farm', 'Catering', 'Manpower'],
+    title: '21 Feb Schedule: 4 PM Jaan to Katargam, Mandap & Mandir',
+    category: 'Rituals & Traditions',
+    side: 'Boy',
+    content: `• 03:30 PM: ICER truck with 4 Base 4 Top, C-truss, sound operator & flowers ready at Groom home.
+• 04:00 PM (Afternoon): Boy side leaves with Jaan to Katargam (1 km away from farm)!
+• 05:30 PM: Grand Entry event at Katargam venue.
+• 06:30 PM: Mandap ma besi javanu (sitting in Mandap) & Varmala.
+• 07:30 PM - 11:30 PM: Hastamelap, Phere, Kanyadaan & Wedding dinner feast.
+• 12:00 AM (Midnight): Lagan vidhi finishes around 12:00 AM -> Mandir e jay avanu (Couple visits temple together for blessings).`,
+    pinned: true,
+    tags: ['21 Feb', '4 PM Jaan', 'Katargam', 'Lagan', 'Mandir'],
     updatedAt: '2026-10-22'
   },
   {
     id: 'note-4',
-    title: 'Wardrobe & Function Outfits (Groom & Bride Breakdown)',
-    category: 'Outfits & Styling',
-    content: `• Feb 19 Morning (Lagan-Lakhan & Vana): Traditional cotton kurta pajama for Groom; traditional saree for Bride.
-• Feb 19 Evening (Geet Gunjan / Varghodo): Semi-formal Jodhpuri suit or tailored blazer.
-• Feb 20 Morning (Haldi): Kurta pajama with Blue, White, or Lavender theme.
-• Feb 20 Noon (Grah Shanti & Mandvo): Traditional coty (bandi) with kurta.
-• Feb 20 Evening (Sangeet / Reception): Formal reception suit or Jodhpuri (alternative: crisp shirt & trousers).
-• Feb 21 Morning (Lagan Vidhi): Formal wedding suit / traditional wedding attire.`,
+    title: 'Sound System Rig, DJ & Lighting (Dhaval Jajenwala & Silver Farm)',
+    category: 'Sound & Technical',
+    side: 'Boy',
+    content: `• Haldi (Feb 18, 4 PM): 2 Base, 2 Top. Rate ₹4,000 with 1 sound operator.
+• Sangeet / Garba Night (Feb 20, 8 PM): Rate ₹24,000. 6 Base, 6 Top, 16 LED small round lights, 6 Safi (white floodlights), 4 battle top lights. 1 sound operator + 1 lighting operator.
+• Truss & Structure: 40ft length C-truss structure + top square ring. 6 Base 6 Top is plenty of punch for 500–800 guests at Silver Farm.
+• Police 10 PM Curfew: Turn down high decibel sound at 10:00 PM if police comes, else till 12:00 AM.
+• Jaan (Feb 21 04:00 PM): Need ICER truck with 4 Base, 4 Top, sound operator, C-truss & floral decoration. Total ₹15,000.
+• Lagan (Feb 21 06:30 PM - 12 AM): 2 Base, 2 Top. Rate ₹4,000 with 1 operator (slow music / lagan geet).
+• Generator: Available on rent. Get vendor contact number directly from Dhaval Jajenwala.`,
     pinned: false,
-    tags: ['Groom Outfits', 'Haldi Blue Theme', 'Suits'],
+    tags: ['Dhaval Jajenwala', 'DJ', 'Truss', 'ICER'],
     updatedAt: '2026-10-22'
   },
   {
     id: 'note-5',
-    title: 'Fiance Discussions & Key Planning Principles',
+    title: 'Two-Sided Coordination (Boy\'s Side & Girl\'s Side Tracking)',
     category: 'Family & Fiance',
-    content: `• Month-to-Month Planning Strategy:
-  - Track tasks systematically month by month (Oct 2026 through Feb 2027) to avoid last-minute stress.
-  - Review remaining task numbers weekly.
-• Key Inquiries to Re-confirm with Elders:
-  1. Ask about annual function scheduling (first half vs second half).
-  2. Confirm marriage vidhis format (together at Silver Farm or separate mandvos).
-• Pre-Wedding Shoot:
-  - Scout and confirm couple photoshoot location before December.`,
-    pinned: false,
-    tags: ['Fiance', 'Month Tracking', 'Elders'],
+    side: 'Both',
+    content: `• Groom & Bride Joint Workflow:
+  - Both partners track preparations collaboratively using the "Boy's Side" and "Girl's Side" switcher.
+  - Boy side tracks: Randel (8 AM), Lagan reception (~100 guests), Boy Haldi (4 PM), 4 PM Jaan to Katargam.
+  - Girl side tracks: Gor Maharaj Lagan Lakhan (10-11 AM), brothers sending Lagan, Parlour (11 AM), Mehndi (4 PM), Mandap.
+  - Joint coordination: Feb 20 Mandvo at 2 PM, Joint Jamanvar (dinner together at 6 PM), Raas Garba (8 PM), 12 AM temple visit.`,
+    pinned: true,
+    tags: ['Boy Side', 'Girl Side', 'Fiance Coordination'],
     updatedAt: '2026-10-22'
   }
 ];

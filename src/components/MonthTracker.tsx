@@ -16,13 +16,16 @@ import {
   MonthMilestone, 
   MonthPeriod, 
   TaskCategory, 
-  Assignee 
+  Assignee,
+  WeddingSide,
+  EventSide 
 } from '../types/wedding';
 import { EditableText } from './EditableText';
 
 interface MonthTrackerProps {
   milestones: MonthMilestone[];
   tasks: Task[];
+  activeSide: WeddingSide;
   onToggleTask: (taskId: string) => void;
   onAddTask: (task: Omit<Task, 'id'>) => void;
   onEditTask: (id: string, updates: Partial<Task>) => void;
@@ -32,6 +35,7 @@ interface MonthTrackerProps {
 export const MonthTracker: React.FC<MonthTrackerProps> = ({
   milestones,
   tasks,
+  activeSide,
   onToggleTask,
   onAddTask,
   onEditTask,
@@ -122,6 +126,16 @@ export const MonthTracker: React.FC<MonthTrackerProps> = ({
     if (statusFilter === 'PENDING' && task.completed) return false;
     if (statusFilter === 'COMPLETED' && !task.completed) return false;
     if (searchQuery.trim() && !task.title.toLowerCase().includes(searchQuery.toLowerCase())) return false;
+    
+    // Side perspective filter
+    if (activeSide === 'BOY') {
+      const isBoy = task.side === 'Boy' || task.side === 'Both' || !task.side || task.assignedTo === 'Groom' || task.assignedTo === 'Both' || task.assignedTo === 'Family';
+      if (!isBoy) return false;
+    }
+    if (activeSide === 'GIRL') {
+      const isGirl = task.side === 'Girl' || task.side === 'Both' || !task.side || task.assignedTo === 'Bride' || task.assignedTo === 'Both' || task.assignedTo === 'Family';
+      if (!isGirl) return false;
+    }
     return true;
   });
 
@@ -344,6 +358,23 @@ export const MonthTracker: React.FC<MonthTrackerProps> = ({
                       {task.priority === 'high' && !task.completed && (
                         <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-rose-100 text-rose-800">
                           Urgent
+                        </span>
+                      )}
+
+                      {/* Side perspective badge */}
+                      {task.side === 'Boy' && (
+                        <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-blue-100 text-blue-900 border border-blue-200">
+                          👦 Boy's Side
+                        </span>
+                      )}
+                      {task.side === 'Girl' && (
+                        <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-rose-100 text-rose-900 border border-rose-200">
+                          👧 Girl's Side
+                        </span>
+                      )}
+                      {task.side === 'Both' && (
+                        <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-purple-100 text-purple-900 border border-purple-200">
+                          🤝 Joint
                         </span>
                       )}
 

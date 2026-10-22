@@ -25,49 +25,92 @@ import {
   DecisionPoint, 
   ScheduleEvent, 
   EventDaySchedule,
-  PlanningNote 
+  PlanningNote,
+  WeddingSide
 } from './types/wedding';
 
 export const App: React.FC = () => {
-  // Load state from localStorage with fallback to default clean data (2026-10-22 to 2027-02-21)
-  const [tasks, setTasks] = useState<Task[]>(() => 
-    loadFromStorage('vivah_tasks_v4', INITIAL_TASKS)
+  // Global Side Switcher state ('ALL' | 'BOY' | 'GIRL')
+  const [activeSide, setActiveSide] = useState<WeddingSide>(() => 
+    loadFromStorage<WeddingSide>('vivah_side_v5', 'ALL')
   );
 
-  const [rentals, setRentals] = useState<RentalItem[]>(() => 
-    loadFromStorage('vivah_rentals_v4', INITIAL_RENTALS)
-  );
+  // Load state from localStorage with smart migration preserving completed checkmarks
+  const [tasks, setTasks] = useState<Task[]>(() => {
+    const v5 = loadFromStorage<Task[] | null>('vivah_tasks_v5', null);
+    if (v5 && v5.length > 0) return v5;
 
-  const [dresses, setDresses] = useState<DressItem[]>(() => 
-    loadFromStorage('vivah_dresses_v4', INITIAL_DRESSES)
-  );
+    // Migrate from v4 preserving completed checkmarks
+    const stored = loadFromStorage<Task[]>('vivah_tasks_v4', []);
+    if (!stored || stored.length === 0) return INITIAL_TASKS;
 
-  const [days, setDays] = useState<EventDaySchedule[]>(() => 
-    loadFromStorage('vivah_days_v4', INITIAL_DAY_SCHEDULES)
-  );
+    const completedIds = new Set(stored.filter(t => t.completed).map(t => t.id));
+    const completedTitles = new Set(stored.filter(t => t.completed).map(t => t.title.toLowerCase().trim()));
 
-  const [decisions, setDecisions] = useState<DecisionPoint[]>(() => 
-    loadFromStorage('vivah_decisions_v4', INITIAL_DECISION_POINTS)
-  );
+    // Custom user-added tasks that aren't in INITIAL_TASKS
+    const initialIds = new Set(INITIAL_TASKS.map(t => t.id));
+    const customTasks = stored.filter(t => !initialIds.has(t.id));
 
-  const [notes, setNotes] = useState<PlanningNote[]>(() => 
-    loadFromStorage('vivah_notes_v4', INITIAL_NOTES)
-  );
+    const merged = INITIAL_TASKS.map(task => ({
+      ...task,
+      completed: completedIds.has(task.id) || completedTitles.has(task.title.toLowerCase().trim())
+    }));
+
+    return [...merged, ...customTasks];
+  });
+
+  const [rentals, setRentals] = useState<RentalItem[]>(() => {
+    const v5 = loadFromStorage<RentalItem[] | null>('vivah_rentals_v5', null);
+    if (v5 && v5.length > 0) return v5;
+    const v4 = loadFromStorage<RentalItem[] | null>('vivah_rentals_v4', null);
+    return v4 && v4.length > 0 ? v4 : INITIAL_RENTALS;
+  });
+
+  const [dresses, setDresses] = useState<DressItem[]>(() => {
+    const v5 = loadFromStorage<DressItem[] | null>('vivah_dresses_v5', null);
+    if (v5 && v5.length > 0) return v5;
+    const v4 = loadFromStorage<DressItem[] | null>('vivah_dresses_v4', null);
+    return v4 && v4.length > 0 ? v4 : INITIAL_DRESSES;
+  });
+
+  const [days, setDays] = useState<EventDaySchedule[]>(() => {
+    const v5 = loadFromStorage<EventDaySchedule[] | null>('vivah_days_v5', null);
+    if (v5 && v5.length > 0) return v5;
+    return INITIAL_DAY_SCHEDULES;
+  });
+
+  const [decisions, setDecisions] = useState<DecisionPoint[]>(() => {
+    const v5 = loadFromStorage<DecisionPoint[] | null>('vivah_decisions_v5', null);
+    if (v5 && v5.length > 0) return v5;
+    const v4 = loadFromStorage<DecisionPoint[] | null>('vivah_decisions_v4', null);
+    return v4 && v4.length > 0 ? v4 : INITIAL_DECISION_POINTS;
+  });
+
+  const [notes, setNotes] = useState<PlanningNote[]>(() => {
+    const v5 = loadFromStorage<PlanningNote[] | null>('vivah_notes_v5', null);
+    if (v5 && v5.length > 0) return v5;
+    const v4 = loadFromStorage<PlanningNote[] | null>('vivah_notes_v4', null);
+    return v4 && v4.length > 0 ? v4 : INITIAL_NOTES;
+  });
 
   const [weddingYear, setWeddingYear] = useState<number>(() => 
-    loadFromStorage('vivah_year_v4', 2027)
+    loadFromStorage('vivah_year_v5', 2027)
   );
 
   const [activeTab, setActiveTab] = useState<TabType>('month-tracker');
 
   // LocalStorage Persistence
-  useEffect(() => { saveToStorage('vivah_tasks_v4', tasks); }, [tasks]);
-  useEffect(() => { saveToStorage('vivah_rentals_v4', rentals); }, [rentals]);
-  useEffect(() => { saveToStorage('vivah_dresses_v4', dresses); }, [dresses]);
-  useEffect(() => { saveToStorage('vivah_days_v4', days); }, [days]);
-  useEffect(() => { saveToStorage('vivah_decisions_v4', decisions); }, [decisions]);
-  useEffect(() => { saveToStorage('vivah_notes_v4', notes); }, [notes]);
-  useEffect(() => { saveToStorage('vivah_year_v4', weddingYear); }, [weddingYear]);
+  useEffect(() => { 
+    saveToStorage('vivah_tasks_v5', tasks); 
+    saveToStorage('vivah_tasks_v4', tasks); 
+  }, [tasks]);
+  useEffect(() => { saveToStorage('vivah_rentals_v5', rentals); }, [rentals]);
+  useEffect(() => { saveToStorage('vivah_dresses_v5', dresses); }, [dresses]);
+  useEffect(() => { saveToStorage('vivah_days_v5', days); }, [days]);
+  useEffect(() => { saveToStorage('vivah_decisions_v5', decisions); }, [decisions]);
+  useEffect(() => { saveToStorage('vivah_notes_v5', notes); }, [notes]);
+  useEffect(() => { saveToStorage('vivah_year_v5', weddingYear); }, [weddingYear]);
+  useEffect(() => { saveToStorage('vivah_side_v5', activeSide); }, [activeSide]);
 
   // Task Handlers (Interactive, Editable, Deletable)
   const handleToggleTask = (taskId: string) => {
@@ -188,36 +231,72 @@ export const App: React.FC = () => {
       setDays(INITIAL_DAY_SCHEDULES);
       setDecisions(INITIAL_DECISION_POINTS);
       setNotes(INITIAL_NOTES);
+      setActiveSide('ALL');
       setWeddingYear(2027);
       localStorage.clear();
     }
   };
 
+  // Filter tasks dynamically based on active side for header & nav badges
+  const filteredTasks = tasks.filter(t => {
+    if (activeSide === 'ALL') return true;
+    if (activeSide === 'BOY') return t.side === 'Boy' || t.side === 'Both' || !t.side || t.assignedTo === 'Groom' || t.assignedTo === 'Both';
+    if (activeSide === 'GIRL') return t.side === 'Girl' || t.side === 'Both' || !t.side || t.assignedTo === 'Bride' || t.assignedTo === 'Both';
+    return true;
+  });
+
+  const filteredRentals = rentals.filter(r => {
+    if (activeSide === 'ALL') return true;
+    if (activeSide === 'BOY') return r.side === 'Boy' || r.side === 'Both' || !r.side;
+    if (activeSide === 'GIRL') return r.side === 'Girl' || r.side === 'Both' || !r.side;
+    return true;
+  });
+
+  const filteredDresses = dresses.filter(d => {
+    if (activeSide === 'ALL') return true;
+    if (activeSide === 'BOY') return d.person === 'Groom';
+    if (activeSide === 'GIRL') return d.person === 'Bride';
+    return true;
+  });
+
+  const filteredScheduleCount = days.reduce((acc, d) => {
+    const items = d.items.filter(it => {
+      if (activeSide === 'ALL') return true;
+      if (activeSide === 'BOY') return it.side === 'Boy' || it.side === 'Both' || !it.side;
+      if (activeSide === 'GIRL') return it.side === 'Girl' || it.side === 'Both' || !it.side;
+      return true;
+    });
+    return acc + items.length;
+  }, 0);
+
   // Smooth live numerical calculations
-  const tasksRemainingCount = tasks.filter(t => !t.completed).length;
-  const rentalsPendingCount = rentals.filter(r => r.status === 'To Book' || r.status === 'Reserved').length;
-  const dressesToBuyCount = dresses.filter(d => d.status !== 'Ready').length;
+  const tasksRemainingCount = filteredTasks.filter(t => !t.completed).length;
+  const rentalsPendingCount = filteredRentals.filter(r => r.status === 'To Book' || r.status === 'Reserved').length;
+  const dressesToBuyCount = filteredDresses.filter(d => d.status !== 'Ready').length;
   const decisionsPendingCount = decisions.filter(d => d.status === 'Pending').length;
-  const scheduleItemsCount = days.reduce((acc, d) => acc + d.items.length, 0);
+  const scheduleItemsCount = filteredScheduleCount;
   const notesCount = notes.length;
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 text-gray-900 font-sans">
-      {/* Dynamic Header with Live Counters */}
+      {/* Dynamic Header with Live Counters & Perspective */}
       <Header
         tasks={tasks}
         rentals={rentals}
         dresses={dresses}
         decisions={decisions}
         notes={notes}
+        activeSide={activeSide}
         weddingYear={weddingYear}
         onResetData={handleResetData}
       />
 
-      {/* Main Tab Navigation with Remaining Count Badges */}
+      {/* Main Tab Navigation with Perspective Switcher & Remaining Count Badges */}
       <Navigation
         activeTab={activeTab}
         onTabChange={setActiveTab}
+        activeSide={activeSide}
+        onSideChange={setActiveSide}
         tasksRemainingCount={tasksRemainingCount}
         rentalsPendingCount={rentalsPendingCount}
         dressesToBuyCount={dressesToBuyCount}
@@ -232,6 +311,7 @@ export const App: React.FC = () => {
           <MonthTracker
             milestones={INITIAL_MILESTONES}
             tasks={tasks}
+            activeSide={activeSide}
             onToggleTask={handleToggleTask}
             onAddTask={handleAddTask}
             onEditTask={handleEditTask}
@@ -251,6 +331,7 @@ export const App: React.FC = () => {
         {activeTab === 'dresses' && (
           <DressesTracker
             dresses={dresses}
+            activeSide={activeSide}
             onUpdateDress={handleUpdateDress}
             onAddDress={handleAddDress}
             onDeleteDress={handleDeleteDress}
@@ -260,6 +341,7 @@ export const App: React.FC = () => {
         {activeTab === 'itinerary' && (
           <EventItinerary
             days={days}
+            activeSide={activeSide}
             onAddScheduleItem={handleAddScheduleItem}
             onEditScheduleItem={handleEditScheduleItem}
             onDeleteScheduleItem={handleDeleteScheduleItem}

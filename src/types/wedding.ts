@@ -8,6 +8,8 @@ export type TaskCategory =
   | 'logistics';
 
 export type Assignee = 'Groom' | 'Bride' | 'Family' | 'Both';
+export type WeddingSide = 'ALL' | 'BOY' | 'GIRL';
+export type EventSide = 'Boy' | 'Girl' | 'Both';
 
 export type MonthPeriod = 
   | 'oct-2026'
@@ -22,6 +24,7 @@ export interface Task {
   title: string;
   category: TaskCategory;
   assignedTo: Assignee;
+  side?: EventSide;
   monthId: MonthPeriod;
   completed: boolean;
   priority: 'high' | 'medium' | 'low';
@@ -52,6 +55,7 @@ export interface RentalItem {
   advancePaid: number;
   securityDeposit?: number;
   status: 'To Book' | 'Reserved' | 'Picked Up' | 'Returned' | 'Settled';
+  side?: EventSide;
   notes?: string;
 }
 
@@ -78,6 +82,7 @@ export interface ScheduleEvent {
   gujaratiTitle?: string;
   location: string;
   actionNotes: string;
+  side?: EventSide;
   soundRig?: string;
   outfitGroom?: string;
   outfitBride?: string;
@@ -99,6 +104,7 @@ export interface DecisionPoint {
   options: string[];
   status: 'Pending' | 'Decided';
   decision?: string;
+  side?: EventSide;
 }
 
 export type NoteCategory = 
@@ -115,6 +121,7 @@ export interface PlanningNote {
   category: NoteCategory;
   content: string;
   pinned: boolean;
+  side?: EventSide;
   tags?: string[];
   updatedAt: string;
 }

@@ -8,11 +8,12 @@ import {
   Tag, 
   Search
 } from 'lucide-react';
-import { DressItem } from '../types/wedding';
+import { DressItem, WeddingSide } from '../types/wedding';
 import { EditableText } from './EditableText';
 
 interface DressesTrackerProps {
   dresses: DressItem[];
+  activeSide?: WeddingSide;
   onUpdateDress: (id: string, updates: Partial<DressItem>) => void;
   onAddDress: (dress: Omit<DressItem, 'id'>) => void;
   onDeleteDress: (id: string) => void;
@@ -20,11 +21,19 @@ interface DressesTrackerProps {
 
 export const DressesTracker: React.FC<DressesTrackerProps> = ({
   dresses,
+  activeSide = 'ALL',
   onUpdateDress,
   onAddDress,
   onDeleteDress
 }) => {
   const [personFilter, setPersonFilter] = useState<'ALL' | 'Groom' | 'Bride'>('ALL');
+
+  // Sync person filter with active side
+  React.useEffect(() => {
+    if (activeSide === 'BOY') setPersonFilter('Groom');
+    else if (activeSide === 'GIRL') setPersonFilter('Bride');
+    else setPersonFilter('ALL');
+  }, [activeSide]);
   const [statusFilter, setStatusFilter] = useState<string>('ALL');
   const [searchQuery, setSearchQuery] = useState('');
 
