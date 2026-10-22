@@ -46,6 +46,18 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
   // Edit Item Modal
   const [editingItem, setEditingItem] = useState<{ dayId: string; item: ScheduleEvent } | null>(null);
 
+  // Keyboard Escape listener for modals
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (isAddModalOpen) setIsAddModalOpen(false);
+        if (editingItem) setEditingItem(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isAddModalOpen, editingItem]);
+
   const activeDay = days.find(d => d.id === selectedDayId) || days[0];
 
   // Filter items by side if selected

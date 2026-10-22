@@ -8,6 +8,9 @@ import { DressesTracker } from './components/DressesTracker';
 import { EventItinerary } from './components/EventItinerary';
 import { DecisionsTracker } from './components/DecisionsTracker';
 import { PlanningNotes } from './components/PlanningNotes';
+import { CommandPalette } from './components/CommandPalette';
+import { ToastContainer, ToastMessage } from './components/Toast';
+import { ConfirmationModal } from './components/ConfirmationModal';
 
 import { 
   INITIAL_MILESTONES, 
@@ -110,6 +113,33 @@ export const App: React.FC = () => {
 
   const [activeTab, setActiveTab] = useState<TabType>('month-tracker');
 
+  // UI States (Command Palette, Toasts, Confirmation Dialog)
+  const [toasts, setToasts] = useState<ToastMessage[]>([]);
+  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
+  const [isResetModalOpen, setIsResetModalOpen] = useState(false);
+
+  // Toast Helpers
+  const showToast = (message: string, type: 'success' | 'info' | 'undo' = 'success', onUndo?: () => void) => {
+    const id = `toast-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`;
+    setToasts(prev => [...prev, { id, message, type, onUndo }]);
+  };
+
+  const dismissToast = (id: string) => {
+    setToasts(prev => prev.filter(t => t.id !== id));
+  };
+
+  // Keyboard shortcut listener for ⌘K / Ctrl+K
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setIsCommandPaletteOpen(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   // LocalStorage Persistence
   useEffect(() => { 
     saveToStorage('vivah_tasks_v5', tasks); 
@@ -127,21 +157,39 @@ export const App: React.FC = () => {
   // Pre-Wedding Handlers
   const handleUpdatePreWeddingPlan = (updates: Partial<PreWeddingTripPlan>) => {
     setPreWeddingPlan(prev => ({ ...prev, ...updates }));
+    showToast('Pre-wedding shoot plan updated', 'success');
   };
 
   const handleResetPreWeddingPreset = (presetType: PreWeddingTripType) => {
-    if (presetType === 'NATIONAL') setPreWeddingPlan(NATIONAL_PREWEDDING_PRESET);
-    else if (presetType === 'INTERNATIONAL') setPreWeddingPlan(INTERNATIONAL_PREWEDDING_PRESET);
-    else if (presetType === 'REGIONAL') setPreWeddingPlan(REGIONAL_PREWEDDING_PRESET);
+    if (presetType === 'NATIONAL') {
+      setPreWeddingPlan(NATIONAL_PREWEDDING_PRESET);
+      showToast('Loaded National Trip preset (Udaipur / Goa, 2–3 Days)', 'info');
+    } else if (presetType === 'INTERNATIONAL') {
+      setPreWeddingPlan(INTERNATIONAL_PREWEDDING_PRESET);
+      showToast('Loaded International Trip preset (Dubai / Bali, 1 Week)', 'info');
+    } else if (presetType === 'REGIONAL') {
+      setPreWeddingPlan(REGIONAL_PREWEDDING_PRESET);
+      showToast('Loaded Regional Gujarat preset (Vadodara / Dumas / Sets)', 'info');
+    }
   };
 
-  // Task Handlers (Interactive, Editable, Deletable)
+  // Task Handlers (Interactive, Editable, Deletable with Undo)
   const handleToggleTask = (taskId: string) => {
-    setTasks(prev => prev.map(t => t.id === taskId ? { ...t, completed: !t.completed } : t));
+    let nextStatus = false;
+    setTasks(prev => prev.map(t => {
+      if (t.id === taskId) {
+        nextStatus = !t.completed;
+        return { ...t, completed: nextStatus };
+      }
+      return t;
+    }));
+    showToast(nextStatus ? 'Task completed! 🎉' : 'Task marked pending', 'success');
   };
 
   const handleAddTask = (newTask: Omit<Task, 'id'>) => {
-    setTasks(prev => [{ ...newTask, id: `t-${Date.now()}` }, ...prev]);
+    const created: Task = { ...newTask, id: `t-${Date.now()}` };
+    setTasks(prev => [created, ...prev]);
+    showToast(`Task "${created.title.slice(0, 28)}..." added`, 'success');
   };
 
   const handleEditTask = (id: string, updates: Partial<Task>) => {
@@ -149,36 +197,58 @@ export const App: React.FC = () => {
   };
 
   const handleDeleteTask = (taskId: string) => {
+    const taskToDelete = tasks.find(t => t.id === taskId);
+    if (!taskToDelete) return;
     setTasks(prev => prev.filter(t => t.id !== taskId));
+    showToast(`Task "${taskToDelete.title.slice(0, 28)}..." deleted`, 'undo', () => {
+      setTasks(prev => [taskToDelete, ...prev]);
+      showToast('Task restored!', 'success');
+    });
   };
 
-  // Rental Handlers (Interactive, Editable, Deletable)
+  // Rental Handlers (Interactive, Editable, Deletable with Undo)
   const handleUpdateRental = (id: string, updates: Partial<RentalItem>) => {
     setRentals(prev => prev.map(r => r.id === id ? { ...r, ...updates } : r));
   };
 
   const handleAddRental = (newRental: Omit<RentalItem, 'id'>) => {
-    setRentals(prev => [...prev, { ...newRental, id: `rent-${Date.now()}` }]);
+    const created: RentalItem = { ...newRental, id: `rent-${Date.now()}` };
+    setRentals(prev => [...prev, created]);
+    showToast(`Rental item added`, 'success');
   };
 
   const handleDeleteRental = (id: string) => {
+    const item = rentals.find(r => r.id === id);
+    if (!item) return;
     setRentals(prev => prev.filter(r => r.id !== id));
+    showToast(`Rental "${item.item.slice(0, 24)}..." deleted`, 'undo', () => {
+      setRentals(prev => [...prev, item]);
+      showToast('Rental item restored!', 'success');
+    });
   };
 
-  // Dress Handlers (Interactive, Editable, Deletable)
+  // Dress Handlers (Interactive, Editable, Deletable with Undo)
   const handleUpdateDress = (id: string, updates: Partial<DressItem>) => {
     setDresses(prev => prev.map(d => d.id === id ? { ...d, ...updates } : d));
   };
 
   const handleAddDress = (newDress: Omit<DressItem, 'id'>) => {
-    setDresses(prev => [...prev, { ...newDress, id: `dr-${Date.now()}` }]);
+    const created: DressItem = { ...newDress, id: `dr-${Date.now()}` };
+    setDresses(prev => [...prev, created]);
+    showToast(`Outfit "${created.garmentName}" added`, 'success');
   };
 
   const handleDeleteDress = (id: string) => {
+    const item = dresses.find(d => d.id === id);
+    if (!item) return;
     setDresses(prev => prev.filter(d => d.id !== id));
+    showToast(`Outfit "${item.garmentName}" deleted`, 'undo', () => {
+      setDresses(prev => [...prev, item]);
+      showToast('Outfit restored!', 'success');
+    });
   };
 
-  // Schedule Handlers (Interactive, Editable, Deletable)
+  // Schedule Handlers (Interactive, Editable, Deletable with Undo)
   const handleAddScheduleItem = (dayId: string, item: ScheduleEvent) => {
     setDays(prev => prev.map(day => {
       if (day.id === dayId) {
@@ -186,6 +256,7 @@ export const App: React.FC = () => {
       }
       return day;
     }));
+    showToast(`Event cue "${item.title.slice(0, 24)}..." added`, 'success');
   };
 
   const handleEditScheduleItem = (dayId: string, itemId: string, updates: Partial<ScheduleEvent>) => {
@@ -201,40 +272,47 @@ export const App: React.FC = () => {
   };
 
   const handleDeleteScheduleItem = (dayId: string, itemId: string) => {
-    setDays(prev => prev.map(day => {
-      if (day.id === dayId) {
-        return {
-          ...day,
-          items: day.items.filter(it => it.id !== itemId)
-        };
-      }
-      return day;
-    }));
+    const day = days.find(d => d.id === dayId);
+    const item = day?.items.find(i => i.id === itemId);
+    if (!item) return;
+    setDays(prev => prev.map(d => d.id === dayId ? { ...d, items: d.items.filter(i => i.id !== itemId) } : d));
+    showToast(`Event cue "${item.title.slice(0, 24)}..." deleted`, 'undo', () => {
+      setDays(prev => prev.map(d => d.id === dayId ? { ...d, items: [...d.items, item] } : d));
+      showToast('Event cue restored!', 'success');
+    });
   };
 
-  // Decision Handlers (Interactive, Editable, Deletable)
+  // Decision Handlers (Interactive, Editable, Deletable with Undo)
   const handleUpdateDecision = (id: string, updates: Partial<DecisionPoint>) => {
     setDecisions(prev => prev.map(d => d.id === id ? { ...d, ...updates } : d));
+    showToast('Decision recorded', 'success');
   };
 
   const handleAddDecision = (newDec: Omit<DecisionPoint, 'id'>) => {
-    setDecisions(prev => [...prev, { ...newDec, id: `dec-${Date.now()}` }]);
+    const created: DecisionPoint = { ...newDec, id: `dec-${Date.now()}` };
+    setDecisions(prev => [...prev, created]);
+    showToast('New decision topic added', 'success');
   };
 
   const handleDeleteDecision = (id: string) => {
+    const item = decisions.find(d => d.id === id);
+    if (!item) return;
     setDecisions(prev => prev.filter(d => d.id !== id));
+    showToast(`Decision topic deleted`, 'undo', () => {
+      setDecisions(prev => [...prev, item]);
+      showToast('Decision restored!', 'success');
+    });
   };
 
-  // Planning Notes Handlers (Interactive, Editable, Deletable)
+  // Planning Notes Handlers (Interactive, Editable, Deletable with Undo)
   const handleAddNote = (newNote: Omit<PlanningNote, 'id' | 'updatedAt'>) => {
-    setNotes(prev => [
-      {
-        ...newNote,
-        id: `note-${Date.now()}`,
-        updatedAt: '2026-10-22'
-      },
-      ...prev
-    ]);
+    const created: PlanningNote = {
+      ...newNote,
+      id: `note-${Date.now()}`,
+      updatedAt: '2026-10-22'
+    };
+    setNotes(prev => [created, ...prev]);
+    showToast(`Note "${created.title}" added`, 'success');
   };
 
   const handleUpdateNote = (id: string, updates: Partial<PlanningNote>) => {
@@ -242,23 +320,42 @@ export const App: React.FC = () => {
   };
 
   const handleDeleteNote = (id: string) => {
+    const item = notes.find(n => n.id === id);
+    if (!item) return;
     setNotes(prev => prev.filter(n => n.id !== id));
+    showToast(`Note "${item.title}" deleted`, 'undo', () => {
+      setNotes(prev => [item, ...prev]);
+      showToast('Note restored!', 'success');
+    });
   };
 
-  // Global Reset
-  const handleResetData = () => {
-    if (window.confirm('Reset all tasks, pre-wedding shoot plans, rentals, dresses, cues, decisions, and notes back to clean defaults?')) {
-      setTasks(INITIAL_TASKS);
-      setPreWeddingPlan(INITIAL_PREWEDDING_PLAN);
-      setRentals(INITIAL_RENTALS);
-      setDresses(INITIAL_DRESSES);
-      setDays(INITIAL_DAY_SCHEDULES);
-      setDecisions(INITIAL_DECISION_POINTS);
-      setNotes(INITIAL_NOTES);
-      setActiveSide('ALL');
-      setWeddingYear(2027);
-      localStorage.clear();
-    }
+  // Global Reset with Confirmation Modal
+  const handleConfirmReset = () => {
+    setTasks(INITIAL_TASKS);
+    setPreWeddingPlan(INITIAL_PREWEDDING_PLAN);
+    setRentals(INITIAL_RENTALS);
+    setDresses(INITIAL_DRESSES);
+    setDays(INITIAL_DAY_SCHEDULES);
+    setDecisions(INITIAL_DECISION_POINTS);
+    setNotes(INITIAL_NOTES);
+    setActiveSide('ALL');
+    setWeddingYear(2027);
+    localStorage.clear();
+    setIsResetModalOpen(false);
+    showToast('Dashboard reset to clean default state', 'info');
+  };
+
+  // Perspective switcher with feedback toast
+  const handleSideChange = (side: WeddingSide) => {
+    setActiveSide(side);
+    showToast(
+      side === 'ALL'
+        ? 'Showing Unified Joint View (Both Sides)'
+        : side === 'BOY'
+        ? "Switched to Boy's Side Focus (Groom)"
+        : "Switched to Girl's Side Focus (Bride)",
+      'info'
+    );
   };
 
   // Filter tasks dynamically based on active side for header & nav badges
@@ -303,7 +400,7 @@ export const App: React.FC = () => {
   const notesCount = notes.length;
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 text-gray-900 font-sans">
+    <div className="min-h-screen flex flex-col bg-gray-50 text-gray-900 font-sans pb-20 sm:pb-8">
       {/* Dynamic Header with Live Counters & Perspective */}
       <Header
         tasks={tasks}
@@ -314,7 +411,8 @@ export const App: React.FC = () => {
         preWeddingPlan={preWeddingPlan}
         activeSide={activeSide}
         weddingYear={weddingYear}
-        onResetData={handleResetData}
+        onResetData={() => setIsResetModalOpen(true)}
+        onOpenSearch={() => setIsCommandPaletteOpen(true)}
       />
 
       {/* Main Tab Navigation with Perspective Switcher & Remaining Count Badges */}
@@ -322,7 +420,7 @@ export const App: React.FC = () => {
         activeTab={activeTab}
         onTabChange={setActiveTab}
         activeSide={activeSide}
-        onSideChange={setActiveSide}
+        onSideChange={handleSideChange}
         tasksRemainingCount={tasksRemainingCount}
         preWeddingRemainingCount={preWeddingRemainingCount}
         rentalsPendingCount={rentalsPendingCount}
@@ -330,6 +428,7 @@ export const App: React.FC = () => {
         decisionsPendingCount={decisionsPendingCount}
         scheduleItemsCount={scheduleItemsCount}
         notesCount={notesCount}
+        onOpenSearch={() => setIsCommandPaletteOpen(true)}
       />
 
       {/* Main Content Area */}
@@ -408,11 +507,67 @@ export const App: React.FC = () => {
         <div className="flex flex-wrap items-center justify-center gap-2">
           <span className="font-semibold text-gray-700">Wedding Operational Dashboard</span>
           <span>•</span>
-          <span>Surat & Bhavnagar (Feb 19–21, 2027)</span>
+          <span>Surat & Bhavnagar (Feb 18–21, 2027)</span>
           <span>•</span>
-          <span>Auto-saved locally in real time</span>
+          <span>Auto-saved locally • Press ⌘K for command search</span>
         </div>
       </footer>
+
+      {/* Global Linear-Style Command Palette (⌘K) */}
+      <CommandPalette
+        isOpen={isCommandPaletteOpen}
+        onClose={() => setIsCommandPaletteOpen(false)}
+        tasks={tasks}
+        onToggleTask={handleToggleTask}
+        days={days}
+        dresses={dresses}
+        rentals={rentals}
+        notes={notes}
+        activeSide={activeSide}
+        onSideChange={handleSideChange}
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        onOpenAddTask={() => {
+          // Triggers modal in MonthTracker if active
+        }}
+        onExportJSON={() => {
+          const data = {
+            exportedAt: new Date().toISOString(),
+            currentDate: '2026-10-22',
+            weddingDate: '2027-02-21',
+            activeSide,
+            tasks,
+            preWeddingPlan,
+            rentals,
+            dresses,
+            decisions,
+            notes
+          };
+          const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `wedding-tracker-2027.json`;
+          a.click();
+          URL.revokeObjectURL(url);
+          showToast('Backup JSON downloaded successfully!', 'success');
+        }}
+      />
+
+      {/* Global Toast & Undo Container */}
+      <ToastContainer toasts={toasts} onDismiss={dismissToast} />
+
+      {/* Reset Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={isResetModalOpen}
+        title="Reset All Wedding Data?"
+        description="This will clear your local changes and reset all tasks, outfits, rentals, itinerary cues, and planning notes back to clean default operational settings. This action cannot be reversed."
+        confirmLabel="Reset Everything"
+        cancelLabel="Keep Data"
+        isDestructive={true}
+        onConfirm={handleConfirmReset}
+        onCancel={() => setIsResetModalOpen(false)}
+      />
     </div>
   );
 };

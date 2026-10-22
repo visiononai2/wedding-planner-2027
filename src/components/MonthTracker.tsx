@@ -59,6 +59,18 @@ export const MonthTracker: React.FC<MonthTrackerProps> = ({
   // Edit Task Modal
   const [editingTask, setEditingTask] = useState<Task | null>(null);
 
+  // Keyboard Escape listener for modals
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (isAddModalOpen) setIsAddModalOpen(false);
+        if (editingTask) setEditingTask(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isAddModalOpen, editingTask]);
+
   const getMilestoneStats = (mId: MonthPeriod) => {
     const mTasks = tasks.filter(t => t.monthId === mId);
     const total = mTasks.length;

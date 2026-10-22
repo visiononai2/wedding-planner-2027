@@ -47,6 +47,18 @@ export const RentalsTracker: React.FC<RentalsTrackerProps> = ({
   // Edit Modal State
   const [editingRental, setEditingRental] = useState<RentalItem | null>(null);
 
+  // Keyboard Escape listener for modals
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (isAddModalOpen) setIsAddModalOpen(false);
+        if (editingRental) setEditingRental(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isAddModalOpen, editingRental]);
+
   // Calculations
   const totalCost = rentals.reduce((acc, r) => acc + (r.totalCost || 0), 0);
   const totalAdvance = rentals.reduce((acc, r) => acc + (r.advancePaid || 0), 0);

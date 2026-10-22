@@ -57,6 +57,18 @@ export const PreWeddingPlanner: React.FC<PreWeddingPlannerProps> = ({
   const [newLookBride, setNewLookBride] = useState('');
   const [newLookBackdrop, setNewLookBackdrop] = useState('');
 
+  // Keyboard Escape listener for modals
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (isAddChecklistOpen) setIsAddChecklistOpen(false);
+        if (isAddLookOpen) setIsAddLookOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isAddChecklistOpen, isAddLookOpen]);
+
   // Checklist Handlers
   const handleToggleChecklist = (id: string) => {
     const updated = plan.checklist.map(item => {

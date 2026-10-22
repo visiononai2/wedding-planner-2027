@@ -54,6 +54,18 @@ export const DressesTracker: React.FC<DressesTrackerProps> = ({
   // Edit Modal State
   const [editingDress, setEditingDress] = useState<DressItem | null>(null);
 
+  // Keyboard Escape listener for modals
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (isAddModalOpen) setIsAddModalOpen(false);
+        if (editingDress) setEditingDress(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isAddModalOpen, editingDress]);
+
   // Calculations
   const totalCost = dresses.reduce((acc, d) => acc + (d.costEstimated || 0), 0);
   const totalAdvance = dresses.reduce((acc, d) => acc + (d.advancePaid || 0), 0);

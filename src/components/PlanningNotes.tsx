@@ -56,6 +56,18 @@ export const PlanningNotes: React.FC<PlanningNotesProps> = ({
   const [editingNote, setEditingNote] = useState<PlanningNote | null>(null);
   const [editTagsStr, setEditTagsStr] = useState('');
 
+  // Keyboard Escape listener for modals
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (isAddModalOpen) setIsAddModalOpen(false);
+        if (editingNote) setEditingNote(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isAddModalOpen, editingNote]);
+
   const handleCreateNote = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newTitle.trim() || !newContent.trim()) return;
