@@ -7,7 +7,6 @@ import {
   ShoppingBag, 
   IndianRupee, 
   Download, 
-  Printer, 
   RotateCcw,
   Search,
   Sparkles
@@ -202,15 +201,6 @@ export const Header: React.FC<HeaderProps> = ({
                 <kbd className="text-[10px] font-mono text-gray-400 bg-gray-100 border border-gray-200 rounded px-1 ml-0.5">⌘K</kbd>
               </button>
             )}
-
-            <button
-              onClick={() => window.print()}
-              title="Print Tracker"
-              className="px-2.5 py-1.5 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-50 active:bg-gray-100 text-xs font-semibold transition focus-visible:ring-2 focus-visible:ring-indigo-500 focus:outline-hidden"
-            >
-              <Printer className="w-3.5 h-3.5 inline mr-1 text-gray-500" />
-              Print
-            </button>
 
             <button
               onClick={handleExportJSON}

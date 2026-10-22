@@ -4,7 +4,6 @@ import {
   MapPin, 
   Volume2, 
   AlertTriangle, 
-  Printer, 
   Shirt, 
   Plus, 
   Edit3, 
@@ -170,14 +169,6 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
         </div>
 
         <div className="flex items-center space-x-2">
-          <button
-            onClick={() => window.print()}
-            className="inline-flex items-center px-3 py-1.5 bg-gray-50 hover:bg-gray-100 text-gray-700 border border-gray-300 rounded-lg text-xs font-semibold transition"
-          >
-            <Printer className="w-3.5 h-3.5 mr-1 text-gray-500" />
-            Print Day
-          </button>
-
           <button
             onClick={() => setIsAddModalOpen(true)}
             className="inline-flex items-center px-3 py-1.5 bg-gray-900 hover:bg-black text-white rounded-lg text-xs font-semibold shadow-sm transition"

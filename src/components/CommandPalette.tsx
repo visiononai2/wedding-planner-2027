@@ -14,7 +14,6 @@ import {
   ArrowRight, 
   Plus, 
   Download, 
-  Printer, 
   X,
   Compass
 } from 'lucide-react';
@@ -111,7 +110,6 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   const actionItems = [
     { id: 'act-add-task', label: 'Create New Task...', category: 'Quick Action', icon: Plus, action: () => { onTabChange('month-tracker'); onOpenAddTask?.(); onClose(); } },
     { id: 'act-export', label: 'Export Full Backup JSON', category: 'Quick Action', icon: Download, action: () => { onExportJSON?.(); onClose(); } },
-    { id: 'act-print', label: 'Print Current View', category: 'Quick Action', icon: Printer, action: () => { window.print(); onClose(); } },
   ];
 
   // Search Results across Tasks
