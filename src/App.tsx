@@ -400,7 +400,7 @@ export const App: React.FC = () => {
   const notesCount = notes.length;
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 text-gray-900 font-sans pb-20 sm:pb-8">
+    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 font-sans pb-24 sm:pb-8">
       {/* Dynamic Header with Live Counters & Perspective */}
       <Header
         tasks={tasks}
@@ -503,9 +503,9 @@ export const App: React.FC = () => {
       </main>
 
       {/* Minimal Footer */}
-      <footer className="bg-white text-gray-500 border-t border-gray-200 py-3.5 text-center text-xs no-print mt-8">
+      <footer className="bg-white text-slate-500 border-t border-slate-200 py-3.5 text-center text-xs no-print mt-8">
         <div className="flex flex-wrap items-center justify-center gap-2">
-          <span className="font-semibold text-gray-700">Wedding Operational Dashboard</span>
+          <span className="font-semibold text-slate-700">Wedding Operational Dashboard</span>
           <span>•</span>
           <span>Surat & Bhavnagar (Feb 18–21, 2027)</span>
           <span>•</span>

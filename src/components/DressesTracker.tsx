@@ -34,6 +34,7 @@ export const DressesTracker: React.FC<DressesTrackerProps> = ({
     else if (activeSide === 'GIRL') setPersonFilter('Bride');
     else setPersonFilter('ALL');
   }, [activeSide]);
+
   const [statusFilter, setStatusFilter] = useState<string>('ALL');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -147,90 +148,98 @@ export const DressesTracker: React.FC<DressesTrackerProps> = ({
   const getStatusBadge = (status: DressItem['status']) => {
     switch (status) {
       case 'Ready':
-        return <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-800">Ready</span>;
+        return <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200/80">Ready</span>;
       case 'Trial Done':
-        return <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-100 text-blue-800">Trial Done</span>;
+        return <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-blue-100 text-blue-800 border border-blue-200/80">Trial Done</span>;
       case 'At Tailor':
-        return <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-purple-100 text-purple-800">At Tailor</span>;
+        return <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-purple-100 text-purple-800 border border-purple-200/80">At Tailor</span>;
       case 'Fabric Bought':
-        return <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-100 text-amber-800">Fabric Bought</span>;
+        return <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-amber-100 text-amber-800 border border-amber-200/80">Fabric Bought</span>;
       default:
-        return <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-rose-100 text-rose-800">To Buy</span>;
+        return <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-rose-100 text-rose-800 border border-rose-200/80">To Buy</span>;
     }
   };
 
   return (
     <div className="space-y-4">
       {/* Numbers Summary Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
-        <div className="bg-white p-3.5 rounded-lg border border-gray-200 shadow-sm">
-          <div className="text-[10px] uppercase font-bold text-gray-400">Total Wardrobe Cost</div>
-          <div className="text-lg font-bold text-gray-900 mt-0.5">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3">
+        <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+          <div className="text-[10px] uppercase font-bold text-slate-400">Total Wardrobe Cost</div>
+          <div className="text-xl font-bold text-slate-900 mt-1">
             ₹{totalCost.toLocaleString('en-IN')}
           </div>
-          <div className="text-[10px] text-gray-500 mt-0.5">{dresses.length} total wedding outfits</div>
+          <div className="text-[11px] text-slate-500 mt-0.5">{dresses.length} total wedding outfits</div>
         </div>
 
-        <div className="bg-white p-3.5 rounded-lg border border-gray-200 shadow-sm">
-          <div className="text-[10px] uppercase font-bold text-gray-400">Advance Paid</div>
-          <div className="text-lg font-bold text-emerald-700 mt-0.5">
+        <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+          <div className="text-[10px] uppercase font-bold text-slate-400">Advance Paid</div>
+          <div className="text-xl font-bold text-emerald-700 mt-1">
             ₹{totalAdvance.toLocaleString('en-IN')}
           </div>
-          <div className="text-[10px] text-emerald-600 mt-0.5">Paid to shops / tailors</div>
+          <div className="text-[11px] text-emerald-600 mt-0.5">Paid to shops / tailors</div>
         </div>
 
-        <div className="bg-white p-3.5 rounded-lg border border-gray-200 shadow-sm">
-          <div className="text-[10px] uppercase font-bold text-gray-400">Balance Pending</div>
-          <div className="text-lg font-bold text-amber-700 mt-0.5">
+        <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+          <div className="text-[10px] uppercase font-bold text-slate-400">Balance Pending</div>
+          <div className="text-xl font-bold text-amber-700 mt-1">
             ₹{totalDue.toLocaleString('en-IN')}
           </div>
-          <div className="text-[10px] text-amber-600 mt-0.5">Pay on delivery/trials</div>
+          <div className="text-[11px] text-amber-600 mt-0.5">Pay on delivery/trials</div>
         </div>
 
-        <div className="bg-white p-3.5 rounded-lg border border-gray-200 shadow-sm flex items-center justify-between">
+        <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
           <div>
-            <div className="text-[10px] uppercase font-bold text-gray-400">Readiness Count</div>
-            <div className="text-xs font-semibold text-gray-800 mt-0.5">
+            <div className="text-[10px] uppercase font-bold text-slate-400">Readiness Count</div>
+            <div className="text-xs font-semibold text-slate-800 mt-1">
               Groom: {groomReady}/{groomCount} ready ({groomPending} left)
             </div>
-            <div className="text-xs font-semibold text-gray-800">
+            <div className="text-xs font-semibold text-slate-800 mt-0.5">
               Bride: {brideReady}/{brideCount} ready ({bridePending} left)
             </div>
           </div>
-          <Scissors className="w-5 h-5 text-gray-400 shrink-0" />
+          <div className="w-8 h-8 rounded-xl bg-purple-50 border border-purple-200/60 flex items-center justify-center shrink-0">
+            <Scissors className="w-4 h-4 text-purple-600" />
+          </div>
         </div>
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-white rounded-xl p-3 border border-gray-200 shadow-sm flex flex-wrap items-center justify-between gap-2.5 text-xs">
+      <div className="bg-white rounded-2xl p-3 sm:p-3.5 border border-slate-200 shadow-sm flex flex-wrap items-center justify-between gap-2.5 text-xs">
         <div className="flex flex-wrap items-center gap-2">
           <div className="relative">
-            <Search className="w-3.5 h-3.5 absolute left-2.5 top-2 text-gray-400" />
+            <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-slate-400" />
             <input
               type="text"
               placeholder="Search dress / event / theme..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-8 pr-2.5 py-1 bg-gray-50 border border-gray-300 rounded text-xs text-gray-900 w-36 sm:w-48 focus:outline-none focus:ring-1 focus:ring-gray-900"
+              className="pl-8 pr-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 w-36 sm:w-52 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-colors"
             />
           </div>
 
-          <div className="flex items-center space-x-1 bg-gray-100 p-0.5 rounded-lg">
+          <div className="flex items-center space-x-1 bg-slate-100 p-1 rounded-xl border border-slate-200/70">
             <button
               onClick={() => setPersonFilter('ALL')}
-              className={`px-2.5 py-1 rounded text-xs transition ${personFilter === 'ALL' ? 'bg-white font-bold shadow text-gray-900' : 'text-gray-600'}`}
+              className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+                personFilter === 'ALL' ? 'bg-white shadow-sm text-slate-900' : 'text-slate-600 hover:text-slate-900'
+              }`}
             >
               All ({dresses.length})
             </button>
             <button
               onClick={() => setPersonFilter('Groom')}
-              className={`px-2.5 py-1 rounded text-xs transition ${personFilter === 'Groom' ? 'bg-gray-900 text-white font-bold shadow' : 'text-gray-600'}`}
+              className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+                personFilter === 'Groom' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'
+              }`}
             >
               Groom ({groomCount})
             </button>
             <button
               onClick={() => setPersonFilter('Bride')}
-              className={`px-2.5 py-1 rounded text-xs transition ${personFilter === 'Bride' ? 'bg-gray-900 text-white font-bold shadow' : 'text-gray-600'}`}
+              className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+                personFilter === 'Bride' ? 'bg-rose-500 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'
+              }`}
             >
               Bride ({brideCount})
             </button>
@@ -239,7 +248,7 @@ export const DressesTracker: React.FC<DressesTrackerProps> = ({
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="bg-gray-50 border border-gray-300 rounded px-2 py-1 text-gray-800"
+            className="bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
             <option value="ALL">All Status</option>
             <option value="To Buy">To Buy</option>
@@ -252,7 +261,7 @@ export const DressesTracker: React.FC<DressesTrackerProps> = ({
 
         <button
           onClick={() => setIsAddModalOpen(true)}
-          className="inline-flex items-center px-3 py-1.5 rounded-lg bg-gray-900 hover:bg-gray-800 text-white text-xs font-semibold shadow-sm transition"
+          className="inline-flex items-center px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white text-xs font-semibold shadow-sm transition-colors"
         >
           <Plus className="w-3.5 h-3.5 mr-1" />
           Add Dress
@@ -260,9 +269,9 @@ export const DressesTracker: React.FC<DressesTrackerProps> = ({
       </div>
 
       {/* Dresses Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
         {filteredDresses.length === 0 ? (
-          <div className="md:col-span-2 bg-white rounded-xl p-8 text-center border border-gray-200 text-xs text-gray-500">
+          <div className="md:col-span-2 bg-white rounded-2xl p-10 text-center border border-dashed border-slate-200 text-xs text-slate-400">
             No outfits match your filter.
           </div>
         ) : (
@@ -272,24 +281,26 @@ export const DressesTracker: React.FC<DressesTrackerProps> = ({
             return (
               <div 
                 key={dress.id}
-                className="bg-white rounded-lg p-3.5 border border-gray-200 hover:border-gray-300 transition shadow-sm space-y-2"
+                className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 hover:border-slate-300 hover:shadow-sm transition-all space-y-3"
               >
                 {/* Header */}
-                <div className="flex items-center justify-between pb-1.5 border-b border-gray-100 text-xs">
+                <div className="flex items-center justify-between pb-2 border-b border-slate-100 text-xs">
                   <div className="flex items-center space-x-2">
-                    <span className="font-semibold px-2 py-0.2 rounded text-[10px] bg-gray-100 text-gray-800">
+                    <span className={`font-bold px-2 py-0.5 rounded-full text-[10px] ${
+                      isGroom ? 'bg-blue-100 text-blue-900 border border-blue-200/80' : 'bg-rose-100 text-rose-900 border border-rose-200/80'
+                    }`}>
                       {dress.person}
                     </span>
                     <EditableText
                       value={dress.event}
                       onSave={(val) => onUpdateDress(dress.id, { event: val })}
-                      className="font-bold text-gray-900"
+                      className="font-bold text-slate-900"
                     />
                   </div>
                   <EditableText
                     value={dress.date}
                     onSave={(val) => onUpdateDress(dress.id, { date: val })}
-                    className="text-[11px] text-gray-400 font-medium"
+                    className="text-[11px] text-slate-400 font-medium"
                   />
                 </div>
 
@@ -298,30 +309,30 @@ export const DressesTracker: React.FC<DressesTrackerProps> = ({
                   <EditableText
                     value={dress.garmentName}
                     onSave={(val) => onUpdateDress(dress.id, { garmentName: val })}
-                    className="text-sm sm:text-base font-bold text-gray-900"
+                    className="text-base font-bold text-slate-900 block"
                   />
-                  <div className="text-xs text-gray-600 font-medium flex items-center mt-0.5">
-                    <Tag className="w-3 h-3 mr-1 text-gray-400" />
+                  <div className="text-xs text-slate-600 font-medium flex items-center mt-1">
+                    <Tag className="w-3 h-3 mr-1 text-slate-400" />
                     <EditableText
                       value={dress.colorTheme}
                       onSave={(val) => onUpdateDress(dress.id, { colorTheme: val })}
-                      className="text-gray-700 font-medium"
+                      className="text-slate-700 font-medium"
                     />
                   </div>
                 </div>
 
                 {/* Status & Edit Controls */}
-                <div className="flex flex-wrap items-center justify-between gap-2 bg-gray-50 p-2 rounded-lg text-xs">
-                  <div className="flex items-center space-x-1.5">
+                <div className="flex flex-wrap items-center justify-between gap-2 bg-slate-50/80 p-2.5 rounded-xl border border-slate-200/60 text-xs">
+                  <div className="flex items-center space-x-2">
                     {getStatusBadge(dress.status)}
-                    <span className="text-[10px] text-gray-500">({dress.action})</span>
+                    <span className="text-[10px] font-medium text-slate-500">({dress.action})</span>
                   </div>
 
                   <div className="flex items-center space-x-1.5">
                     <select
                       value={dress.status}
                       onChange={(e) => onUpdateDress(dress.id, { status: e.target.value as any })}
-                      className="text-xs bg-white border border-gray-300 rounded px-2 py-0.5 text-gray-800"
+                      className="text-xs bg-white border border-slate-200 rounded-lg px-2 py-1 text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     >
                       <option value="To Buy">To Buy</option>
                       <option value="Fabric Bought">Fabric Bought</option>
@@ -333,7 +344,7 @@ export const DressesTracker: React.FC<DressesTrackerProps> = ({
                     <button
                       onClick={() => setEditingDress(dress)}
                       title="Edit dress parameters"
-                      className="p-1 text-gray-400 hover:text-gray-700 transition"
+                      className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 rounded-lg transition-colors"
                     >
                       <Edit3 className="w-3.5 h-3.5" />
                     </button>
@@ -341,7 +352,7 @@ export const DressesTracker: React.FC<DressesTrackerProps> = ({
                     <button
                       onClick={() => onDeleteDress(dress.id)}
                       title="Delete dress"
-                      className="p-1 text-gray-300 hover:text-rose-600 transition"
+                      className="p-1.5 text-slate-300 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
@@ -350,17 +361,17 @@ export const DressesTracker: React.FC<DressesTrackerProps> = ({
 
                 {/* Financials */}
                 <div className="flex items-center justify-between pt-1 text-xs">
-                  <div className="flex items-center gap-1.5">
-                    <span className="font-semibold text-gray-900 flex items-center">
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold text-slate-900 flex items-center">
                       ₹
                       <EditableText
                         type="number"
                         value={dress.costEstimated}
                         onSave={(val) => onUpdateDress(dress.id, { costEstimated: Number(val) || 0 })}
-                        className="font-semibold text-gray-900"
+                        className="font-semibold text-slate-900"
                       />
                     </span>
-                    <span>•</span>
+                    <span className="text-slate-300">•</span>
                     <span className="text-emerald-600 font-semibold flex items-center">
                       Paid: ₹
                       <EditableText
@@ -370,41 +381,41 @@ export const DressesTracker: React.FC<DressesTrackerProps> = ({
                         className="font-semibold text-emerald-600"
                       />
                     </span>
-                    <span>•</span>
+                    <span className="text-slate-300">•</span>
                     <span className={`font-semibold ${balance > 0 ? 'text-amber-700' : 'text-emerald-700'}`}>
                       Due: ₹{balance.toLocaleString('en-IN')}
                     </span>
                   </div>
 
-                  <div className="text-[11px] text-gray-500 flex items-center">
+                  <div className="text-[11px] text-slate-500 flex items-center">
                     <span>Store:</span>
                     <EditableText
                       value={dress.storeOrTailor || ''}
                       placeholder="add tailor..."
                       onSave={(val) => onUpdateDress(dress.id, { storeOrTailor: val })}
-                      className="text-gray-700 ml-1 font-medium"
+                      className="text-slate-700 ml-1 font-medium"
                     />
                   </div>
                 </div>
 
                 {/* Notes & Trial Date Inline */}
-                <div className="text-[11px] text-gray-500 bg-gray-50 p-1.5 rounded border border-gray-200 flex flex-wrap justify-between gap-1">
+                <div className="text-[11px] text-slate-600 bg-slate-50/80 p-2.5 rounded-xl border border-slate-200/80 flex flex-wrap justify-between gap-1">
                   <div className="flex items-center">
-                    <span className="font-bold mr-1 text-gray-700">Trial Date:</span>
+                    <span className="font-bold mr-1 text-slate-700">Trial Date:</span>
                     <EditableText
                       value={dress.trialDate || ''}
                       placeholder="set trial date..."
                       onSave={(val) => onUpdateDress(dress.id, { trialDate: val })}
-                      className="text-gray-700"
+                      className="text-slate-700 font-medium"
                     />
                   </div>
                   <div className="flex items-center">
-                    <span className="font-bold mr-1 text-gray-700">Note:</span>
+                    <span className="font-bold mr-1 text-slate-700">Note:</span>
                     <EditableText
                       value={dress.notes || ''}
                       placeholder="add note..."
                       onSave={(val) => onUpdateDress(dress.id, { notes: val })}
-                      className="text-gray-700"
+                      className="text-slate-700 font-medium"
                     />
                   </div>
                 </div>
@@ -417,31 +428,31 @@ export const DressesTracker: React.FC<DressesTrackerProps> = ({
       {/* Add Dress Modal */}
       {isAddModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-white rounded-xl max-w-md w-full p-5 shadow-xl border border-gray-200">
-            <div className="flex items-center justify-between pb-2 border-b border-gray-200">
-              <h3 className="text-sm font-bold text-gray-900">Add Dress / Outfit to Tracker</h3>
-              <button onClick={() => setIsAddModalOpen(false)} className="text-gray-400 hover:text-gray-700">&times;</button>
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <h3 className="text-sm font-bold text-slate-900">Add Dress / Outfit to Tracker</h3>
+              <button onClick={() => setIsAddModalOpen(false)} className="text-slate-400 hover:text-slate-700 text-lg leading-none">&times;</button>
             </div>
 
-            <form onSubmit={handleCreateDress} className="mt-3 space-y-3 text-xs">
+            <form onSubmit={handleCreateDress} className="mt-4 space-y-3.5 text-xs">
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">For Whom *</label>
+                  <label className="block font-semibold text-slate-700 mb-1">For Whom *</label>
                   <select
                     value={newPerson}
                     onChange={(e) => setNewPerson(e.target.value as any)}
-                    className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   >
                     <option value="Groom">Groom</option>
                     <option value="Bride">Bride</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Action Type</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Action Type</label>
                   <select
                     value={newAction}
                     onChange={(e) => setNewAction(e.target.value as any)}
-                    className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   >
                     <option value="Buy">Buy Ready-made</option>
                     <option value="Tailor / Stitch">Custom Tailor / Stitch</option>
@@ -452,108 +463,119 @@ export const DressesTracker: React.FC<DressesTrackerProps> = ({
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Function / Event</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Function / Event</label>
                   <input
                     type="text"
                     required
                     placeholder="e.g. Haldi / Garba / Lagan"
                     value={newEvent}
                     onChange={(e) => setNewEvent(e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Date & Time</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Date & Time</label>
                   <input
                     type="text"
                     placeholder="e.g. Feb 20, 2027 09:30 AM"
                     value={newDate}
                     onChange={(e) => setNewDate(e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block font-semibold text-gray-700 mb-1">Garment Name *</label>
+                <label className="block font-semibold text-slate-700 mb-1">Garment Name *</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Kurta Pajama / Royal Jodhpuri Suit / Lagan Suit / Panetar"
                   value={newGarment}
                   onChange={(e) => setNewGarment(e.target.value)}
-                  className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
 
               <div>
-                <label className="block font-semibold text-gray-700 mb-1">Color / Theme Palette</label>
+                <label className="block font-semibold text-slate-700 mb-1">Color / Theme Palette</label>
                 <input
                   type="text"
                   placeholder="e.g. Blue, White, Lavender theme"
                   value={newTheme}
                   onChange={(e) => setNewTheme(e.target.value)}
-                  className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Estimated Cost (₹)</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Estimated Cost (₹)</label>
                   <input
                     type="number"
                     value={newCost || ''}
                     onChange={(e) => setNewCost(Number(e.target.value))}
-                    className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Advance Paid (₹)</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Advance Paid (₹)</label>
                   <input
                     type="number"
                     value={newAdvance || ''}
                     onChange={(e) => setNewAdvance(Number(e.target.value))}
-                    className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Store / Tailor</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Store / Tailor</label>
                   <input
                     type="text"
                     placeholder="Store name / address"
                     value={newStore}
                     onChange={(e) => setNewStore(e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Trial Date</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Trial Date</label>
                   <input
                     type="date"
                     value={newTrialDate}
                     onChange={(e) => setNewTrialDate(e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block font-semibold text-gray-700 mb-1">Notes</label>
+                <label className="block font-semibold text-slate-700 mb-1">Notes</label>
                 <input
                   type="text"
                   placeholder="e.g. Fabric bought, lining pending"
                   value={newNotes}
                   onChange={(e) => setNewNotes(e.target.value)}
-                  className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
 
-              <div className="pt-2 flex justify-end space-x-2 border-t border-gray-200">
-                <button type="button" onClick={() => setIsAddModalOpen(false)} className="px-3 py-1.5 text-gray-600">Cancel</button>
-                <button type="submit" className="px-4 py-1.5 bg-gray-900 text-white rounded font-semibold">Save Dress</button>
+              <div className="pt-3 flex justify-end space-x-2 border-t border-slate-100">
+                <button 
+                  type="button" 
+                  onClick={() => setIsAddModalOpen(false)} 
+                  className="px-4 py-2 text-slate-500 hover:text-slate-700 text-xs font-semibold rounded-xl hover:bg-slate-100 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button 
+                  type="submit" 
+                  className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-semibold text-xs shadow-sm transition-colors"
+                >
+                  Save Dress
+                </button>
               </div>
             </form>
           </div>
@@ -563,31 +585,31 @@ export const DressesTracker: React.FC<DressesTrackerProps> = ({
       {/* Edit Dress Modal */}
       {editingDress && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-white rounded-xl max-w-md w-full p-5 shadow-xl border border-gray-200">
-            <div className="flex items-center justify-between pb-2 border-b border-gray-200">
-              <h3 className="text-sm font-bold text-gray-900">Edit Dress Parameters</h3>
-              <button onClick={() => setEditingDress(null)} className="text-gray-400 hover:text-gray-700">&times;</button>
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <h3 className="text-sm font-bold text-slate-900">Edit Dress Parameters</h3>
+              <button onClick={() => setEditingDress(null)} className="text-slate-400 hover:text-slate-700 text-lg leading-none">&times;</button>
             </div>
 
-            <form onSubmit={handleSaveEdit} className="mt-3 space-y-3 text-xs">
+            <form onSubmit={handleSaveEdit} className="mt-4 space-y-3.5 text-xs">
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">For Whom *</label>
+                  <label className="block font-semibold text-slate-700 mb-1">For Whom *</label>
                   <select
                     value={editingDress.person}
                     onChange={(e) => setEditingDress({ ...editingDress, person: e.target.value as any })}
-                    className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   >
                     <option value="Groom">Groom</option>
                     <option value="Bride">Bride</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Action Type</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Action Type</label>
                   <select
                     value={editingDress.action}
                     onChange={(e) => setEditingDress({ ...editingDress, action: e.target.value as any })}
-                    className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   >
                     <option value="Buy">Buy Ready-made</option>
                     <option value="Tailor / Stitch">Custom Tailor / Stitch</option>
@@ -597,63 +619,63 @@ export const DressesTracker: React.FC<DressesTrackerProps> = ({
               </div>
 
               <div>
-                <label className="block font-semibold text-gray-700 mb-1">Garment Name *</label>
+                <label className="block font-semibold text-slate-700 mb-1">Garment Name *</label>
                 <input
                   type="text"
                   required
                   value={editingDress.garmentName}
                   onChange={(e) => setEditingDress({ ...editingDress, garmentName: e.target.value })}
-                  className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Function / Event</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Function / Event</label>
                   <input
                     type="text"
                     required
                     value={editingDress.event}
                     onChange={(e) => setEditingDress({ ...editingDress, event: e.target.value })}
-                    className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Color / Theme</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Color / Theme</label>
                   <input
                     type="text"
                     value={editingDress.colorTheme}
                     onChange={(e) => setEditingDress({ ...editingDress, colorTheme: e.target.value })}
-                    className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-3 gap-2">
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Cost (₹)</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Cost (₹)</label>
                   <input
                     type="number"
                     value={editingDress.costEstimated || ''}
                     onChange={(e) => setEditingDress({ ...editingDress, costEstimated: Number(e.target.value) })}
-                    className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Paid (₹)</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Paid (₹)</label>
                   <input
                     type="number"
                     value={editingDress.advancePaid || ''}
                     onChange={(e) => setEditingDress({ ...editingDress, advancePaid: Number(e.target.value) })}
-                    className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Status</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Status</label>
                   <select
                     value={editingDress.status}
                     onChange={(e) => setEditingDress({ ...editingDress, status: e.target.value as any })}
-                    className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   >
                     <option value="To Buy">To Buy</option>
                     <option value="Fabric Bought">Fabric Bought</option>
@@ -666,38 +688,49 @@ export const DressesTracker: React.FC<DressesTrackerProps> = ({
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Store / Tailor</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Store / Tailor</label>
                   <input
                     type="text"
                     value={editingDress.storeOrTailor || ''}
                     onChange={(e) => setEditingDress({ ...editingDress, storeOrTailor: e.target.value })}
-                    className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Trial Date</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Trial Date</label>
                   <input
                     type="date"
                     value={editingDress.trialDate || ''}
                     onChange={(e) => setEditingDress({ ...editingDress, trialDate: e.target.value })}
-                    className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block font-semibold text-gray-700 mb-1">Notes</label>
+                <label className="block font-semibold text-slate-700 mb-1">Notes</label>
                 <input
                   type="text"
                   value={editingDress.notes || ''}
                   onChange={(e) => setEditingDress({ ...editingDress, notes: e.target.value })}
-                  className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
 
-              <div className="pt-2 flex justify-end space-x-2 border-t border-gray-200">
-                <button type="button" onClick={() => setEditingDress(null)} className="px-3 py-1.5 text-gray-600">Cancel</button>
-                <button type="submit" className="px-4 py-1.5 bg-gray-900 text-white rounded font-semibold">Update Dress</button>
+              <div className="pt-3 flex justify-end space-x-2 border-t border-slate-100">
+                <button 
+                  type="button" 
+                  onClick={() => setEditingDress(null)} 
+                  className="px-4 py-2 text-slate-500 hover:text-slate-700 text-xs font-semibold rounded-xl hover:bg-slate-100 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button 
+                  type="submit" 
+                  className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-semibold text-xs shadow-sm transition-colors"
+                >
+                  Update Dress
+                </button>
               </div>
             </form>
           </div>

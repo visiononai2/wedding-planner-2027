@@ -63,7 +63,7 @@ const ToastItem: React.FC<{ toast: ToastMessage; onDismiss: (id: string) => void
               toast.onUndo?.();
               onDismiss(toast.id);
             }}
-            className="px-2.5 py-1 bg-white text-gray-900 hover:bg-gray-100 active:scale-95 text-xs font-bold rounded-md shadow-xs transition focus-visible:ring-2 focus-visible:ring-indigo-500 focus:outline-hidden"
+            className="px-2.5 py-1 bg-white text-slate-900 hover:bg-slate-100 active:scale-95 text-xs font-bold rounded-lg shadow-xs transition-all focus-visible:ring-2 focus-visible:ring-indigo-500 focus:outline-none"
           >
             Undo
           </button>
@@ -71,7 +71,7 @@ const ToastItem: React.FC<{ toast: ToastMessage; onDismiss: (id: string) => void
 
         <button
           onClick={() => onDismiss(toast.id)}
-          className="p-1 text-gray-400 hover:text-white rounded-md transition focus-visible:ring-2 focus-visible:ring-gray-400 focus:outline-hidden"
+          className="p-1 text-slate-400 hover:text-white rounded-lg transition-colors focus-visible:ring-2 focus-visible:ring-slate-400 focus:outline-none"
           aria-label="Close notification"
         >
           <X className="w-3.5 h-3.5" />

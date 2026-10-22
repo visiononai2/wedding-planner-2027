@@ -68,14 +68,14 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
             ref={cancelButtonRef}
             type="button"
             onClick={onCancel}
-            className="px-4 py-2 border border-gray-300 rounded-xl text-xs sm:text-sm font-semibold text-gray-700 hover:bg-gray-50 active:bg-gray-100 transition focus-visible:ring-2 focus-visible:ring-indigo-500 focus:outline-hidden"
+            className="px-4 py-2 border border-slate-300 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-50 active:bg-slate-100 transition-colors focus-visible:ring-2 focus-visible:ring-indigo-500 focus:outline-none"
           >
             {cancelLabel}
           </button>
           <button
             type="button"
             onClick={onConfirm}
-            className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-white shadow-xs transition active:scale-95 focus-visible:ring-2 focus:outline-hidden ${
+            className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-white shadow-xs transition-all active:scale-95 focus-visible:ring-2 focus:outline-none ${
               isDestructive 
                 ? 'bg-rose-600 hover:bg-rose-700 active:bg-rose-800 focus-visible:ring-rose-500' 
                 : 'bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 focus-visible:ring-indigo-500'

@@ -120,7 +120,7 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
   const renderSideBadge = (side?: EventSide) => {
     if (side === 'Boy') {
       return (
-        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-900 border border-blue-200 flex items-center gap-1">
+        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-900 border border-blue-200/80 flex items-center gap-1">
           <span>👦</span>
           <span>Boy's Side</span>
         </span>
@@ -128,14 +128,14 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
     }
     if (side === 'Girl') {
       return (
-        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-100 text-rose-900 border border-rose-200 flex items-center gap-1">
+        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-900 border border-rose-200/80 flex items-center gap-1">
           <span>👧</span>
           <span>Girl's Side</span>
         </span>
       );
     }
     return (
-      <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-100 text-purple-900 border border-purple-200 flex items-center gap-1">
+      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-100 text-purple-900 border border-purple-200/80 flex items-center gap-1">
         <span>🤝</span>
         <span>Joint / Both Sides</span>
       </span>
@@ -145,7 +145,7 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
   return (
     <div className="space-y-4">
       {/* Day Selector and Actions */}
-      <div className="bg-white rounded-xl p-3 sm:p-4 border border-gray-200 shadow-sm flex flex-wrap items-center justify-between gap-3">
+      <div className="bg-white rounded-2xl p-3 sm:p-4 border border-slate-200 shadow-sm flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap gap-2">
           {days.map((d) => {
             const isSelected = selectedDayId === d.id;
@@ -153,14 +153,14 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
               <button
                 key={d.id}
                 onClick={() => setSelectedDayId(d.id)}
-                className={`px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold transition border ${
+                className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all border text-left ${
                   isSelected
-                    ? 'bg-gray-900 text-white border-gray-900 shadow-sm'
-                    : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100'
+                    ? 'bg-slate-900 text-white border-slate-900 shadow-sm'
+                    : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 hover:border-slate-300'
                 }`}
               >
-                <div>{d.title}</div>
-                <div className={`text-[10px] ${isSelected ? 'text-gray-300' : 'text-gray-500'}`}>
+                <div className="font-bold">{d.title}</div>
+                <div className={`text-[10px] mt-0.5 ${isSelected ? 'text-slate-300' : 'text-slate-500'}`}>
                   {d.dayName} • {d.items.length} cues
                 </div>
               </button>
@@ -171,7 +171,7 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
         <div className="flex items-center space-x-2">
           <button
             onClick={() => setIsAddModalOpen(true)}
-            className="inline-flex items-center px-3 py-1.5 bg-gray-900 hover:bg-black text-white rounded-lg text-xs font-semibold shadow-sm transition"
+            className="inline-flex items-center px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white rounded-xl text-xs font-semibold shadow-sm transition-colors"
           >
             <Plus className="w-3.5 h-3.5 mr-1" />
             Add Event Cue
@@ -181,89 +181,89 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
 
       {/* Critical Reminders Strip tailored to exact user notes */}
       {selectedDayId === 'feb-18' && (
-        <div className="p-3 rounded-xl bg-blue-50 border border-blue-200 text-xs text-blue-900 flex items-center space-x-2">
-          <Clock className="w-4 h-4 text-blue-600 shrink-0" />
-          <span>
-            <strong>HOME RITUALS (18 Feb):</strong> 8:00 AM Randel sthapana at Groom home • 10–11 AM Lagan Lakhan at Bride home • 11 AM Bride brothers bring Lagan to Groom home (~100 present) • 12–1 PM Boy Lunch • 4 PM Boy Haldi & Groom photo visit to Girl Mehndi • 6–7 PM Evening Jamanvar. <em>(Note: Couple pre-wedding shoot is planned separately in Nov/Dec as a 2–3 day national or 1-week international trip).</em>
+        <div className="p-4 rounded-2xl bg-blue-50/90 border border-blue-200/80 text-xs text-blue-900 flex items-start sm:items-center space-x-2.5 shadow-sm">
+          <Clock className="w-4 h-4 text-blue-600 shrink-0 mt-0.5 sm:mt-0" />
+          <span className="leading-relaxed">
+            <strong className="text-blue-950 font-bold">HOME RITUALS (18 Feb):</strong> 8:00 AM Randel sthapana at Groom home • 10–11 AM Lagan Lakhan at Bride home • 11 AM Bride brothers bring Lagan to Groom home (~100 present) • 12–1 PM Boy Lunch • 4 PM Boy Haldi & Groom photo visit to Girl Mehndi • 6–7 PM Evening Jamanvar. <em>(Note: Couple pre-wedding shoot is planned separately in Nov/Dec as a 2–3 day national or 1-week international trip).</em>
           </span>
         </div>
       )}
 
       {selectedDayId === 'feb-20' && (
-        <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900 flex items-center space-x-2">
-          <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
-          <span>
-            <strong>MANDVO & GARBA PROTOCOL (20 Feb):</strong> 11 AM–12 PM Bride Parlour • 2 PM Mandvo (Boy side) with reciprocal mandva & Chandlo • <strong>6:00–6:30 PM JOINT JAMANVAR (both sides dine together)</strong> • 8 PM Raas Garba (Stop at 10 PM if police arrives, else rock till 12:00 AM!).
+        <div className="p-4 rounded-2xl bg-amber-50/90 border border-amber-200/80 text-xs text-amber-900 flex items-start sm:items-center space-x-2.5 shadow-sm">
+          <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5 sm:mt-0" />
+          <span className="leading-relaxed">
+            <strong className="text-amber-950 font-bold">MANDVO & GARBA PROTOCOL (20 Feb):</strong> 11 AM–12 PM Bride Parlour • 2 PM Mandvo (Boy side) with reciprocal mandva & Chandlo • <strong>6:00–6:30 PM JOINT JAMANVAR (both sides dine together)</strong> • 8 PM Raas Garba (Stop at 10 PM if police arrives, else rock till 12:00 AM!).
           </span>
         </div>
       )}
 
       {selectedDayId === 'feb-21' && (
-        <div className="p-3 rounded-xl bg-purple-50 border border-purple-200 text-xs text-purple-900 flex items-center space-x-2">
-          <Clock className="w-4 h-4 text-purple-600 shrink-0" />
-          <span>
-            <strong>AFTERNOON JAAN & LAGAN PROTOCOL (21 Feb):</strong> <strong>04:00 PM Afternoon Jaan departure</strong> on ICER truck to Katargam (1 km from farm) • 5:30 PM Grand Entry • 6:30 PM Mandap ma besi javanu • Lagan completes around 12:00 AM midnight ➔ <strong>Newlywed couple visits holy temple (Mandir) together!</strong>
+        <div className="p-4 rounded-2xl bg-purple-50/90 border border-purple-200/80 text-xs text-purple-900 flex items-start sm:items-center space-x-2.5 shadow-sm">
+          <Clock className="w-4 h-4 text-purple-600 shrink-0 mt-0.5 sm:mt-0" />
+          <span className="leading-relaxed">
+            <strong className="text-purple-950 font-bold">AFTERNOON JAAN & LAGAN PROTOCOL (21 Feb):</strong> <strong>04:00 PM Afternoon Jaan departure</strong> on ICER truck to Katargam (1 km from farm) • 5:30 PM Grand Entry • 6:30 PM Mandap ma besi javanu • Lagan completes around 12:00 AM midnight ➔ <strong>Newlywed couple visits holy temple (Mandir) together!</strong>
           </span>
         </div>
       )}
 
       {/* Schedule Items Table / Cards with Inline Hover-to-Edit Text */}
-      <div className="space-y-2.5">
+      <div className="space-y-3">
         {displayedItems.length === 0 ? (
-          <div className="bg-white rounded-xl p-8 text-center border border-gray-200 text-xs text-gray-500">
+          <div className="bg-white rounded-2xl p-10 text-center border border-dashed border-slate-200 text-xs text-slate-400">
             No cues match the selected perspective ({activeSide === 'BOY' ? "Boy's Side" : "Girl's Side"}). Switch to "Both Sides" to see all events.
           </div>
         ) : (
           displayedItems.map((item) => (
             <div
               key={item.id}
-              className="bg-white rounded-xl p-3.5 sm:p-4 border border-gray-200 hover:border-gray-300 transition shadow-sm space-y-2.5"
+              className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 hover:border-slate-300 hover:shadow-sm transition-all space-y-3"
             >
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="px-2.5 py-1 rounded bg-gray-100 text-gray-900 border border-gray-200 text-xs font-bold flex items-center">
+                  <span className="px-2.5 py-1 rounded-xl bg-slate-100 text-slate-900 border border-slate-200 text-xs font-bold font-mono">
                     <EditableText
                       value={item.time}
                       onSave={(val) => onEditScheduleItem(selectedDayId, item.id, { time: val })}
-                      className="font-bold text-gray-900"
+                      className="font-bold text-slate-900"
                     />
                   </span>
 
                   <EditableText
                     value={item.title}
                     onSave={(val) => onEditScheduleItem(selectedDayId, item.id, { title: val })}
-                    className="text-sm sm:text-base font-bold text-gray-900"
+                    className="text-sm sm:text-base font-bold text-slate-900"
                   />
 
                   {/* Side Tag Badge */}
                   {renderSideBadge(item.side)}
 
-                  <span className="text-xs text-gray-500 font-medium hidden sm:inline">
+                  <span className="text-xs text-slate-400 font-medium hidden sm:inline">
                     (
                     <EditableText
                       value={item.gujaratiTitle || ''}
                       placeholder="ગુજરાતી શીર્ષક..."
                       onSave={(val) => onEditScheduleItem(selectedDayId, item.id, { gujaratiTitle: val })}
-                      className="text-gray-600"
+                      className="text-slate-600"
                     />
                     )
                   </span>
                 </div>
 
                 <div className="flex items-center space-x-2 text-xs">
-                  <div className="text-gray-400 flex items-center mr-2">
-                    <MapPin className="w-3 h-3 mr-1" />
+                  <div className="text-slate-400 flex items-center mr-2">
+                    <MapPin className="w-3.5 h-3.5 mr-1 text-slate-400" />
                     <EditableText
                       value={item.location}
                       onSave={(val) => onEditScheduleItem(selectedDayId, item.id, { location: val })}
-                      className="text-gray-600"
+                      className="text-slate-600 font-medium"
                     />
                   </div>
 
                   <button
                     onClick={() => setEditingItem({ dayId: selectedDayId, item })}
                     title="Edit full event"
-                    className="p-1 text-gray-400 hover:text-gray-900 transition"
+                    className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
                   >
                     <Edit3 className="w-3.5 h-3.5" />
                   </button>
@@ -271,7 +271,7 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
                   <button
                     onClick={() => onDeleteScheduleItem(selectedDayId, item.id)}
                     title="Delete event"
-                    className="p-1 text-gray-400 hover:text-rose-600 transition"
+                    className="p-1.5 text-slate-300 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
@@ -279,20 +279,20 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
               </div>
 
               {/* Action Note with Inline Editing */}
-              <div className="text-xs text-gray-700 bg-gray-50 p-2.5 rounded-lg border border-gray-200">
-                <strong className="text-gray-900 mr-1 font-semibold">Key Action:</strong>
+              <div className="text-xs text-slate-700 bg-slate-50/80 p-3 rounded-xl border border-slate-200/80 leading-relaxed">
+                <strong className="text-slate-900 mr-1.5 font-semibold">Key Action:</strong>
                 <EditableText
                   value={item.actionNotes}
                   multiline
                   onSave={(val) => onEditScheduleItem(selectedDayId, item.id, { actionNotes: val })}
-                  className="text-gray-800"
+                  className="text-slate-800"
                 />
               </div>
 
               {/* Badges row with Inline Editing */}
-              <div className="flex flex-wrap items-center gap-2 pt-1 text-xs">
+              <div className="flex flex-wrap items-center gap-2 pt-0.5 text-xs">
                 {item.soundRig && (
-                  <span className="inline-flex items-center px-2 py-0.5 rounded bg-purple-50 text-purple-800 border border-purple-200 text-[11px] font-medium">
+                  <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-purple-50 text-purple-800 border border-purple-200/80 text-[11px] font-medium">
                     <Volume2 className="w-3 h-3 mr-1 text-purple-600" />
                     <EditableText
                       value={item.soundRig}
@@ -303,7 +303,7 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
                 )}
 
                 {item.outfitGroom && (
-                  <span className="inline-flex items-center px-2 py-0.5 rounded bg-blue-50 text-blue-800 border border-blue-200 text-[11px] font-medium">
+                  <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-blue-50 text-blue-800 border border-blue-200/80 text-[11px] font-medium">
                     <Shirt className="w-3 h-3 mr-1 text-blue-600" />
                     <span className="mr-1">Groom:</span>
                     <EditableText
@@ -315,7 +315,7 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
                 )}
 
                 {item.outfitBride && (
-                  <span className="inline-flex items-center px-2 py-0.5 rounded bg-rose-50 text-rose-800 border border-rose-200 text-[11px] font-medium">
+                  <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-rose-50 text-rose-800 border border-rose-200/80 text-[11px] font-medium">
                     <Shirt className="w-3 h-3 mr-1 text-rose-600" />
                     <span className="mr-1">Bride:</span>
                     <EditableText
@@ -327,7 +327,7 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
                 )}
 
                 {item.urgentRule && (
-                  <span className="inline-flex items-center px-2 py-0.5 rounded bg-rose-50 text-rose-800 border border-rose-200 text-[11px] font-semibold">
+                  <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-rose-50 text-rose-800 border border-rose-200/80 text-[11px] font-semibold">
                     ⚠️
                     <EditableText
                       value={item.urgentRule}
@@ -344,32 +344,32 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
 
       {/* Add Modal */}
       {isAddModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
-          <div className="bg-white rounded-xl max-w-md w-full p-5 shadow-xl border border-gray-200">
-            <div className="flex items-center justify-between pb-2 border-b border-gray-200">
-              <h3 className="text-sm font-bold text-gray-900">Add Cue to {activeDay.title}</h3>
-              <button onClick={() => setIsAddModalOpen(false)} className="text-gray-400 hover:text-gray-700 text-lg">&times;</button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <h3 className="text-sm font-bold text-slate-900">Add Cue to {activeDay.title}</h3>
+              <button onClick={() => setIsAddModalOpen(false)} className="text-slate-400 hover:text-slate-700 text-lg leading-none">&times;</button>
             </div>
 
-            <form onSubmit={handleCreateItem} className="mt-3 space-y-3 text-xs">
+            <form onSubmit={handleCreateItem} className="mt-4 space-y-3.5 text-xs">
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Time *</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Time *</label>
                   <input
                     type="text"
                     required
                     placeholder="e.g. 04:00 PM"
                     value={newTime}
                     onChange={(e) => setNewTime(e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5 text-gray-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-gray-900"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Side / Family</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Side / Family</label>
                   <select
                     value={newSide}
                     onChange={(e) => setNewSide(e.target.value as EventSide)}
-                    className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5 text-gray-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-gray-900"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   >
                     <option value="Both">Joint / Both Sides</option>
                     <option value="Boy">Boy's Side</option>
@@ -379,86 +379,97 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
               </div>
 
               <div>
-                <label className="block font-semibold text-gray-700 mb-1">Location</label>
+                <label className="block font-semibold text-slate-700 mb-1">Location</label>
                 <input
                   type="text"
                   value={newLocation}
                   onChange={(e) => setNewLocation(e.target.value)}
-                  className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5 text-gray-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-gray-900"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
 
               <div>
-                <label className="block font-semibold text-gray-700 mb-1">Title (English) *</label>
+                <label className="block font-semibold text-slate-700 mb-1">Title (English) *</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Haldi Rasam at Groom Home"
                   value={newTitle}
                   onChange={(e) => setNewTitle(e.target.value)}
-                  className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5 text-gray-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-gray-900"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
 
               <div>
-                <label className="block font-semibold text-gray-700 mb-1">Gujarati Title (Optional)</label>
+                <label className="block font-semibold text-slate-700 mb-1">Gujarati Title (Optional)</label>
                 <input
                   type="text"
                   placeholder="e.g. હળદી રસમ"
                   value={newGujTitle}
                   onChange={(e) => setNewGujTitle(e.target.value)}
-                  className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5 text-gray-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-gray-900"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
 
               <div>
-                <label className="block font-semibold text-gray-700 mb-1">Key Action / Instruction</label>
+                <label className="block font-semibold text-slate-700 mb-1">Key Action / Instruction</label>
                 <textarea
                   rows={2}
                   placeholder="e.g. Relatives arrive at 4 PM. Haldi vidhi with family."
                   value={newActionNotes}
                   onChange={(e) => setNewActionNotes(e.target.value)}
-                  className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5 text-gray-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-gray-900"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Sound Rig Tag</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Sound Rig Tag</label>
                   <input
                     type="text"
                     placeholder="e.g. 2 Base, 2 Top"
                     value={newSoundRig}
                     onChange={(e) => setNewSoundRig(e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5 text-gray-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-gray-900"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Groom Outfit Tag</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Groom Outfit Tag</label>
                   <input
                     type="text"
                     placeholder="e.g. Haldi Kurta Pajama"
                     value={newOutfitGroom}
                     onChange={(e) => setNewOutfitGroom(e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5 text-gray-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-gray-900"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block font-semibold text-gray-700 mb-1">Urgent Alert / Rule</label>
+                <label className="block font-semibold text-slate-700 mb-1">Urgent Alert / Rule</label>
                 <input
                   type="text"
                   placeholder="e.g. Groom takes 1-2 friends for photo at girl venue"
                   value={newUrgentRule}
                   onChange={(e) => setNewUrgentRule(e.target.value)}
-                  className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5 text-gray-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-gray-900"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
 
-              <div className="pt-2 flex justify-end space-x-2 border-t border-gray-200">
-                <button type="button" onClick={() => setIsAddModalOpen(false)} className="px-3 py-1.5 text-gray-600 hover:bg-gray-100 rounded">Cancel</button>
-                <button type="submit" className="px-4 py-1.5 bg-gray-900 text-white rounded font-semibold hover:bg-black">Save Cue</button>
+              <div className="pt-3 flex justify-end space-x-2 border-t border-slate-100">
+                <button 
+                  type="button" 
+                  onClick={() => setIsAddModalOpen(false)} 
+                  className="px-4 py-2 text-slate-500 hover:text-slate-700 text-xs font-semibold rounded-xl hover:bg-slate-100 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button 
+                  type="submit" 
+                  className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-semibold text-xs shadow-sm transition-colors"
+                >
+                  Save Cue
+                </button>
               </div>
             </form>
           </div>
@@ -467,17 +478,17 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
 
       {/* Edit Modal */}
       {editingItem && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
-          <div className="bg-white rounded-xl max-w-md w-full p-5 shadow-xl border border-gray-200">
-            <div className="flex items-center justify-between pb-2 border-b border-gray-200">
-              <h3 className="text-sm font-bold text-gray-900">Edit Schedule Cue</h3>
-              <button onClick={() => setEditingItem(null)} className="text-gray-400 hover:text-gray-700 text-lg">&times;</button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <h3 className="text-sm font-bold text-slate-900">Edit Schedule Cue</h3>
+              <button onClick={() => setEditingItem(null)} className="text-slate-400 hover:text-slate-700 text-lg leading-none">&times;</button>
             </div>
 
-            <form onSubmit={handleSaveEdit} className="mt-3 space-y-3 text-xs">
+            <form onSubmit={handleSaveEdit} className="mt-4 space-y-3.5 text-xs">
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Time *</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Time *</label>
                   <input
                     type="text"
                     required
@@ -486,18 +497,18 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
                       ...editingItem,
                       item: { ...editingItem.item, time: e.target.value }
                     })}
-                    className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5 text-gray-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-gray-900"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Side / Family</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Side / Family</label>
                   <select
                     value={editingItem.item.side || 'Both'}
                     onChange={(e) => setEditingItem({
                       ...editingItem,
                       item: { ...editingItem.item, side: e.target.value as EventSide }
                     })}
-                    className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5 text-gray-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-gray-900"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   >
                     <option value="Both">Joint / Both Sides</option>
                     <option value="Boy">Boy's Side</option>
@@ -507,7 +518,7 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
               </div>
 
               <div>
-                <label className="block font-semibold text-gray-700 mb-1">Location</label>
+                <label className="block font-semibold text-slate-700 mb-1">Location</label>
                 <input
                   type="text"
                   value={editingItem.item.location}
@@ -515,12 +526,12 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
                     ...editingItem,
                     item: { ...editingItem.item, location: e.target.value }
                   })}
-                  className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5 text-gray-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-gray-900"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
 
               <div>
-                <label className="block font-semibold text-gray-700 mb-1">Title *</label>
+                <label className="block font-semibold text-slate-700 mb-1">Title *</label>
                 <input
                   type="text"
                   required
@@ -529,12 +540,12 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
                     ...editingItem,
                     item: { ...editingItem.item, title: e.target.value }
                   })}
-                  className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5 text-gray-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-gray-900"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
 
               <div>
-                <label className="block font-semibold text-gray-700 mb-1">Gujarati Title</label>
+                <label className="block font-semibold text-slate-700 mb-1">Gujarati Title</label>
                 <input
                   type="text"
                   value={editingItem.item.gujaratiTitle || ''}
@@ -542,12 +553,12 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
                     ...editingItem,
                     item: { ...editingItem.item, gujaratiTitle: e.target.value }
                   })}
-                  className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5 text-gray-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-gray-900"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
 
               <div>
-                <label className="block font-semibold text-gray-700 mb-1">Action Notes</label>
+                <label className="block font-semibold text-slate-700 mb-1">Action Notes</label>
                 <textarea
                   rows={2}
                   value={editingItem.item.actionNotes}
@@ -555,13 +566,13 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
                     ...editingItem,
                     item: { ...editingItem.item, actionNotes: e.target.value }
                   })}
-                  className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5 text-gray-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-gray-900"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Sound Rig Tag</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Sound Rig Tag</label>
                   <input
                     type="text"
                     value={editingItem.item.soundRig || ''}
@@ -569,11 +580,11 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
                       ...editingItem,
                       item: { ...editingItem.item, soundRig: e.target.value }
                     })}
-                    className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5 text-gray-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-gray-900"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Groom Outfit Tag</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Groom Outfit Tag</label>
                   <input
                     type="text"
                     value={editingItem.item.outfitGroom || ''}
@@ -581,13 +592,13 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
                       ...editingItem,
                       item: { ...editingItem.item, outfitGroom: e.target.value }
                     })}
-                    className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5 text-gray-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-gray-900"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block font-semibold text-gray-700 mb-1">Urgent Rule / Alert</label>
+                <label className="block font-semibold text-slate-700 mb-1">Urgent Rule / Alert</label>
                 <input
                   type="text"
                   value={editingItem.item.urgentRule || ''}
@@ -595,13 +606,24 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
                     ...editingItem,
                     item: { ...editingItem.item, urgentRule: e.target.value }
                   })}
-                  className="w-full bg-gray-50 border border-gray-300 rounded px-2.5 py-1.5 text-gray-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-gray-900"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
 
-              <div className="pt-2 flex justify-end space-x-2 border-t border-gray-200">
-                <button type="button" onClick={() => setEditingItem(null)} className="px-3 py-1.5 text-gray-600 hover:bg-gray-100 rounded">Cancel</button>
-                <button type="submit" className="px-4 py-1.5 bg-gray-900 text-white rounded font-semibold hover:bg-black">Update Cue</button>
+              <div className="pt-3 flex justify-end space-x-2 border-t border-slate-100">
+                <button 
+                  type="button" 
+                  onClick={() => setEditingItem(null)} 
+                  className="px-4 py-2 text-slate-500 hover:text-slate-700 text-xs font-semibold rounded-xl hover:bg-slate-100 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button 
+                  type="submit" 
+                  className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-semibold text-xs shadow-sm transition-colors"
+                >
+                  Update Cue
+                </button>
               </div>
             </form>
           </div>

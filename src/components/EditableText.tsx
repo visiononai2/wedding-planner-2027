@@ -81,7 +81,7 @@ export const EditableText: React.FC<EditableTextProps> = ({
             onKeyDown={handleKeyDown}
             onBlur={handleSave}
             rows={2}
-            className={`px-2 py-1 bg-white border border-gray-900 rounded text-xs text-gray-900 shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-900 w-full min-w-[200px] ${inputClassName}`}
+            className={`px-2 py-1 bg-white border border-indigo-600 rounded-lg text-xs text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full min-w-[200px] ${inputClassName}`}
           />
         ) : (
           <input
@@ -91,14 +91,14 @@ export const EditableText: React.FC<EditableTextProps> = ({
             onChange={(e) => setCurrentVal(e.target.value)}
             onKeyDown={handleKeyDown}
             onBlur={handleSave}
-            className={`px-2 py-0.5 bg-white border border-gray-900 rounded text-xs text-gray-900 shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-900 min-w-[120px] ${inputClassName}`}
+            className={`px-2 py-0.5 bg-white border border-indigo-600 rounded-lg text-xs text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 min-w-[120px] ${inputClassName}`}
           />
         )}
         <button
           type="button"
           onClick={handleSave}
           title="Save (Enter)"
-          className="p-1 rounded bg-gray-900 hover:bg-black text-white transition shrink-0"
+          className="p-1 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white transition-colors shrink-0"
         >
           <Check className="w-3 h-3" />
         </button>
@@ -106,7 +106,7 @@ export const EditableText: React.FC<EditableTextProps> = ({
           type="button"
           onClick={handleCancel}
           title="Cancel (Esc)"
-          className="p-1 rounded bg-gray-100 hover:bg-gray-200 text-gray-700 transition shrink-0"
+          className="p-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors shrink-0"
         >
           <X className="w-3 h-3" />
         </button>
