@@ -140,41 +140,6 @@ export const Header: React.FC<HeaderProps> = ({
               <h1 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
                 Wedding Dashboard
               </h1>
-              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-800 border border-indigo-200">
-                Feb 18–21, 2027
-              </span>
-
-              {/* Active Perspective Badge */}
-              {activeSide === 'BOY' && (
-                <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-600 text-white shadow-2xs flex items-center gap-1">
-                  <span>👦</span>
-                  <span>Boy's Side Focus</span>
-                </span>
-              )}
-              {activeSide === 'GIRL' && (
-                <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-600 text-white shadow-2xs flex items-center gap-1">
-                  <span>👧</span>
-                  <span>Girl's Side Focus</span>
-                </span>
-              )}
-              {activeSide === 'ALL' && (
-                <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-gray-100 text-gray-800 border border-gray-300 flex items-center gap-1">
-                  <span>👥</span>
-                  <span>Joint View</span>
-                </span>
-              )}
-            </div>
-
-            <div className="flex flex-wrap items-center gap-2 text-xs text-gray-600 mt-1">
-              <span className="font-semibold text-gray-800">Today: Oct 22, 2026</span>
-              <span>•</span>
-              <span>18 Feb: Lagan Lakhan & Haldi</span>
-              <span>•</span>
-              <span>20 Feb: Mandvo & Garba</span>
-              <span>•</span>
-              <span>21 Feb: 4 PM Jaan & Lagan</span>
-              <span>•</span>
-              <span className="font-medium text-gray-700">Silver Farm & Katargam, Surat</span>
             </div>
           </div>
 
