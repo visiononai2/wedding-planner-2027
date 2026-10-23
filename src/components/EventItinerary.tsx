@@ -275,7 +275,7 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
         <div className="p-4 rounded-2xl bg-amber-50/90 border border-amber-200/80 text-xs text-amber-900 flex items-start sm:items-center space-x-2.5 shadow-sm">
           <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5 sm:mt-0" />
           <span className="leading-relaxed">
-            <strong className="text-amber-950 font-bold">MANDVO & GARBA PROTOCOL (20 Feb):</strong> 11 AM–12 PM Bride Parlour • 2 PM Mandvo (Boy side) with reciprocal mandva & Chandlo • <strong>6:00–6:30 PM JOINT JAMANVAR (both sides dine together)</strong> • 8 PM Raas Garba (Stop at 10 PM if police arrives, else rock till 12:00 AM!).
+            <strong className="text-amber-950 font-bold">MANDVO & GARBA PROTOCOL (20 Feb):</strong> <strong>09:00–11:00 AM Groom Makeup/Prep</strong> • 11 AM–12 PM Bride Parlour • 2 PM Mandvo (Boy side) with reciprocal mandva & Chandlo • <strong>6:00–6:30 PM JOINT JAMANVAR (both sides dine together)</strong> • 8 PM Raas Garba (Stop at 10 PM if police arrives, else rock till 12:00 AM!).
           </span>
         </div>
       )}

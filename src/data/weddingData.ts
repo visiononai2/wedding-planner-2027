@@ -485,6 +485,17 @@ export const INITIAL_TASKS: Task[] = [
     notes: 'Sanji na geet around 9:00 PM on 19th Feb with girl side guests only.'
   },
   { 
+    id: 't-day-7-boy', 
+    title: 'Feb 20 09:00 AM: Groom Grooming & Makeup Prep (9:00 AM – 11:00 AM, Boy side)', 
+    category: 'outfits', 
+    assignedTo: 'Groom', 
+    side: 'Boy',
+    monthId: 'feb-days', 
+    completed: false, 
+    priority: 'high',
+    notes: 'Boy makeup, hair styling, beard grooming, and Mandvo outfit readyness between 9:00 AM – 11:00 AM.'
+  },
+  { 
     id: 't-day-7', 
     title: 'Feb 20 11:00 AM: Bride Parlour slot starts strictly between 11 AM - 12 PM', 
     category: 'outfits', 
@@ -1103,6 +1114,17 @@ export const INITIAL_DAY_SCHEDULES: EventDaySchedule[] = [
     title: 'Mandvo, Joint Dinner & Raas Garba',
     location: 'Silver Farm, Surat',
     items: [
+      {
+        id: 's-20-0',
+        time: '09:00 AM – 11:00 AM',
+        title: 'Groom Makeup & Readiness Prep (Boy Side)',
+        gujaratiTitle: 'વરરાજા તૈયાર થવું અને મેકઅપ (સવારે ૯ થી ૧૧ વાગે)',
+        location: 'Groom Residence / Salon',
+        actionNotes: 'Groom gets ready with hair styling, beard grooming, makeup, and Mandvo outfit (Coty & Kurta) draping between 9:00 AM – 11:00 AM before afternoon rituals.',
+        side: 'Boy',
+        outfitGroom: 'Traditional Coty (Bandi) & Kurta',
+        urgentRule: 'Groom makeup & prep slot scheduled strictly for 9:00 AM – 11:00 AM!'
+      },
       {
         id: 's-20-1',
         time: '11:00 AM – 12:00 PM',
