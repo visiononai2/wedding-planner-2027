@@ -304,6 +304,17 @@ export const INITIAL_TASKS: Task[] = [
     priority: 'high',
     notes: 'Direct from user notes: Close at 10 if police comes else till 12 AM.'
   },
+  { 
+    id: 't-jan-5', 
+    title: 'Jan 20 11:00 AM: Visit police station to obtain sound permit for DJ at low voice / decibel for Garba', 
+    category: 'sound_dj', 
+    assignedTo: 'Both', 
+    side: 'Both',
+    monthId: 'jan-2027', 
+    completed: false, 
+    priority: 'high',
+    notes: 'Visit local police station on 20 January 2027 with venue booking slip & invite to get permit for regulated low voice DJ for marriage Garba.'
+  },
 
   // February 1 - 16, 2027 (Final Prep & Fittings)
   { 
@@ -938,6 +949,25 @@ export const INITIAL_DRESSES: DressItem[] = [
 ];
 
 export const INITIAL_DAY_SCHEDULES: EventDaySchedule[] = [
+  {
+    id: 'jan-20',
+    dateString: '2027-01-20',
+    dayName: 'Wednesday / 20 Jan',
+    title: 'Police Station Permit Visit (DJ Sound)',
+    location: 'Surat Police Station (Local Jurisdiction)',
+    items: [
+      {
+        id: 's-jan20-1',
+        time: '11:00 AM – 01:00 PM',
+        title: 'Police Station Visit for DJ Sound Permit (Low Decibel)',
+        gujaratiTitle: 'પોલીસ સ્ટેશન મુલાકાત: ગરબા ડીજે સાઉન્ડ પરમિશન (ધીમા અવાજે)',
+        location: 'Surat City Police Station / Commissioner Office',
+        actionNotes: 'Visit the local police station to apply for & secure official written permit for DJ sound setup (at regulated low decibel / volume) for marriage Raas Garba celebration at Silver Farm.',
+        side: 'Both',
+        urgentRule: 'Submit marriage invitation card, venue booking slip & Dhaval sound specs for DJ permit!'
+      }
+    ]
+  },
   {
     id: 'feb-15',
     dateString: '2027-02-15',

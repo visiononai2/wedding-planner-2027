@@ -226,6 +226,15 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
       </div>
 
       {/* Critical Reminders Strip tailored to exact user notes */}
+      {selectedDayId === 'jan-20' && (
+        <div className="p-4 rounded-2xl bg-amber-50/90 border border-amber-200/80 text-xs text-amber-900 flex items-start sm:items-center space-x-2.5 shadow-sm">
+          <Clock className="w-4 h-4 text-amber-600 shrink-0 mt-0.5 sm:mt-0" />
+          <span className="leading-relaxed">
+            <strong className="text-amber-950 font-bold">POLICE STATION VISIT (20 Jan):</strong> Visit local police station in Surat to submit venue booking and obtain official sound permission/permit for low-decibel DJ music during the Feb 20 Raas Garba celebration.
+          </span>
+        </div>
+      )}
+
       {selectedDayId === 'feb-15' && (
         <div className="p-4 rounded-2xl bg-blue-50/90 border border-blue-200/80 text-xs text-blue-900 flex items-start sm:items-center space-x-2.5 shadow-sm">
           <Clock className="w-4 h-4 text-blue-600 shrink-0 mt-0.5 sm:mt-0" />

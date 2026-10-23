@@ -49,11 +49,16 @@ export const App: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>(() => {
     const v6 = loadFromStorage<Task[] | null>('vivah_tasks_v6', null);
     if (v6 && v6.length > 0) {
-      if (!v6.some(t => t.id === 't-day-7-boy')) {
+      let updatedTasks = v6;
+      if (!updatedTasks.some(t => t.id === 't-day-7-boy')) {
         const initTask = INITIAL_TASKS.find(t => t.id === 't-day-7-boy');
-        if (initTask) return [...v6, initTask];
+        if (initTask) updatedTasks = [...updatedTasks, initTask];
       }
-      return v6;
+      if (!updatedTasks.some(t => t.id === 't-jan-5')) {
+        const initTask = INITIAL_TASKS.find(t => t.id === 't-jan-5');
+        if (initTask) updatedTasks = [...updatedTasks, initTask];
+      }
+      return updatedTasks;
     }
 
     // Migrate from v5/v4 preserving completed checkmarks
@@ -107,15 +112,27 @@ export const App: React.FC = () => {
   const [days, setDays] = useState<EventDaySchedule[]>(() => {
     const v6 = loadFromStorage<EventDaySchedule[] | null>('vivah_days_v6', null);
     if (v6 && v6.length >= 7) {
-      const feb20 = v6.find(d => d.id === 'feb-20');
+      let updated = v6;
+
+      // Check if jan-20 schedule day is present
+      if (!updated.some(d => d.id === 'jan-20')) {
+        const jan20 = INITIAL_DAY_SCHEDULES.find(d => d.id === 'jan-20');
+        if (jan20) {
+          updated = [jan20, ...updated];
+        }
+      }
+
+      // Check if s-20-0 is present in feb-20
+      const feb20 = updated.find(d => d.id === 'feb-20');
       if (feb20 && !feb20.items.some(item => item.id === 's-20-0')) {
         const initFeb20 = INITIAL_DAY_SCHEDULES.find(d => d.id === 'feb-20');
         const s20_0 = initFeb20?.items.find(i => i.id === 's-20-0');
         if (s20_0) {
-          return v6.map(d => d.id === 'feb-20' ? { ...d, items: [s20_0, ...d.items] } : d);
+          updated = updated.map(d => d.id === 'feb-20' ? { ...d, items: [s20_0, ...d.items] } : d);
         }
       }
-      return v6;
+
+      return updated;
     }
     return INITIAL_DAY_SCHEDULES;
   });
