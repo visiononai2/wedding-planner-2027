@@ -132,10 +132,10 @@ export const App: React.FC = () => {
         }
       }
 
-      // Check if feb-21 has the updated detailed wedding schedule
+      // Check if feb-21 has the updated detailed wedding schedule including girl touchup & departure
       const feb21 = updated.find(d => d.id === 'feb-21');
       const initFeb21 = INITIAL_DAY_SCHEDULES.find(d => d.id === 'feb-21');
-      if (feb21 && initFeb21 && !feb21.items.some(item => item.id === 's-21-parlour')) {
+      if (feb21 && initFeb21 && !feb21.items.some(item => item.id === 's-21-girl-touchup')) {
         updated = updated.map(d => d.id === 'feb-21' ? initFeb21 : d);
       }
 

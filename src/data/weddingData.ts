@@ -1293,6 +1293,16 @@ export const INITIAL_DAY_SCHEDULES: EventDaySchedule[] = [
         outfitGroom: 'Lagan Wedding Suit & Safa'
       },
       {
+        id: 's-21-girl-touchup',
+        time: '03:00 PM – 04:00 PM',
+        title: 'Bride Makeup Touch-Up (Girl Side)',
+        gujaratiTitle: 'દીકરીનું મેકઅપ ટચઅપ (બપોરે ૩:૦૦ થી ૪:૦૦ વાગે)',
+        location: 'Bride Residence',
+        actionNotes: 'Bride final makeup touch-up, hair setting, jewellery adjustments, and Panetar saree draping perfecting before leaving for venue.',
+        side: 'Girl',
+        outfitBride: 'Bridal Panetar / Wedding Saree'
+      },
+      {
         id: 's-21-homevidhi',
         time: '03:00 PM – 03:30 PM',
         title: 'Vidhi for Groom at Boy\'s House',
@@ -1309,6 +1319,16 @@ export const INITIAL_DAY_SCHEDULES: EventDaySchedule[] = [
         location: 'Groom Residence to Katargam (1 km from Farm)',
         actionNotes: 'Groom, close family, and guests travel from home to the Jaan starting assembly point in Katargam (1 km away from farm).',
         side: 'Boy'
+      },
+      {
+        id: 's-21-girl-departure',
+        time: '04:00 PM',
+        title: 'Bride Leaves for Marriage Farm',
+        gujaratiTitle: 'દીકરી મેરેજ ફાર્મ જવા રવાના (સાંજે ૪:૦૦ વાગે)',
+        location: 'Bride Residence to Marriage Farm Venue',
+        actionNotes: 'Bride departs with family members for the marriage farm venue to be settled and ready before Jaan arrives.',
+        side: 'Girl',
+        urgentRule: 'Bride leaves for marriage farm at 4:00 PM to prepare for Jaan welcome!'
       },
       {
         id: 's-21-jaan',
@@ -1556,8 +1576,10 @@ export const INITIAL_NOTES: PlanningNote[] = [
 • 10:00 AM – 12:00 PM: Dedicated photography & couple photoshoot.
 • 01:00 PM – 02:00 PM: Lunch at own house or together as couple.
 • 02:30 PM – 03:00 PM: Touch up for Groom at boy's house.
+• 03:00 PM – 04:00 PM: Bride makeup touch-up at girl's house.
 • 03:00 PM – 03:30 PM: Departure vidhi for Groom at boy's house.
 • 03:30 PM – 04:00 PM: Travel to Katargam Jaan starting assembly point.
+• 04:00 PM: Bride leaves for marriage farm venue.
 • 04:00 PM – 04:30 PM: Jaan Kadhvani on ICER truck; reach marriage farm by 5:30 PM!
 • 05:30 PM – 06:30 PM: Welcoming & Pokhvanu rituals for boy and girl together.
 • 06:30 PM – 07:30 PM: Varmala & Kanya Agaman into the wedding mandap.
