@@ -132,6 +132,13 @@ export const App: React.FC = () => {
         }
       }
 
+      // Check if feb-21 has the updated detailed wedding schedule
+      const feb21 = updated.find(d => d.id === 'feb-21');
+      const initFeb21 = INITIAL_DAY_SCHEDULES.find(d => d.id === 'feb-21');
+      if (feb21 && initFeb21 && !feb21.items.some(item => item.id === 's-21-parlour')) {
+        updated = updated.map(d => d.id === 'feb-21' ? initFeb21 : d);
+      }
+
       return updated;
     }
     return INITIAL_DAY_SCHEDULES;
@@ -145,7 +152,13 @@ export const App: React.FC = () => {
 
   const [notes, setNotes] = useState<PlanningNote[]>(() => {
     const v6 = loadFromStorage<PlanningNote[] | null>('vivah_notes_v6', null);
-    if (v6 && v6.length > 0) return v6;
+    if (v6 && v6.length > 0) {
+      const freshNote3 = INITIAL_NOTES.find(n => n.id === 'note-3');
+      if (freshNote3) {
+        return v6.map(n => n.id === 'note-3' ? freshNote3 : n);
+      }
+      return v6;
+    }
     return INITIAL_NOTES;
   });
 

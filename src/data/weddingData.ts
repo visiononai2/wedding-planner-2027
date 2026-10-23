@@ -1249,66 +1249,162 @@ export const INITIAL_DAY_SCHEDULES: EventDaySchedule[] = [
     dateString: '2027-02-21',
     dayName: 'Sunday / 21 Feb',
     title: 'Afternoon Jaan to Katargam, Lagan & Mandir',
-    location: 'Katargam Venue (1 km from Farm)',
+    location: 'Katargam Marriage Farm Venue',
     items: [
       {
-        id: 's-21-1',
-        time: '03:30 PM',
-        title: 'ICER Truck & Sound Rig Assembly at Groom Home',
-        gujaratiTitle: 'આઈસર ટ્રક તૈયારી (બપોરે ૩:૩૦ વાગે)',
-        location: 'Groom Residence',
-        actionNotes: 'ICER truck mounted with 4 Base 4 Top, C-truss & floral decoration arrives at Groom residence.',
-        side: 'Boy',
-        soundRig: 'ICER Truck 4 Base 4 Top + C-truss & flowers (₹15,000)'
+        id: 's-21-parlour',
+        time: '08:00 AM – 10:00 AM',
+        title: 'Bride & Groom Parlour Prep (Get Ready)',
+        gujaratiTitle: 'વર-વધૂ પાર્લરમાં તૈયાર થવું (સવારે ૮ થી ૧૦ વાગે)',
+        location: 'Respective Bridal / Groom Parlours',
+        actionNotes: 'Bride and Groom arrive early at their respective parlours for hair styling, makeup, draping, and wedding attire readiness.',
+        side: 'Both',
+        outfitGroom: 'Lagan Wedding Suit',
+        outfitBride: 'Bridal Panetar / Wedding Saree',
+        urgentRule: 'Parlour prep strictly from 8:00 AM – 10:00 AM so photography starts on time!'
       },
       {
-        id: 's-21-2',
-        time: '04:00 PM',
-        title: 'JAAN DEPARTURE TO KATARGAM (Afternoon 4 PM Sharp)',
-        gujaratiTitle: 'જાન લઈને જવું (બપોર પછી ૪ વાગે - કતારગામ, ફાર્મથી ૧ કિમી)',
-        location: 'Groom Residence to Katargam Venue',
-        actionNotes: 'Boy side leaves with Jaan at 4:00 PM in the afternoon! Venue is in Katargam, 1 km away from farm.',
-        side: 'Boy',
-        urgentRule: 'Boy leaves with Jaan at 04:00 PM afternoon sharp!',
-        outfitGroom: 'Lagan Wedding Suit'
+        id: 's-21-photo',
+        time: '10:00 AM – 12:00 PM',
+        title: 'Wedding Photography & Couple Portraits',
+        gujaratiTitle: 'ફોટોશૂટ અને કપલ પોટ્રેટ્સ (સવારે ૧૦ થી ૧૨ વાગે)',
+        location: 'Photo Studio / Scenic Venue',
+        actionNotes: 'Dedicated wedding day couple photo session, solo bridal portraits, groom portraits, and creative cinematography shots.',
+        side: 'Both',
+        urgentRule: 'Dedicated 2-hour photography session before lunch!'
       },
       {
-        id: 's-21-3',
-        time: '05:30 PM',
-        title: 'Grand Entry Event at Katargam Venue',
-        gujaratiTitle: 'એન્ટ્રી ઈવેન્ટ અને પોંખણું (સાંજે ૫:૩૦)',
-        location: 'Katargam Venue Entrance',
-        actionNotes: 'Groom entry & welcoming rituals (Pokhvanu) by Bride\'s mother and elders.',
+        id: 's-21-lunch',
+        time: '01:00 PM – 02:00 PM',
+        title: 'Lunch (At Own House or Together as Couple)',
+        gujaratiTitle: 'બપોરનું જમણવાર (પોતાના ઘરે અથવા કપલ સાથે - ૧ થી ૨ વાગે)',
+        location: 'Respective Family Homes / Private Dining',
+        actionNotes: 'Lunch break for the couple and families to rest, hydrate, and recharge before afternoon ceremonies.',
         side: 'Both'
       },
       {
-        id: 's-21-4',
-        time: '06:30 PM',
-        title: 'Mandap Sthapana & Besi Javanu',
-        gujaratiTitle: 'મંડપમાં બેસી જવું અને વરમાળા (સાંજે ૬:૩૦)',
-        location: 'Katargam Mandap',
-        actionNotes: 'Groom and Bride take their seats in the sacred wedding Mandap. Varmala and auspicious rituals begin.',
+        id: 's-21-touchup',
+        time: '02:30 PM – 03:00 PM',
+        title: 'Groom Touch-Up & Final Dressup (Boy Side)',
+        gujaratiTitle: 'છોકરાનું ટચઅપ અને ફાઇનલ તૈયારી (બપોરે ૨:૩૦ થી ૩:૦૦)',
+        location: 'Groom Residence',
+        actionNotes: 'Groom final touch-up, hair set, safa/paghdi tying, and brooch attachment before home departure vidhi.',
+        side: 'Boy',
+        outfitGroom: 'Lagan Wedding Suit & Safa'
+      },
+      {
+        id: 's-21-homevidhi',
+        time: '03:00 PM – 03:30 PM',
+        title: 'Vidhi for Groom at Boy\'s House',
+        gujaratiTitle: 'છોકરાના ઘરે પ્રસ્થાન વિધિ (બપોરે ૩:૦૦ થી ૩:૩૦)',
+        location: 'Groom Residence',
+        actionNotes: 'Auspicious home departure vidhi, elder family blessings, and tilak for the Groom before leaving for Katargam.',
+        side: 'Boy'
+      },
+      {
+        id: 's-21-travel',
+        time: '03:30 PM – 04:00 PM',
+        title: 'Travel to Katargam Assembly Point',
+        gujaratiTitle: 'કતારગામ જવા રવાના (બપોરે ૩:૩૦ થી ૪:૦૦)',
+        location: 'Groom Residence to Katargam (1 km from Farm)',
+        actionNotes: 'Groom, close family, and guests travel from home to the Jaan starting assembly point in Katargam (1 km away from farm).',
+        side: 'Boy'
+      },
+      {
+        id: 's-21-jaan',
+        time: '04:00 PM – 04:30 PM',
+        title: 'Jaan Kadhvani (Departure) & Procession to Marriage Farm',
+        gujaratiTitle: 'જાન કાઢવી (૪ થી ૪:૩૦) - ૫:૩૦ વાગે મેરેજ ફાર્મ પહોંચવું',
+        location: 'Katargam Assembly to Marriage Farm Venue',
+        actionNotes: 'High-energy Jaan procession departs with ICER truck, 4B+4T DJ sound rig, dancing family & baarat. Reach marriage farm venue by 5:30 PM.',
+        side: 'Boy',
+        soundRig: 'ICER Truck 4 Base 4 Top + C-truss & flowers (₹15,000)',
+        urgentRule: 'Jaan leaves at 4:00 PM sharp, reach marriage farm by 5:30 PM!'
+      },
+      {
+        id: 's-21-welcome',
+        time: '05:30 PM – 06:30 PM',
+        title: 'Rituals for Boy & Girl Together (Pokhvanu & Welcome)',
+        gujaratiTitle: 'છોકરા અને છોકરીની સાથે વિધિ અને પોંખણું (સાંજે ૫:૩૦ થી ૬:૩૦)',
+        location: 'Marriage Farm Entrance & Welcome Stage',
+        actionNotes: 'Grand Pokhvanu rituals by Bride\'s mother and elders. Auspicious welcoming aarti and joint entry ceremonies for bride and groom together.',
+        side: 'Both'
+      },
+      {
+        id: 's-21-varmala',
+        time: '06:30 PM – 07:30 PM',
+        title: 'Varmala & Kanya Agaman in Mandvo',
+        gujaratiTitle: 'વરમાળા અને કન્યા આગમન માંડવામાં (સાંજે ૬:૩૦ થી ૭:૩૦)',
+        location: 'Marriage Farm Mandap',
+        actionNotes: 'Grand Varmala exchange under floral umbrella with celebratory music. Bride enters the wedding Mandap escorted by maternal uncles (Mama).',
         side: 'Both',
         soundRig: '2 Base 2 Top (₹4,000, slow music / lagan geet)'
       },
       {
-        id: 's-21-5',
-        time: '07:30 PM – 11:30 PM',
-        title: 'Hastamelap, Phere, Kanyadaan & Wedding Jamanvar',
-        gujaratiTitle: 'હસ્તમેળાપ, ફેરા અને લગ્ન જમણવાર',
-        location: 'Katargam Mandap & Dining',
-        actionNotes: 'Sacred Phere, Saptapadi, Kanyadaan rituals, followed by wedding dinner for guests.',
+        id: 's-21-guestdinner',
+        time: '06:30 PM – 09:30 PM',
+        title: 'Meman Badha Jamanvar (Wedding Dinner Feast)',
+        gujaratiTitle: 'મહેમાનોનો જમણવાર (સાંજે ૬:૩૦ થી ૯:૩૦)',
+        location: 'Marriage Farm Dining Grounds',
+        actionNotes: 'Grand wedding dinner feast served to all invited wedding guests, relatives, and family friends.',
         side: 'Both'
       },
       {
-        id: 's-21-6',
-        time: '12:00 AM (Midnight)',
-        title: 'Lagan Completes & Mandir Darshan (Visit Temple)',
-        gujaratiTitle: 'લગ્ન ૧૨ વાગે પતે એટલે મંદિરે જઈ આવવું અને આશીર્વાદ લેવા',
-        location: 'Holy Temple (Mandir) & Home',
-        actionNotes: 'Wedding rituals complete around 12:00 AM midnight. The newlywed couple visits a holy temple (Mandir e jay avanu) for blessings, followed by Vidai!',
+        id: 's-21-lagan',
+        time: '07:30 PM – 09:30 PM',
+        title: 'Lagan Process (Hastamelap, Kanyadaan & Phera)',
+        gujaratiTitle: 'લગ્ન વિધિ: હસ્તમેળાપ, કન્યાદાન અને ફેરા (સાંજે ૭:૩૦ થી ૯:૩૦)',
+        location: 'Sacred Wedding Mandap',
+        actionNotes: 'Core Vedic Gujarati wedding rituals performed by Gor Maharaj: Kanyadaan, Hastamelap, Mangalphera around the sacred fire, and Saptapadi vows.',
         side: 'Both',
-        urgentRule: 'Once Lagan completes around 12 AM midnight, couple visits temple (mandir) together!'
+        urgentRule: 'Sacred phere and core lagan rituals strictly from 7:30 PM – 9:30 PM!'
+      },
+      {
+        id: 's-21-couple-dinner',
+        time: '09:30 PM – 10:00 PM',
+        title: 'Dinner for Newlywed Couple',
+        gujaratiTitle: 'નવદંપતીનું જમણવાર (રાત્રે ૯:૩૦ થી ૧૦:૦0)',
+        location: 'Private Couple Dining Area',
+        actionNotes: 'Peaceful dinner break served for the newlywed couple after completion of the sacred Pheras and main rituals.',
+        side: 'Both'
+      },
+      {
+        id: 's-21-girl-vidhi',
+        time: '10:00 PM – 10:30 PM',
+        title: 'Special Vidhi for Bride (Girl\'s Side Rituals)',
+        gujaratiTitle: 'દીકરી માટેની વિધિઓ અને આશીર્વાદ (રાત્રે ૧૦:૦૦ થી ૧૦:૩૦)',
+        location: 'Mandap / Bride Family Area',
+        actionNotes: 'Family blessings, final gifts, shagun, and special emotional farewell rituals performed for the Bride by her family and elders.',
+        side: 'Girl'
+      },
+      {
+        id: 's-21-viday',
+        time: '10:30 PM',
+        title: 'Viday (Farewell from Girl to Boy\'s House)',
+        gujaratiTitle: 'વિદાય (દીકરીની વિદાય - સાસરે જવા રવાના - રાત્રે ૧૦:૩૦)',
+        location: 'Marriage Farm Gate / Car Departure',
+        actionNotes: 'Heartfelt Viday ceremony. Bride departs from her parental family with coconut toss and blessings, travelling to the groom\'s residence.',
+        side: 'Both',
+        urgentRule: 'Viday departs from marriage farm at 10:30 PM sharp!'
+      },
+      {
+        id: 's-21-mandir',
+        time: '11:00 PM',
+        title: 'Mandir Darshan (Visit Holy Temple for Blessings)',
+        gujaratiTitle: 'મંદિરે દર્શન અને આશીર્વાદ (રાત્રે ૧૧:૦૦ વાગે)',
+        location: 'Surat Holy Temple (Mandir)',
+        actionNotes: 'Newlywed couple visits a holy temple (Mandir e jay avanu) together to seek divine blessings for a joyful married life.',
+        side: 'Both',
+        urgentRule: 'Newlywed couple visits holy temple together at 11:00 PM!'
+      },
+      {
+        id: 's-21-couple-vidhi',
+        time: '11:30 PM – 12:00 AM',
+        title: 'Marriage Couple Welcoming Vidhi (Gruh Pravesh at Groom\'s House)',
+        gujaratiTitle: 'નવદંપતી ગૃહ પ્રવેશ અને વિધિ (રાત્રે ૧૧:૩૦ થી ૧૨:૦૦)',
+        location: 'Groom Residence Entrance',
+        actionNotes: 'Gruh Pravesh rituals: mother-in-law welcomes couple with aarti, kicking the auspicious rice kalash, entering right foot first, and playful ring-in-milk (Aeki Beki) game.',
+        side: 'Both'
       }
     ]
   }
@@ -1453,18 +1549,28 @@ export const INITIAL_NOTES: PlanningNote[] = [
   },
   {
     id: 'note-3',
-    title: '21 Feb Schedule: 4 PM Jaan to Katargam, Mandap & Mandir',
+    title: '21 Feb Complete Wedding Day Runsheet: Parlour, Jaan, Lagan & Mandir',
     category: 'Rituals & Traditions',
-    side: 'Boy',
-    content: `• 03:30 PM: ICER truck with 4 Base 4 Top, C-truss, sound operator & flowers ready at Groom home.
-• 04:00 PM (Afternoon): Boy side leaves with Jaan to Katargam (1 km away from farm)!
-• 05:30 PM: Grand Entry event at Katargam venue.
-• 06:30 PM: Mandap ma besi javanu (sitting in Mandap) & Varmala.
-• 07:30 PM - 11:30 PM: Hastamelap, Phere, Kanyadaan & Wedding dinner feast.
-• 12:00 AM (Midnight): Lagan vidhi finishes around 12:00 AM -> Mandir e jay avanu (Couple visits temple together for blessings).`,
+    side: 'Both',
+    content: `• 08:00 AM – 10:00 AM: Bride & Groom get ready in parlour.
+• 10:00 AM – 12:00 PM: Dedicated photography & couple photoshoot.
+• 01:00 PM – 02:00 PM: Lunch at own house or together as couple.
+• 02:30 PM – 03:00 PM: Touch up for Groom at boy's house.
+• 03:00 PM – 03:30 PM: Departure vidhi for Groom at boy's house.
+• 03:30 PM – 04:00 PM: Travel to Katargam Jaan starting assembly point.
+• 04:00 PM – 04:30 PM: Jaan Kadhvani on ICER truck; reach marriage farm by 5:30 PM!
+• 05:30 PM – 06:30 PM: Welcoming & Pokhvanu rituals for boy and girl together.
+• 06:30 PM – 07:30 PM: Varmala & Kanya Agaman into the wedding mandap.
+• 06:30 PM – 09:30 PM: Meman badha jamanvar (guest wedding dinner feast).
+• 07:30 PM – 09:30 PM: Sacred Lagan process (Hastamelap, Kanyadaan, then sacred Phera).
+• 09:30 PM – 10:00 PM: Dinner break for newlywed couple.
+• 10:00 PM – 10:30 PM: Special farewell rituals & blessings for Bride by girl's family.
+• 10:30 PM: Viday of Bride to Groom's home!
+• 11:00 PM: Mandir Darshan (couple visits holy temple together for blessings).
+• 11:30 PM – 12:00 AM: Marriage couple welcoming vidhi (Gruh Pravesh) at groom's house.`,
     pinned: true,
-    tags: ['21 Feb', '4 PM Jaan', 'Katargam', 'Lagan', 'Mandir'],
-    updatedAt: '2026-10-22'
+    tags: ['21 Feb', 'Wedding Day', 'Jaan', 'Lagan', 'Viday', 'Mandir', 'Gruh Pravesh'],
+    updatedAt: '2026-10-24'
   },
   {
     id: 'note-4',

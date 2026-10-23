@@ -293,7 +293,7 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
         <div className="p-4 rounded-2xl bg-purple-50/90 border border-purple-200/80 text-xs text-purple-900 flex items-start sm:items-center space-x-2.5 shadow-sm">
           <Clock className="w-4 h-4 text-purple-600 shrink-0 mt-0.5 sm:mt-0" />
           <span className="leading-relaxed">
-            <strong className="text-purple-950 font-bold">AFTERNOON JAAN & LAGAN PROTOCOL (21 Feb):</strong> <strong>04:00 PM Afternoon Jaan departure</strong> on ICER truck to Katargam (1 km from farm) • 5:30 PM Grand Entry • 6:30 PM Mandap ma besi javanu • Lagan completes around 12:00 AM midnight ➔ <strong>Newlywed couple visits holy temple (Mandir) together!</strong>
+            <strong className="text-purple-950 font-bold">WEDDING DAY RUNSHEET (21 Feb):</strong> 8–10 AM Parlour • 10 AM–12 PM Photography • 1–2 PM Lunch • 2:30 PM Boy Touch-up • 3 PM Boy Home Vidhi • <strong>4:00 PM Jaan Kadhvani (Reach Farm by 5:30 PM)</strong> • 5:30 PM Welcoming Rituals • 6:30 PM Varmala • 6:30–9:30 PM Guest Jamanvar • <strong>7:30–9:30 PM Lagan (Hastamelap, Kanyadaan, Phera)</strong> • 9:30 PM Couple Dinner • 10 PM Girl Vidhi • <strong>10:30 PM Viday</strong> • <strong>11:00 PM Mandir Darshan</strong> • 11:30 PM Marriage Couple Gruh Pravesh Vidhi.
           </span>
         </div>
       )}
