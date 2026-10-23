@@ -47,11 +47,12 @@ export const App: React.FC = () => {
 
   // Load state from localStorage with smart migration preserving completed checkmarks
   const [tasks, setTasks] = useState<Task[]>(() => {
-    const v5 = loadFromStorage<Task[] | null>('vivah_tasks_v5', null);
-    if (v5 && v5.length > 0) return v5;
+    const v6 = loadFromStorage<Task[] | null>('vivah_tasks_v6', null);
+    if (v6 && v6.length > 0) return v6;
 
-    // Migrate from v4 preserving completed checkmarks
-    const stored = loadFromStorage<Task[]>('vivah_tasks_v4', []);
+    // Migrate from v5/v4 preserving completed checkmarks
+    const v5 = loadFromStorage<Task[] | null>('vivah_tasks_v5', null);
+    const stored = (v5 && v5.length > 0) ? v5 : loadFromStorage<Task[]>('vivah_tasks_v4', []);
     if (!stored || stored.length === 0) return INITIAL_TASKS;
 
     const completedIds = new Set(stored.filter(t => t.completed).map(t => t.id));
@@ -63,13 +64,15 @@ export const App: React.FC = () => {
 
     const merged = INITIAL_TASKS.map(task => ({
       ...task,
-      completed: completedIds.has(task.id) || completedTitles.has(task.title.toLowerCase().trim())
+      completed: completedIds.has(task.id) || completedTitles.has(task.title.toLowerCase().trim()) || task.completed
     }));
 
     return [...merged, ...customTasks];
   });
 
   const [rentals, setRentals] = useState<RentalItem[]>(() => {
+    const v6 = loadFromStorage<RentalItem[] | null>('vivah_rentals_v6', null);
+    if (v6 && v6.length > 0) return v6;
     const v5 = loadFromStorage<RentalItem[] | null>('vivah_rentals_v5', null);
     if (v5 && v5.length > 0) return v5;
     const v4 = loadFromStorage<RentalItem[] | null>('vivah_rentals_v4', null);
@@ -77,30 +80,40 @@ export const App: React.FC = () => {
   });
 
   const [dresses, setDresses] = useState<DressItem[]>(() => {
+    const v6 = loadFromStorage<DressItem[] | null>('vivah_dresses_v6', null);
+    if (v6 && v6.length > 0) return v6;
     const v5 = loadFromStorage<DressItem[] | null>('vivah_dresses_v5', null);
-    if (v5 && v5.length > 0) return v5;
-    const v4 = loadFromStorage<DressItem[] | null>('vivah_dresses_v4', null);
-    return v4 && v4.length > 0 ? v4 : INITIAL_DRESSES;
+    if (v5 && v5.length > 0) {
+      const v5Ids = new Set(v5.map(d => d.id));
+      const newDresses = INITIAL_DRESSES.filter(d => !v5Ids.has(d.id));
+      const updatedV5 = v5.map(d => {
+        const fresh = INITIAL_DRESSES.find(init => init.id === d.id);
+        if (fresh && d.date.includes('Feb 18') && fresh.date.includes('Feb 15')) {
+          return { ...d, date: fresh.date, event: fresh.event, notes: fresh.notes };
+        }
+        return d;
+      });
+      return [...updatedV5, ...newDresses];
+    }
+    return INITIAL_DRESSES;
   });
 
   const [days, setDays] = useState<EventDaySchedule[]>(() => {
-    const v5 = loadFromStorage<EventDaySchedule[] | null>('vivah_days_v5', null);
-    if (v5 && v5.length > 0) return v5;
+    const v6 = loadFromStorage<EventDaySchedule[] | null>('vivah_days_v6', null);
+    if (v6 && v6.length >= 7) return v6;
     return INITIAL_DAY_SCHEDULES;
   });
 
   const [decisions, setDecisions] = useState<DecisionPoint[]>(() => {
-    const v5 = loadFromStorage<DecisionPoint[] | null>('vivah_decisions_v5', null);
-    if (v5 && v5.length > 0) return v5;
-    const v4 = loadFromStorage<DecisionPoint[] | null>('vivah_decisions_v4', null);
-    return v4 && v4.length > 0 ? v4 : INITIAL_DECISION_POINTS;
+    const v6 = loadFromStorage<DecisionPoint[] | null>('vivah_decisions_v6', null);
+    if (v6 && v6.length > 0) return v6;
+    return INITIAL_DECISION_POINTS;
   });
 
   const [notes, setNotes] = useState<PlanningNote[]>(() => {
-    const v5 = loadFromStorage<PlanningNote[] | null>('vivah_notes_v5', null);
-    if (v5 && v5.length > 0) return v5;
-    const v4 = loadFromStorage<PlanningNote[] | null>('vivah_notes_v4', null);
-    return v4 && v4.length > 0 ? v4 : INITIAL_NOTES;
+    const v6 = loadFromStorage<PlanningNote[] | null>('vivah_notes_v6', null);
+    if (v6 && v6.length > 0) return v6;
+    return INITIAL_NOTES;
   });
 
   const [weddingYear, setWeddingYear] = useState<number>(() => 
@@ -142,15 +155,34 @@ export const App: React.FC = () => {
 
   // LocalStorage Persistence
   useEffect(() => { 
+    saveToStorage('vivah_tasks_v6', tasks); 
     saveToStorage('vivah_tasks_v5', tasks); 
     saveToStorage('vivah_tasks_v4', tasks); 
   }, [tasks]);
-  useEffect(() => { saveToStorage('vivah_prewedding_v5', preWeddingPlan); }, [preWeddingPlan]);
-  useEffect(() => { saveToStorage('vivah_rentals_v5', rentals); }, [rentals]);
-  useEffect(() => { saveToStorage('vivah_dresses_v5', dresses); }, [dresses]);
-  useEffect(() => { saveToStorage('vivah_days_v5', days); }, [days]);
-  useEffect(() => { saveToStorage('vivah_decisions_v5', decisions); }, [decisions]);
-  useEffect(() => { saveToStorage('vivah_notes_v5', notes); }, [notes]);
+  useEffect(() => { 
+    saveToStorage('vivah_prewedding_v6', preWeddingPlan); 
+    saveToStorage('vivah_prewedding_v5', preWeddingPlan); 
+  }, [preWeddingPlan]);
+  useEffect(() => { 
+    saveToStorage('vivah_rentals_v6', rentals); 
+    saveToStorage('vivah_rentals_v5', rentals); 
+  }, [rentals]);
+  useEffect(() => { 
+    saveToStorage('vivah_dresses_v6', dresses); 
+    saveToStorage('vivah_dresses_v5', dresses); 
+  }, [dresses]);
+  useEffect(() => { 
+    saveToStorage('vivah_days_v6', days); 
+    saveToStorage('vivah_days_v5', days); 
+  }, [days]);
+  useEffect(() => { 
+    saveToStorage('vivah_decisions_v6', decisions); 
+    saveToStorage('vivah_decisions_v5', decisions); 
+  }, [decisions]);
+  useEffect(() => { 
+    saveToStorage('vivah_notes_v6', notes); 
+    saveToStorage('vivah_notes_v5', notes); 
+  }, [notes]);
   useEffect(() => { saveToStorage('vivah_year_v5', weddingYear); }, [weddingYear]);
   useEffect(() => { saveToStorage('vivah_side_v5', activeSide); }, [activeSide]);
 
@@ -268,6 +300,16 @@ export const App: React.FC = () => {
         };
       }
       return day;
+    }));
+  };
+
+  const handleReorderScheduleItems = (dayId: string, fromIndex: number, toIndex: number) => {
+    setDays(prev => prev.map(day => {
+      if (day.id !== dayId) return day;
+      const items = [...day.items];
+      const [moved] = items.splice(fromIndex, 1);
+      items.splice(toIndex, 0, moved);
+      return { ...day, items };
     }));
   };
 
@@ -480,6 +522,7 @@ export const App: React.FC = () => {
             onAddScheduleItem={handleAddScheduleItem}
             onEditScheduleItem={handleEditScheduleItem}
             onDeleteScheduleItem={handleDeleteScheduleItem}
+            onReorderScheduleItems={handleReorderScheduleItems}
           />
         )}
 
@@ -507,7 +550,7 @@ export const App: React.FC = () => {
         <div className="flex flex-wrap items-center justify-center gap-2">
           <span className="font-semibold text-slate-700">Wedding Operational Dashboard</span>
           <span>•</span>
-          <span>Surat & Bhavnagar (Feb 18–21, 2027)</span>
+          <span>Surat & Bhavnagar (Feb 15–21, 2027)</span>
           <span>•</span>
           <span>Auto-saved locally • Press ⌘K for command search</span>
         </div>

@@ -17,8 +17,8 @@ export const INITIAL_MILESTONES: MonthMilestone[] = [
   { id: 'nov-2026', name: 'November 2026', monthLabel: 'Nov 2026', timeframe: '3 Months to Go', badge: 'Nov 2026: Outfits & Makeup' },
   { id: 'dec-2026', name: 'December 2026', monthLabel: 'Dec 2026', timeframe: '2 Months to Go', badge: 'Dec 2026: Catering & Staff' },
   { id: 'jan-2027', name: 'January 2027', monthLabel: 'Jan 2027', timeframe: '1 Month to Go', badge: 'Jan 2027: Chab & Envelopes' },
-  { id: 'feb-prep', name: 'Feb 1 - 16, 2027', monthLabel: 'Feb 1-16', timeframe: 'Wedding Month Prep', badge: 'Feb 1-16: Final Fittings & ICER' },
-  { id: 'feb-days', name: 'Feb 18 - 21, 2027', monthLabel: 'Feb 18-21', timeframe: 'Wedding Days', badge: 'Event Days: Randel, Mandvo, Garba & Jaan' }
+  { id: 'feb-prep', name: 'Feb 1 - 14, 2027', monthLabel: 'Feb 1-14', timeframe: 'Wedding Month Prep', badge: 'Feb 1-14: Final Fittings & ICER' },
+  { id: 'feb-days', name: 'Feb 15 - 21, 2027', monthLabel: 'Feb 15-21', timeframe: 'Wedding Week', badge: 'Event Week: Feb 15-21 Celebrations' }
 ];
 
 export const INITIAL_TASKS: Task[] = [
@@ -65,7 +65,7 @@ export const INITIAL_TASKS: Task[] = [
     monthId: 'oct-2026', 
     completed: false, 
     priority: 'high',
-    notes: 'Direct from user notes: Photo graphy - find location (we find). Multi-day travel shoot, independent from Feb 18 home rituals.'
+    notes: 'Direct from user notes: Photo graphy - find location (we find). Multi-day travel shoot, independent from Feb 15 home rituals.'
   },
   { 
     id: 't-oct-4b', 
@@ -330,14 +330,14 @@ export const INITIAL_TASKS: Task[] = [
   },
   { 
     id: 't-feb-3', 
-    title: 'Girl side: Confirm Gor Maharaj exact date for Lagan Lakhan (17 or 18 Feb)', 
+    title: 'Girl side: Gor Maharaj finalized Lagan Lakhan date (Feb 15, 2027)', 
     category: 'rituals', 
     assignedTo: 'Bride', 
     side: 'Girl',
     monthId: 'feb-prep', 
-    completed: false, 
+    completed: true, 
     priority: 'high',
-    notes: 'Direct from user notes: 17 or 18 Feb (girl wala jyare lagan lakhvanu decide kare ena gor maharaj pase che).'
+    notes: 'FINALIZED: Gor Maharaj confirmed Lagan Lakhan & Haldi on Feb 15, 2027!'
   },
   { 
     id: 't-feb-4', 
@@ -351,32 +351,32 @@ export const INITIAL_TASKS: Task[] = [
     notes: 'Direct from user notes: jamanvar (boy and girl nu hare che 6-6:30 PM).'
   },
 
-  // February 18 - 21, 2027 (Wedding Execution Days)
+  // February 15 - 21, 2027 (Wedding Execution Days)
   { 
     id: 't-day-1', 
-    title: 'Feb 18 08:00 AM: Randel Tedva at Groom home & welcome ~100 family guests', 
+    title: 'Feb 15 08:00 AM: Randel Tedva at Groom home & welcome ~100 family guests', 
     category: 'rituals', 
     assignedTo: 'Family', 
     side: 'Boy',
     monthId: 'feb-days', 
     completed: false, 
     priority: 'high',
-    notes: 'Direct from user notes: Sawar ma ran dal tedvana boy na ghare, Randel tedvanu: 8 AM.'
+    notes: 'Direct from user notes: Sawar ma ran dal tedvana boy na ghare, Randel tedvanu: 8 AM. Finalized for Feb 15.'
   },
   { 
     id: 't-day-2', 
-    title: 'Feb 18 10:00 AM: Gor Maharaj completes Lagan Lakhan at Bride house', 
+    title: 'Feb 15 10:00 AM: Gor Maharaj completes Lagan Lakhan at Bride house', 
     category: 'rituals', 
     assignedTo: 'Bride', 
     side: 'Girl',
     monthId: 'feb-days', 
     completed: false, 
     priority: 'high',
-    notes: 'Direct from user notes: Gor maharaj girl na ghare lagan lakhavanu patave around 10-11 AM.'
+    notes: 'Direct from user notes: Gor maharaj girl na ghare lagan lakhavanu patave around 10-11 AM on Feb 15.'
   },
   { 
     id: 't-day-3', 
-    title: 'Feb 18 11:00 AM: Bride brothers (5-6 people) deliver Lagan to Groom home; give shagun covers', 
+    title: 'Feb 15 11:00 AM: Bride brothers (5-6 people) deliver Lagan to Groom home; give shagun covers', 
     category: 'rituals', 
     assignedTo: 'Both', 
     side: 'Both',
@@ -387,7 +387,7 @@ export const INITIAL_TASKS: Task[] = [
   },
   { 
     id: 't-day-4', 
-    title: 'Feb 18 12:00 PM: Boy side Jamanvar lunch (~100 guests)', 
+    title: 'Feb 15 12:00 PM: Boy side Jamanvar lunch (~100 guests)', 
     category: 'catering', 
     assignedTo: 'Family', 
     side: 'Boy',
@@ -398,18 +398,18 @@ export const INITIAL_TASKS: Task[] = [
   },
   { 
     id: 't-day-5', 
-    title: 'Feb 18 04:00 PM: Haldi Rasam at Groom home & Groom visits Bride Mehndi for photos', 
+    title: 'Feb 15 04:00 PM: Haldi Rasam at Groom home (guests invited for 4 PM)', 
     category: 'rituals', 
-    assignedTo: 'Both', 
-    side: 'Both',
+    assignedTo: 'Groom', 
+    side: 'Boy',
     monthId: 'feb-days', 
     completed: false, 
     priority: 'high',
-    notes: 'Direct from user notes: Haldi Rasam : 4 Wage, meman ne 4 wage bolavana / Girls wala Mehndi Rakhe tya boy ne one two friends leine phota padva javanu.'
+    notes: 'Direct from user notes: Haldi Rasam : 4 Wage, meman ne 4 wage bolavana. Finalized for Feb 15.'
   },
   { 
     id: 't-day-6', 
-    title: 'Feb 18 06:00 PM: Evening Jamanvar (Dinner for guests, Bride side has more guests)', 
+    title: 'Feb 15 06:00 PM: Evening Jamanvar (Dinner for guests, Bride side has more guests)', 
     category: 'catering', 
     assignedTo: 'Family', 
     side: 'Both',
@@ -417,6 +417,72 @@ export const INITIAL_TASKS: Task[] = [
     completed: false, 
     priority: 'high',
     notes: 'Direct from user notes: Sanj Jamanvar : 6-7 Wage, girl side tyre meman pn vadhare hase.'
+  },
+  { 
+    id: 't-day-16', 
+    title: 'Feb 16 08:00 AM: Randal Tedva at Girl\'s house (8:00 - 9:00 AM, Girl side)', 
+    category: 'rituals', 
+    assignedTo: 'Bride', 
+    side: 'Girl',
+    monthId: 'feb-days', 
+    completed: false, 
+    priority: 'high',
+    notes: 'Auspicious Randal Tedva function at girl\'s house around 8-9 AM on 16th Feb 2027.'
+  },
+  { 
+    id: 't-day-17', 
+    title: 'Feb 17 04:00 PM: Vana Rasam at Girl\'s place (Groom called for rasam together & couple photoshoot)', 
+    category: 'rituals', 
+    assignedTo: 'Both', 
+    side: 'Both',
+    monthId: 'feb-days', 
+    completed: false, 
+    priority: 'high',
+    notes: 'Vana Rasam on 17th Feb at girl\'s place: boy is called for the rasam together and photosession.'
+  },
+  { 
+    id: 't-day-18', 
+    title: 'Feb 18 04:00 PM: Mehndi at Girl\'s place (Groom called for couple photosession)', 
+    category: 'rituals', 
+    assignedTo: 'Both', 
+    side: 'Both',
+    monthId: 'feb-days', 
+    completed: false, 
+    priority: 'high',
+    notes: 'Mehndi at girl\'s place on 18th Feb: boy will be called upon for photoshoot.'
+  },
+  { 
+    id: 't-day-19a', 
+    title: 'Feb 19 11:00 AM: Mameru Ceremony at Girl\'s house (Girl side only with Mama family)', 
+    category: 'rituals', 
+    assignedTo: 'Bride', 
+    side: 'Girl',
+    monthId: 'feb-days', 
+    completed: false, 
+    priority: 'high',
+    notes: 'Mameru on 19th Feb: only girl\'s side function with maternal uncle & family.'
+  },
+  { 
+    id: 't-day-19b', 
+    title: 'Feb 19 04:30 PM: Chab Giving by Boy\'s side (Boy side presents Chab items to Girl\'s side)', 
+    category: 'rituals', 
+    assignedTo: 'Both', 
+    side: 'Both',
+    monthId: 'feb-days', 
+    completed: false, 
+    priority: 'high',
+    notes: 'Boy\'s side is called on 19th Feb to present and give Chab gift items to girl\'s side.'
+  },
+  { 
+    id: 't-day-19c', 
+    title: 'Feb 19 09:00 PM: Sanji Na Geet at Girl\'s house (Girl side guests only)', 
+    category: 'rituals', 
+    assignedTo: 'Bride', 
+    side: 'Girl',
+    monthId: 'feb-days', 
+    completed: false, 
+    priority: 'high',
+    notes: 'Sanji na geet around 9:00 PM on 19th Feb with girl side guests only.'
   },
   { 
     id: 't-day-7', 
@@ -557,9 +623,9 @@ export const INITIAL_RENTALS: RentalItem[] = [
     item: 'Haldi Sound Rig (2 Base, 2 Top + 1 Operator)',
     vendor: 'Dhaval Jajenwala',
     contactPerson: 'Dhaval Jajenwala',
-    pickupDate: '2027-02-18',
+    pickupDate: '2027-02-15',
     pickupTime: '03:30 PM',
-    dropDate: '2027-02-18',
+    dropDate: '2027-02-15',
     dropTime: '08:00 PM',
     pickupLocation: 'Groom Residence Courtyard',
     totalCost: 4000,
@@ -567,7 +633,7 @@ export const INITIAL_RENTALS: RentalItem[] = [
     securityDeposit: 0,
     status: 'Reserved',
     side: 'Boy',
-    notes: 'Direct from user notes: Haldi: 2 base 2 top. Rate 4000. One operator for sound. Haldi starts at 4 PM.'
+    notes: 'Direct from user notes: Haldi: 2 base 2 top. Rate 4000. One operator for sound. Haldi starts at 4 PM on Feb 15.'
   },
   {
     id: 'rent-5',
@@ -625,7 +691,7 @@ export const INITIAL_DRESSES: DressItem[] = [
   {
     id: 'dr-1',
     event: 'Randel & Lagan-Lakhan Arrival',
-    date: 'Feb 18, 2027 Morning',
+    date: 'Feb 15, 2027 Morning',
     person: 'Groom',
     garmentName: 'Traditional Cotton Kurta Pajama',
     colorTheme: 'Traditional auspicious',
@@ -633,7 +699,7 @@ export const INITIAL_DRESSES: DressItem[] = [
     status: 'To Buy',
     costEstimated: 0,
     advancePaid: 0,
-    notes: 'Direct from user notes: Sawar ma ran dal tedvana boy na ghare, 18 feb event.'
+    notes: 'Direct from user notes: Sawar ma ran dal tedvana boy na ghare, 15 feb event.'
   },
   {
     id: 'dr-2',
@@ -650,8 +716,8 @@ export const INITIAL_DRESSES: DressItem[] = [
   },
   {
     id: 'dr-3',
-    event: 'Haldi Rasam & Photo Visit to Mehndi',
-    date: 'Feb 18, 2027 04:00 PM',
+    event: 'Haldi Rasam (Groom\'s Side)',
+    date: 'Feb 15, 2027 04:00 PM',
     person: 'Groom',
     garmentName: 'Haldi Kurta Pajama',
     colorTheme: 'Blue / White / Lavender theme',
@@ -660,6 +726,45 @@ export const INITIAL_DRESSES: DressItem[] = [
     costEstimated: 0,
     advancePaid: 0,
     notes: 'Direct from user notes: Haldi Rasam 4 Wage, kurta payjama, blue theme, white, lavender.'
+  },
+  {
+    id: 'dr-3b',
+    event: 'Vana Rasam & Couple Photosession',
+    date: 'Feb 17, 2027 04:00 PM',
+    person: 'Groom',
+    garmentName: 'Traditional Kurta Pajama / Indo-Western',
+    colorTheme: 'Festive ceremonial shade',
+    action: 'Buy',
+    status: 'To Buy',
+    costEstimated: 0,
+    advancePaid: 0,
+    notes: 'Vana Rasam at Girl\'s place on Feb 17: boy is called for rasam together and photosession.'
+  },
+  {
+    id: 'dr-3c',
+    event: 'Mehndi Couple Photoshoot Visit',
+    date: 'Feb 18, 2027 04:00 PM',
+    person: 'Groom',
+    garmentName: 'Kurta Pajama / Stylish Nehru Jacket',
+    colorTheme: 'Matching mehndi aesthetic',
+    action: 'Buy',
+    status: 'To Buy',
+    costEstimated: 0,
+    advancePaid: 0,
+    notes: 'Mehndi at girl\'s place on Feb 18: boy called upon with 1-2 friends for photoshoot.'
+  },
+  {
+    id: 'dr-3d',
+    event: 'Chab Giving by Boy\'s Side',
+    date: 'Feb 19, 2027 04:30 PM',
+    person: 'Groom',
+    garmentName: 'Formal / Traditional Attire',
+    colorTheme: 'Traditional formal',
+    action: 'Tailor / Stitch',
+    status: 'To Buy',
+    costEstimated: 0,
+    advancePaid: 0,
+    notes: 'Boy\'s side presents and gifts decorated Chab hampers to Girl\'s side.'
   },
   {
     id: 'dr-4',
@@ -705,20 +810,46 @@ export const INITIAL_DRESSES: DressItem[] = [
   {
     id: 'dr-7',
     event: 'Lagan-Lakhan at Girl\'s Home',
-    date: 'Feb 18, 2027 10:00 AM',
+    date: 'Feb 15, 2027 10:00 AM',
     person: 'Bride',
     garmentName: 'Traditional Ceremony Saree / Outfit',
-    colorTheme: 'Traditional auspicious',
+    colorTheme: 'Traditional auspicious Bandhani',
     action: 'Buy',
     status: 'To Buy',
     costEstimated: 0,
     advancePaid: 0,
-    notes: 'Direct from user notes: Gor maharaj girl na ghare lagan lakhavanu patave around 10-11 AM.'
+    notes: 'Direct from user notes: Gor maharaj girl na ghare lagan lakhavanu patave around 10-11 AM on Feb 15.'
+  },
+  {
+    id: 'dr-7b',
+    event: 'Randal Tedva at Girl\'s House',
+    date: 'Feb 16, 2027 08:00 AM',
+    person: 'Bride',
+    garmentName: 'Auspicious Saree / Bandhani',
+    colorTheme: 'Red / Auspicious Yellow / Green',
+    action: 'Buy',
+    status: 'To Buy',
+    costEstimated: 0,
+    advancePaid: 0,
+    notes: 'Auspicious Randal Tedva at Bride\'s house on Feb 16 from 8:00 AM - 9:00 AM.'
+  },
+  {
+    id: 'dr-7c',
+    event: 'Vana Rasam & Couple Photosession',
+    date: 'Feb 17, 2027 04:00 PM',
+    person: 'Bride',
+    garmentName: 'Vana Ceremony Traditional Saree',
+    colorTheme: 'Ceremonial auspicious shade',
+    action: 'Buy',
+    status: 'To Buy',
+    costEstimated: 0,
+    advancePaid: 0,
+    notes: 'Vana Rasam on Feb 17: Groom called for rasam together and couple photosession.'
   },
   {
     id: 'dr-8',
     event: 'Mehndi Rasam & Couple Photoshoot',
-    date: 'Feb 18, 2027 04:30 PM',
+    date: 'Feb 18, 2027 04:00 PM',
     person: 'Bride',
     garmentName: 'Mehndi Outfit',
     colorTheme: 'Green / Festive bright',
@@ -726,20 +857,33 @@ export const INITIAL_DRESSES: DressItem[] = [
     status: 'To Buy',
     costEstimated: 0,
     advancePaid: 0,
-    notes: 'Direct from user notes: Girls wala Mehndi Rakhe tya boy ne one two friends leine phota padva javanu.'
+    notes: 'Direct from user notes: Mehndi at Girl\'s place on Feb 18; Groom called upon for photoshoot.'
   },
   {
-    id: 'dr-9',
-    event: 'Haldi Rasam',
-    date: 'Feb 18, 2027',
+    id: 'dr-9b',
+    event: 'Mameru Ceremony',
+    date: 'Feb 19, 2027 11:00 AM',
     person: 'Bride',
-    garmentName: 'Haldi Outfit',
-    colorTheme: 'Yellow / Lavender / White theme',
+    garmentName: 'Mameru Auspicious Saree / Silk',
+    colorTheme: 'Traditional Mameru shade (gifted by Mama)',
     action: 'Buy',
     status: 'To Buy',
     costEstimated: 0,
     advancePaid: 0,
-    notes: 'Match Blue/White/Lavender palette.'
+    notes: 'Feb 19 Mameru ceremony: Girl side function only with maternal uncle Mama & family.'
+  },
+  {
+    id: 'dr-9c',
+    event: 'Sanji Na Geet Night',
+    date: 'Feb 19, 2027 09:00 PM',
+    person: 'Bride',
+    garmentName: 'Festive Saree / Lehenga',
+    colorTheme: 'Evening festive',
+    action: 'Buy',
+    status: 'To Buy',
+    costEstimated: 0,
+    advancePaid: 0,
+    notes: 'Feb 19 Sanji na geet at Girl\'s house around 9:00 PM with girl side guests only.'
   },
   {
     id: 'dr-10',
@@ -784,14 +928,14 @@ export const INITIAL_DRESSES: DressItem[] = [
 
 export const INITIAL_DAY_SCHEDULES: EventDaySchedule[] = [
   {
-    id: 'feb-18',
-    dateString: '2027-02-18',
-    dayName: 'Thursday / 18 Feb (17 or 18 Feb)',
+    id: 'feb-15',
+    dateString: '2027-02-15',
+    dayName: 'Monday / 15 Feb',
     title: 'Lagan Lakhan, Haldi & Home Rituals',
     location: 'Groom & Bride Respective Homes',
     items: [
       {
-        id: 's-18-1',
+        id: 's-15-1',
         time: '08:00 AM',
         title: 'Randel Tedva (Groom Home)',
         gujaratiTitle: 'સવારમાં રાંદલ તેડવા (છોકરાના ઘરે - ૮ વાગે)',
@@ -801,7 +945,7 @@ export const INITIAL_DAY_SCHEDULES: EventDaySchedule[] = [
         outfitGroom: 'Traditional Cotton Kurta'
       },
       {
-        id: 's-18-2',
+        id: 's-15-2',
         time: '10:00 AM – 11:00 AM',
         title: 'Lagan Lakhavanu (Bride Home with Gor Maharaj)',
         gujaratiTitle: 'લગ્ન લખાણ (દીકરીના ઘરે ગોર મહારાજ સાથે - ૧૦ થી ૧૧ વાગે)',
@@ -811,7 +955,7 @@ export const INITIAL_DAY_SCHEDULES: EventDaySchedule[] = [
         outfitBride: 'Traditional Bandhani'
       },
       {
-        id: 's-18-3',
+        id: 's-15-3',
         time: '11:00 AM – 12:00 PM',
         title: 'Lagan Delivery to Groom Home (Bride\'s Brothers)',
         gujaratiTitle: 'લગ્ન લઈને આવવું (દીકરીના ભાઈઓ ૫-૬ જણા સામાન લઈને આવે, છોકરા પક્ષે ~૧૦૦ હાજર)',
@@ -820,7 +964,7 @@ export const INITIAL_DAY_SCHEDULES: EventDaySchedule[] = [
         side: 'Both'
       },
       {
-        id: 's-18-4',
+        id: 's-15-4',
         time: '12:00 PM – 01:00 PM',
         title: 'Boy Side Lunch Feast (Jamanvar)',
         gujaratiTitle: 'બપોરે જમણવાર (૧૨ થી ૧ વાગે - ૧૦૦ મહેમાન)',
@@ -829,7 +973,7 @@ export const INITIAL_DAY_SCHEDULES: EventDaySchedule[] = [
         side: 'Boy'
       },
       {
-        id: 's-18-5',
+        id: 's-15-5',
         time: '04:00 PM',
         title: 'Haldi Rasam (Groom\'s Side)',
         gujaratiTitle: 'હળદી રસમ (૪ વાગે મહેમાનોને બોલાવવા)',
@@ -840,17 +984,7 @@ export const INITIAL_DAY_SCHEDULES: EventDaySchedule[] = [
         soundRig: '2 Base, 2 Top sound setup'
       },
       {
-        id: 's-18-6',
-        time: '04:30 PM – 05:30 PM',
-        title: 'Mehndi Rasam & Groom Photo Visit',
-        gujaratiTitle: 'મહેંદી રસમ અને ફોટોશૂટ (છોકરો ૧-૨ મિત્રો સાથે ફોટા પડાવવા જાય ને પાછો આવે)',
-        location: 'Bride Residence / Mehndi Lawn',
-        actionNotes: 'Bride side holds Mehndi. Groom visits with 1-2 close friends for couple photoshoot, clicks portraits, and returns back.',
-        side: 'Both',
-        urgentRule: 'Groom visits with 1-2 friends for photoshoot at Bride\'s venue, then returns for dinner!'
-      },
-      {
-        id: 's-18-7',
+        id: 's-15-6',
         time: '06:00 PM – 07:00 PM',
         title: 'Evening Jamanvar (Dinner for Both Sides)',
         gujaratiTitle: 'સાંજનો જમણવાર (૬ થી ૭ વાગે - દીકરી પક્ષે મહેમાન વધારે હશે)',
@@ -861,10 +995,112 @@ export const INITIAL_DAY_SCHEDULES: EventDaySchedule[] = [
     ]
   },
   {
+    id: 'feb-16',
+    dateString: '2027-02-16',
+    dayName: 'Tuesday / 16 Feb',
+    title: 'Randal Tedva at Girl\'s House',
+    location: 'Bride Residence',
+    items: [
+      {
+        id: 's-16-1',
+        time: '08:00 AM – 09:00 AM',
+        title: 'Randal Tedva (Girl\'s House)',
+        gujaratiTitle: 'રાંદલ તેડવા (દીકરીના ઘરે - સવારે ૮ થી ૯ વાગે)',
+        location: 'Bride Residence',
+        actionNotes: 'Auspicious Randal sthapana and invocation ceremony at Bride\'s residence in the morning (8:00–9:00 AM) with girl side family and relatives.',
+        side: 'Girl',
+        outfitBride: 'Auspicious Saree / Bandhani',
+        urgentRule: 'Randal Tedva at Girl\'s house scheduled for 8:00 AM – 9:00 AM!'
+      }
+    ]
+  },
+  {
+    id: 'feb-17',
+    dateString: '2027-02-17',
+    dayName: 'Wednesday / 17 Feb',
+    title: 'Vana Rasam & Couple Photosession',
+    location: 'Bride Residence',
+    items: [
+      {
+        id: 's-17-1',
+        time: '04:00 PM – 06:30 PM',
+        title: 'Vana Rasam & Couple Photosession',
+        gujaratiTitle: 'વાણા રસમ અને ફોટોસેશન (દીકરીના ઘરે - છોકરાને સાથે રસમ અને ફોટા માટે બોલાવવો)',
+        location: 'Bride Residence',
+        actionNotes: 'Traditional Vana Rasam celebrated at Girl\'s place. Groom is called upon to participate in the sacred rasam together with the Bride, followed by a dedicated couple photoshoot.',
+        side: 'Both',
+        outfitGroom: 'Traditional Kurta Pajama',
+        outfitBride: 'Ceremony Attire / Saree',
+        urgentRule: 'Groom is invited to Girl\'s place for Vana Rasam together & couple photoshoot!'
+      }
+    ]
+  },
+  {
+    id: 'feb-18',
+    dateString: '2027-02-18',
+    dayName: 'Thursday / 18 Feb',
+    title: 'Mehndi Rasam at Girl\'s House',
+    location: 'Bride Residence / Lawn',
+    items: [
+      {
+        id: 's-18-1',
+        time: '04:00 PM – 07:30 PM',
+        title: 'Mehndi Rasam & Groom Photosession',
+        gujaratiTitle: 'મહેંદી રસમ અને કપલ ફોટોસેશન (દીકરીના ઘરે - છોકરાને ફોટા માટે બોલાવવો)',
+        location: 'Bride Residence / Lawn',
+        actionNotes: 'Festive Mehndi celebration held at Girl\'s place. Groom is called upon with 1-2 close friends for a couple photoshoot with the Bride in her mehndi outfit.',
+        side: 'Both',
+        outfitBride: 'Green / Festive Mehndi Outfit',
+        outfitGroom: 'Kurta Pajama / Indo-Western',
+        urgentRule: 'Groom invited to Girl\'s place for couple photoshoot during Mehndi!'
+      }
+    ]
+  },
+  {
+    id: 'feb-19',
+    dateString: '2027-02-19',
+    dayName: 'Friday / 19 Feb',
+    title: 'Mameru, Chab Giving & Sanji Na Geet',
+    location: 'Bride Residence',
+    items: [
+      {
+        id: 's-19-1',
+        time: '11:00 AM – 01:30 PM',
+        title: 'Mameru Ceremony (Girl\'s Side Only)',
+        gujaratiTitle: 'મામેરું (દીકરીના ઘરે - ફક્ત દીકરી પક્ષનો પ્રસંગ, મામા પક્ષ તરફથી શુકન)',
+        location: 'Bride Residence',
+        actionNotes: 'Traditional Mameru ceremony hosted exclusively by Bride\'s maternal uncle (Mama) and maternal relatives with auspicious gifts, clothes, and jewellery. Strictly girl\'s side function.',
+        side: 'Girl',
+        outfitBride: 'Mameru Traditional Saree'
+      },
+      {
+        id: 's-19-2',
+        time: '04:30 PM – 06:00 PM',
+        title: 'Chab Giving by Boy\'s Side',
+        gujaratiTitle: 'છાબ આપવી (છોકરા પક્ષ દ્વારા દીકરીના ઘરે છાબ-સામાન આપવો)',
+        location: 'Bride Residence',
+        actionNotes: 'Groom\'s family is invited to present and gift the auspicious \'Chab\' (decorated gift hampers containing wedding clothes, cosmetics, dry fruits, sweets, and ceremonial items) to the Bride\'s family.',
+        side: 'Both',
+        outfitGroom: 'Formal / Traditional Attire',
+        urgentRule: 'Boy\'s side presents and gifts Chab items to Girl\'s family!'
+      },
+      {
+        id: 's-19-3',
+        time: '09:00 PM – 11:30 PM',
+        title: 'Sanji Na Geet (Girl\'s Side Guests Only)',
+        gujaratiTitle: 'સાંજીના ગીત (રાત્રે ૯ વાગે - ફક્ત દીકરી પક્ષના મહેમાનો સાથે)',
+        location: 'Bride Residence',
+        actionNotes: 'Around 9:00 PM, Girl\'s side hosts traditional Gujarati wedding song night (Sanji na geet / Fatana) celebrating with family, women, and girl\'s side guests only.',
+        side: 'Girl',
+        urgentRule: 'Sanji na geet starts at 9:00 PM at Girl\'s house with girl side guests only!'
+      }
+    ]
+  },
+  {
     id: 'feb-20',
     dateString: '2027-02-20',
     dayName: 'Saturday / 20 Feb',
-    title: 'Day 1: Parlour, Mandvo, Joint Dinner & Garba',
+    title: 'Mandvo, Joint Dinner & Raas Garba',
     location: 'Silver Farm, Surat',
     items: [
       {
@@ -960,7 +1196,7 @@ export const INITIAL_DAY_SCHEDULES: EventDaySchedule[] = [
     id: 'feb-21',
     dateString: '2027-02-21',
     dayName: 'Sunday / 21 Feb',
-    title: 'Day 2: 4 PM Jaan to Katargam, Mandap, Lagan & Mandir',
+    title: 'Afternoon Jaan to Katargam, Lagan & Mandir',
     location: 'Katargam Venue (1 km from Farm)',
     items: [
       {
@@ -1057,10 +1293,10 @@ export const INITIAL_DECISION_POINTS: DecisionPoint[] = [
   },
   {
     id: 'dec-3',
-    question: 'Girl side: Confirm Gor Maharaj decision date for Lagan Lakhan (17 or 18 Feb)?',
-    options: ['17 February', '18 February'],
-    status: 'Pending',
-    decision: '',
+    question: 'Girl side: Confirm Gor Maharaj decision date for Lagan Lakhan?',
+    options: ['15 February (Finalized)', '17 February', '18 February'],
+    status: 'Decided',
+    decision: '15 February 2027 (Finalized)',
     side: 'Girl'
   },
   {
@@ -1119,20 +1355,33 @@ export const INITIAL_NOTES: PlanningNote[] = [
   },
   {
     id: 'note-1',
-    title: '17/18 Feb Home Rituals: Randel, Lagan Lakhan, Haldi & Mehndi',
+    title: 'Feb 15–19 Finalized Home Rituals & Events Schedule',
     category: 'Rituals & Traditions',
     side: 'Both',
-    content: `• Date: 17 or 18 Feb (Gor Maharaj at Girl's house decides exact date):
-• 08:00 AM: Randel Tedva at Boy's house in morning.
-• 10:00 - 11:00 AM: Gor Maharaj finishes Lagan Lakhan writing at Girl's house.
-• 11:00 AM - 12:00 PM: Girl's brothers (5-6 people) bring Lagan and ritual saman to Boy's house. Boy side has around 100 family members present. Give shagun covers and send brothers back.
-• 12:00 - 01:00 PM: Boy side Jamanvar lunch served to ~100 guests at home.
-• 04:00 PM: Haldi Rasam for Groom (guests invited for 4:00 PM).
-• 04:30 - 05:30 PM: Girl side hosts Mehndi. Groom visits with 1-2 friends for couple photoshoot, clicks portraits, and returns back.
-• 06:00 - 07:00 PM: Evening Jamanvar dinner for guests (Girl side will have more guests present).`,
+    content: `• Feb 15 (Finalized): Lagan Lakhan & Haldi
+  - 08:00 AM: Randel Tedva at Groom's home.
+  - 10:00 - 11:00 AM: Gor Maharaj completes Lagan Lakhan writing at Bride's home.
+  - 11:00 AM - 12:00 PM: Bride's brothers (5-6 people) deliver Lagan and ritual saman to Groom's home (~100 present). Give shagun covers and hospitality.
+  - 12:00 - 01:00 PM: Groom side lunch Jamanvar (~100 guests).
+  - 04:00 PM: Haldi Rasam for Groom (guests invited for 4:00 PM).
+  - 06:00 - 07:00 PM: Evening Jamanvar dinner (Bride side has larger guest gathering).
+
+• Feb 16: Randal Tedva at Girl's House
+  - 08:00 - 09:00 AM: Auspicious Randal Tedva invocation puja at Bride's home (Girl side only).
+
+• Feb 17: Vana Rasam at Girl's House
+  - 04:00 PM: Vana Rasam rituals at Girl's place. Groom is called upon for the rasam together and dedicated couple photosession!
+
+• Feb 18: Mehndi Rasam at Girl's House
+  - 04:00 PM: Festive Mehndi at Girl's place. Groom is called upon with 1-2 friends for couple photosession.
+
+• Feb 19: Mameru, Chab Giving & Sanji Na Geet
+  - 11:00 AM - 01:30 PM: Mameru ceremony at Bride's house (Girl side only with maternal uncle Mama & family).
+  - 04:30 PM: Chab Giving by Boy's side. Groom's family presents decorated Chab gift hampers to Bride's family.
+  - 09:00 PM: Sanji Na Geet night at Girl's house (Girl side guests only).`,
     pinned: true,
-    tags: ['18 Feb', 'Randel', 'Lagan Lakhan', 'Haldi', 'Mehndi'],
-    updatedAt: '2026-10-22'
+    tags: ['15 Feb', '16 Feb', '17 Feb', '18 Feb', '19 Feb', 'Randel', 'Vana', 'Mehndi', 'Mameru', 'Chab', 'Sanji'],
+    updatedAt: '2026-10-23'
   },
   {
     id: 'note-2',
@@ -1170,7 +1419,7 @@ export const INITIAL_NOTES: PlanningNote[] = [
     title: 'Sound System Rig, DJ & Lighting (Dhaval Jajenwala & Silver Farm)',
     category: 'Sound & Technical',
     side: 'Boy',
-    content: `• Haldi (Feb 18, 4 PM): 2 Base, 2 Top. Rate ₹4,000 with 1 sound operator.
+    content: `• Haldi (Feb 15, 4 PM): 2 Base, 2 Top. Rate ₹4,000 with 1 sound operator.
 • Sangeet / Garba Night (Feb 20, 8 PM): Rate ₹24,000. 6 Base, 6 Top, 16 LED small round lights, 6 Safi (white floodlights), 4 battle top lights. 1 sound operator + 1 lighting operator.
 • Truss & Structure: 40ft length C-truss structure + top square ring. 6 Base 6 Top is plenty of punch for 500–800 guests at Silver Farm.
 • Police 10 PM Curfew: Turn down high decibel sound at 10:00 PM if police comes, else till 12:00 AM.
@@ -1179,21 +1428,25 @@ export const INITIAL_NOTES: PlanningNote[] = [
 • Generator: Available on rent. Get vendor contact number directly from Dhaval Jajenwala.`,
     pinned: false,
     tags: ['Dhaval Jajenwala', 'DJ', 'Truss', 'ICER'],
-    updatedAt: '2026-10-22'
+    updatedAt: '2026-10-23'
   },
   {
     id: 'note-5',
     title: 'Two-Sided Coordination (Boy\'s Side & Girl\'s Side Tracking)',
     category: 'Family & Fiance',
     side: 'Both',
-    content: `• Groom & Bride Joint Workflow:
+    content: `• Groom & Bride Joint Workflow (Feb 15–21, 2027):
   - Both partners track preparations collaboratively using the "Boy's Side" and "Girl's Side" switcher.
-  - Boy side tracks: Randel (8 AM), Lagan reception (~100 guests), Boy Haldi (4 PM), 4 PM Jaan to Katargam.
-  - Girl side tracks: Gor Maharaj Lagan Lakhan (10-11 AM), brothers sending Lagan, Parlour (11 AM), Mehndi (4 PM), Mandap.
-  - Joint coordination: Feb 20 Mandvo at 2 PM, Joint Jamanvar (dinner together at 6 PM), Raas Garba (8 PM), 12 AM temple visit.`,
+  - Feb 15 (Finalized): Randel at Groom home (8 AM), Gor Maharaj Lagan Lakhan at Bride home (10-11 AM), brothers deliver Lagan to Groom home (~100 present), Boy Lunch (12 PM), Boy Haldi (4 PM), Evening Jamanvar.
+  - Feb 16: Randal Tedva at Girl's house (8:00–9:00 AM, Girl side).
+  - Feb 17: Vana Rasam at Girl's place (Groom called for rasam together & couple photoshoot).
+  - Feb 18: Mehndi at Girl's place (Groom called for couple photoshoot).
+  - Feb 19: Mameru (11 AM, Girl side only), Chab Giving by Boy's side (4:30 PM), Sanji Na Geet (9 PM, Girl side only).
+  - Feb 20: Bride Parlour (11 AM), Mandvo at 2 PM, Joint Jamanvar (dinner together at 6:00–6:30 PM), Raas Garba (8 PM till midnight).
+  - Feb 21: Afternoon Jaan departure on ICER truck at 4:00 PM sharp to Katargam, 5:30 PM Entry, 6:30 PM Mandap, 12 AM midnight lagan finish & holy Mandir visit.`,
     pinned: true,
     tags: ['Boy Side', 'Girl Side', 'Fiance Coordination'],
-    updatedAt: '2026-10-22'
+    updatedAt: '2026-10-23'
   }
 ];
 
@@ -1347,7 +1600,7 @@ export const NATIONAL_PREWEDDING_PRESET: PreWeddingTripPlan = {
       notes: 'Hand over file to Dhaval Jajenwala\'s LED wall operator at Silver Farm!'
     }
   ],
-  notes: 'Pre-wedding shoot is an independent multi-day trip planned for Nov/Dec 2026. Totally distinct from Feb 18 home rituals (Randel, Lagan Lakhan, Haldi & Mehndi).'
+  notes: 'Pre-wedding shoot is an independent multi-day trip planned for Nov/Dec 2026. Totally distinct from Feb 15 home rituals (Randel, Lagan Lakhan, Haldi & Mehndi).'
 };
 
 export const INTERNATIONAL_PREWEDDING_PRESET: PreWeddingTripPlan = {

@@ -169,7 +169,7 @@ export const PreWeddingPlanner: React.FC<PreWeddingPlannerProps> = ({
               Pre-Wedding Photography & Cinematography Planner
             </h1>
             <p className="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
-              <strong>Notice:</strong> This couple photoshoot trip is an entirely separate multi-day travel project (2–3 days national or 1 week international), distinct from the Feb 18 home rituals (Randel, Lagan Lakhan, Haldi & Mehndi).
+              <strong>Notice:</strong> This couple photoshoot trip is an entirely separate multi-day travel project (2–3 days national or 1 week international), distinct from the Feb 15 home rituals (Randel, Lagan Lakhan, Haldi & Mehndi).
             </p>
           </div>
 

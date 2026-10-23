@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { 
   Clock, 
   MapPin, 
@@ -8,7 +8,9 @@ import {
   Plus, 
   Edit3, 
   Trash2,
-  Users
+  ChevronUp,
+  ChevronDown,
+  GripVertical
 } from 'lucide-react';
 import { EventDaySchedule, ScheduleEvent, WeddingSide, EventSide } from '../types/wedding';
 import { EditableText } from './EditableText';
@@ -19,6 +21,7 @@ interface EventItineraryProps {
   onAddScheduleItem: (dayId: string, item: ScheduleEvent) => void;
   onEditScheduleItem: (dayId: string, itemId: string, updates: Partial<ScheduleEvent>) => void;
   onDeleteScheduleItem: (dayId: string, itemId: string) => void;
+  onReorderScheduleItems: (dayId: string, fromIndex: number, toIndex: number) => void;
 }
 
 export const EventItinerary: React.FC<EventItineraryProps> = ({
@@ -26,9 +29,10 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
   activeSide,
   onAddScheduleItem,
   onEditScheduleItem,
-  onDeleteScheduleItem
+  onDeleteScheduleItem,
+  onReorderScheduleItems
 }) => {
-  const [selectedDayId, setSelectedDayId] = useState<string>('feb-18');
+  const [selectedDayId, setSelectedDayId] = useState<string>('feb-15');
 
   // Add Item Modal
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -45,6 +49,10 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
   // Edit Item Modal
   const [editingItem, setEditingItem] = useState<{ dayId: string; item: ScheduleEvent } | null>(null);
 
+  // Drag-and-drop state
+  const dragIndexRef = useRef<number | null>(null);
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
+
   // Keyboard Escape listener for modals
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -59,16 +67,54 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
 
   const activeDay = days.find(d => d.id === selectedDayId) || days[0];
 
-  // Filter items by side if selected
-  const displayedItems = activeDay.items.filter(item => {
-    if (activeSide === 'BOY') {
-      return item.side === 'Boy' || item.side === 'Both' || !item.side;
+  // Filter items by side if selected — keep original indices for reorder
+  const displayedItems = activeDay.items
+    .map((item, originalIndex) => ({ item, originalIndex }))
+    .filter(({ item }) => {
+      if (activeSide === 'BOY') {
+        return item.side === 'Boy' || item.side === 'Both' || !item.side;
+      }
+      if (activeSide === 'GIRL') {
+        return item.side === 'Girl' || item.side === 'Both' || !item.side;
+      }
+      return true;
+    });
+
+  // Drag-and-drop handlers (operate on original indices in activeDay.items)
+  const handleDragStart = (originalIndex: number) => {
+    dragIndexRef.current = originalIndex;
+  };
+
+  const handleDragOver = (e: React.DragEvent, displayIndex: number) => {
+    e.preventDefault();
+    setDragOverIndex(displayIndex);
+  };
+
+  const handleDrop = (e: React.DragEvent, targetOriginalIndex: number) => {
+    e.preventDefault();
+    if (dragIndexRef.current === null || dragIndexRef.current === targetOriginalIndex) {
+      setDragOverIndex(null);
+      return;
     }
-    if (activeSide === 'GIRL') {
-      return item.side === 'Girl' || item.side === 'Both' || !item.side;
-    }
-    return true;
-  });
+    onReorderScheduleItems(selectedDayId, dragIndexRef.current, targetOriginalIndex);
+    dragIndexRef.current = null;
+    setDragOverIndex(null);
+  };
+
+  const handleDragEnd = () => {
+    dragIndexRef.current = null;
+    setDragOverIndex(null);
+  };
+
+  const handleMoveUp = (originalIndex: number) => {
+    if (originalIndex === 0) return;
+    onReorderScheduleItems(selectedDayId, originalIndex, originalIndex - 1);
+  };
+
+  const handleMoveDown = (originalIndex: number) => {
+    if (originalIndex === activeDay.items.length - 1) return;
+    onReorderScheduleItems(selectedDayId, originalIndex, originalIndex + 1);
+  };
 
   const handleCreateItem = (e: React.FormEvent) => {
     e.preventDefault();
@@ -180,11 +226,47 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
       </div>
 
       {/* Critical Reminders Strip tailored to exact user notes */}
-      {selectedDayId === 'feb-18' && (
+      {selectedDayId === 'feb-15' && (
         <div className="p-4 rounded-2xl bg-blue-50/90 border border-blue-200/80 text-xs text-blue-900 flex items-start sm:items-center space-x-2.5 shadow-sm">
           <Clock className="w-4 h-4 text-blue-600 shrink-0 mt-0.5 sm:mt-0" />
           <span className="leading-relaxed">
-            <strong className="text-blue-950 font-bold">HOME RITUALS (18 Feb):</strong> 8:00 AM Randel sthapana at Groom home • 10–11 AM Lagan Lakhan at Bride home • 11 AM Bride brothers bring Lagan to Groom home (~100 present) • 12–1 PM Boy Lunch • 4 PM Boy Haldi & Groom photo visit to Girl Mehndi • 6–7 PM Evening Jamanvar. <em>(Note: Couple pre-wedding shoot is planned separately in Nov/Dec as a 2–3 day national or 1-week international trip).</em>
+            <strong className="text-blue-950 font-bold">FINALIZED HOME RITUALS (15 Feb):</strong> 8:00 AM Randel sthapana at Groom home • 10–11 AM Lagan Lakhan at Bride home • 11 AM Bride brothers bring Lagan to Groom home (~100 present, give shagun covers) • 12–1 PM Boy Lunch Jamanvar • 4 PM Boy Haldi Rasam • 6–7 PM Evening Jamanvar (Bride side has more guests).
+          </span>
+        </div>
+      )}
+
+      {selectedDayId === 'feb-16' && (
+        <div className="p-4 rounded-2xl bg-rose-50/90 border border-rose-200/80 text-xs text-rose-900 flex items-start sm:items-center space-x-2.5 shadow-sm">
+          <Clock className="w-4 h-4 text-rose-600 shrink-0 mt-0.5 sm:mt-0" />
+          <span className="leading-relaxed">
+            <strong className="text-rose-950 font-bold">RANDAL TEDVA AT GIRL'S HOUSE (16 Feb):</strong> 8:00 AM – 9:00 AM auspicious Randal Tedva sthapana & puja at Bride's house with girl side family and relatives.
+          </span>
+        </div>
+      )}
+
+      {selectedDayId === 'feb-17' && (
+        <div className="p-4 rounded-2xl bg-amber-50/90 border border-amber-200/80 text-xs text-amber-900 flex items-start sm:items-center space-x-2.5 shadow-sm">
+          <Clock className="w-4 h-4 text-amber-600 shrink-0 mt-0.5 sm:mt-0" />
+          <span className="leading-relaxed">
+            <strong className="text-amber-950 font-bold">VANA RASAM & COUPLE PHOTOSESSION (17 Feb):</strong> Sacred Vana Rasam celebrated at Girl's house • Groom is called upon to participate together in the rasam followed by dedicated couple photoshoot session!
+          </span>
+        </div>
+      )}
+
+      {selectedDayId === 'feb-18' && (
+        <div className="p-4 rounded-2xl bg-emerald-50/90 border border-emerald-200/80 text-xs text-emerald-900 flex items-start sm:items-center space-x-2.5 shadow-sm">
+          <Clock className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5 sm:mt-0" />
+          <span className="leading-relaxed">
+            <strong className="text-emerald-950 font-bold">MEHNDI RASAM & COUPLE PHOTOSHOOT (18 Feb):</strong> Festive Mehndi at Girl's house • Groom is invited with 1-2 close friends for couple photosession with the Bride in her mehndi attire!
+          </span>
+        </div>
+      )}
+
+      {selectedDayId === 'feb-19' && (
+        <div className="p-4 rounded-2xl bg-indigo-50/90 border border-indigo-200/80 text-xs text-indigo-900 flex items-start sm:items-center space-x-2.5 shadow-sm">
+          <Clock className="w-4 h-4 text-indigo-600 shrink-0 mt-0.5 sm:mt-0" />
+          <span className="leading-relaxed">
+            <strong className="text-indigo-950 font-bold">MAMERU, CHAB GIVING & SANJI NA GEET (19 Feb):</strong> 11:00 AM Mameru ceremony (Girl side only with maternal uncle Mama & family) • 4:30 PM Chab Giving by Boy's side (Boy side presents decorated Chab gift items to Girl side) • 9:00 PM Sanji Na Geet wedding song night at Girl's house (Girl side guests only).
           </span>
         </div>
       )}
@@ -214,13 +296,30 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
             No cues match the selected perspective ({activeSide === 'BOY' ? "Boy's Side" : "Girl's Side"}). Switch to "Both Sides" to see all events.
           </div>
         ) : (
-          displayedItems.map((item) => (
+          displayedItems.map(({ item, originalIndex }, displayIndex) => (
             <div
               key={item.id}
-              className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 hover:border-slate-300 hover:shadow-sm transition-all space-y-3"
+              draggable
+              onDragStart={() => handleDragStart(originalIndex)}
+              onDragOver={(e) => handleDragOver(e, displayIndex)}
+              onDrop={(e) => handleDrop(e, originalIndex)}
+              onDragEnd={handleDragEnd}
+              className={`bg-white rounded-2xl p-4 sm:p-5 border transition-all space-y-3 ${
+                dragOverIndex === displayIndex
+                  ? 'border-indigo-400 shadow-md ring-2 ring-indigo-200 scale-[1.01]'
+                  : 'border-slate-200 hover:border-slate-300 hover:shadow-sm'
+              }`}
             >
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div className="flex flex-wrap items-center gap-2">
+                  {/* Drag Handle */}
+                  <span
+                    className="cursor-grab active:cursor-grabbing text-slate-300 hover:text-slate-500 transition-colors shrink-0"
+                    title="Drag to reorder"
+                  >
+                    <GripVertical className="w-4 h-4" />
+                  </span>
+
                   <span className="px-2.5 py-1 rounded-xl bg-slate-100 text-slate-900 border border-slate-200 text-xs font-bold font-mono">
                     <EditableText
                       value={item.time}
@@ -258,6 +357,26 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
                       onSave={(val) => onEditScheduleItem(selectedDayId, item.id, { location: val })}
                       className="text-slate-600 font-medium"
                     />
+                  </div>
+
+                  {/* Up / Down reorder buttons */}
+                  <div className="flex flex-col border border-slate-200 rounded-lg overflow-hidden shrink-0">
+                    <button
+                      onClick={() => handleMoveUp(originalIndex)}
+                      disabled={originalIndex === 0}
+                      title="Move up"
+                      className="px-1.5 py-0.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 disabled:opacity-25 disabled:cursor-not-allowed transition-colors border-b border-slate-200"
+                    >
+                      <ChevronUp className="w-3 h-3" />
+                    </button>
+                    <button
+                      onClick={() => handleMoveDown(originalIndex)}
+                      disabled={originalIndex === activeDay.items.length - 1}
+                      title="Move down"
+                      className="px-1.5 py-0.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 disabled:opacity-25 disabled:cursor-not-allowed transition-colors"
+                    >
+                      <ChevronDown className="w-3 h-3" />
+                    </button>
                   </div>
 
                   <button
