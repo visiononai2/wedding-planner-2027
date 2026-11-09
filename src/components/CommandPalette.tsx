@@ -40,6 +40,7 @@ interface CommandPaletteProps {
   onSideChange: (side: WeddingSide) => void;
   activeTab: TabType;
   onTabChange: (tab: TabType) => void;
+  onNavigateTaskSubView?: (subView: 'checklist' | 'outfits' | 'rentals' | 'pre-wedding') => void;
   onOpenAddTask?: () => void;
   onExportJSON?: () => void;
 }
@@ -57,6 +58,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   onSideChange,
   activeTab,
   onTabChange,
+  onNavigateTaskSubView,
   onOpenAddTask,
   onExportJSON
 }) => {
@@ -90,13 +92,13 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
 
   // Navigation Items
   const navItems = [
-    { id: 'month-tracker', label: 'Go to Month-by-Month Tasks', category: 'Navigation', icon: Calendar, action: () => { onTabChange('month-tracker'); onClose(); } },
-    { id: 'pre-wedding', label: 'Go to Pre-Wedding Shoot Planner (2–7 Days Trip)', category: 'Navigation', icon: Camera, action: () => { onTabChange('pre-wedding'); onClose(); } },
-    { id: 'itinerary', label: 'Go to Run-Sheet (Feb 15–21 Itinerary)', category: 'Navigation', icon: Clock, action: () => { onTabChange('itinerary'); onClose(); } },
-    { id: 'dresses', label: 'Go to Outfits & Dresses Tracker', category: 'Navigation', icon: ShoppingBag, action: () => { onTabChange('dresses'); onClose(); } },
-    { id: 'rentals', label: 'Go to Rentals & DJ Sound Rigs', category: 'Navigation', icon: Truck, action: () => { onTabChange('rentals'); onClose(); } },
-    { id: 'decisions', label: 'Go to Decisions & Questions', category: 'Navigation', icon: HelpCircle, action: () => { onTabChange('decisions'); onClose(); } },
+    { id: 'month-tracker', label: 'Go to General Tasks', category: 'Navigation', icon: Calendar, action: () => { onTabChange('month-tracker'); onNavigateTaskSubView?.('checklist'); onClose(); } },
+    { id: 'itinerary', label: 'Go to Event Schedule (Feb 15–21 Itinerary)', category: 'Navigation', icon: Clock, action: () => { onTabChange('itinerary'); onClose(); } },
+    { id: 'decisions', label: 'Go to Decisions & Questions Tracker', category: 'Navigation', icon: HelpCircle, action: () => { onTabChange('decisions'); onClose(); } },
     { id: 'notes', label: 'Go to Planning Notes', category: 'Navigation', icon: FileText, action: () => { onTabChange('notes'); onClose(); } },
+    { id: 'dresses', label: 'Go to Outfits & Tailoring (in Tasks)', category: 'Tasks Workspaces', icon: ShoppingBag, action: () => { onTabChange('month-tracker'); onNavigateTaskSubView?.('outfits'); onClose(); } },
+    { id: 'rentals', label: 'Go to Rentals & DJ Sound Rigs (in Tasks)', category: 'Tasks Workspaces', icon: Truck, action: () => { onTabChange('month-tracker'); onNavigateTaskSubView?.('rentals'); onClose(); } },
+    { id: 'pre-wedding', label: 'Go to Pre-Wedding Shoot Planner (in Tasks)', category: 'Tasks Workspaces', icon: Camera, action: () => { onTabChange('month-tracker'); onNavigateTaskSubView?.('pre-wedding'); onClose(); } },
   ];
 
   // Perspective Switchers
@@ -104,6 +106,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
     { id: 'side-all', label: 'Switch to: Both Sides (Joint Perspective)', category: 'Perspective', icon: Users, action: () => { onSideChange('ALL'); onClose(); } },
     { id: 'side-boy', label: "Switch to: Boy's Side (Groom Focus)", category: 'Perspective', icon: Users, action: () => { onSideChange('BOY'); onClose(); } },
     { id: 'side-girl', label: "Switch to: Girl's Side (Bride Focus)", category: 'Perspective', icon: Users, action: () => { onSideChange('GIRL'); onClose(); } },
+    { id: 'side-family', label: "Switch to: Family's Side (Family & Elders Focus)", category: 'Perspective', icon: Users, action: () => { onSideChange('FAMILY'); onClose(); } },
   ];
 
   // Quick Actions
@@ -114,7 +117,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
 
   // Search Results across Tasks
   const taskResults = tasks
-    .filter(t => !normalizedQuery || t.title.toLowerCase().includes(normalizedQuery) || t.notes?.toLowerCase().includes(normalizedQuery))
+    .filter(t => !normalizedQuery || t.title.toLowerCase().includes(normalizedQuery) || t.description?.toLowerCase().includes(normalizedQuery) || t.notes?.toLowerCase().includes(normalizedQuery))
     .slice(0, 5)
     .map(t => ({
       id: `task-${t.id}`,
@@ -149,7 +152,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
             id: `cue-${it.id}`,
             label: `${it.time}: ${it.title}`,
             sublabel: `${d.dayName} • ${it.location}`,
-            category: 'Run-Sheet Cues',
+            category: 'Event Schedule Cues',
             icon: Clock,
             iconColor: 'text-indigo-500',
             action: () => {
@@ -174,7 +177,26 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
       icon: ShoppingBag,
       iconColor: 'text-purple-500',
       action: () => {
-        onTabChange('dresses');
+        onTabChange('month-tracker');
+        onNavigateTaskSubView?.('outfits');
+        onClose();
+      }
+    }));
+
+  // Search Results across Rentals
+  const rentalResults = rentals
+    .filter(r => !normalizedQuery || r.item.toLowerCase().includes(normalizedQuery) || r.vendor?.toLowerCase().includes(normalizedQuery))
+    .slice(0, 3)
+    .map(r => ({
+      id: `rental-${r.id}`,
+      label: r.item,
+      sublabel: `${r.vendor || 'Equipment'} • ${r.status}`,
+      category: 'Rentals',
+      icon: Truck,
+      iconColor: 'text-blue-500',
+      action: () => {
+        onTabChange('month-tracker');
+        onNavigateTaskSubView?.('rentals');
         onClose();
       }
     }));
@@ -186,6 +208,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
     ...taskResults,
     ...cueResults,
     ...dressResults,
+    ...rentalResults,
     ...(normalizedQuery ? navItems.filter(n => n.label.toLowerCase().includes(normalizedQuery)) : []),
     ...(normalizedQuery ? sideItems.filter(s => s.label.toLowerCase().includes(normalizedQuery)) : []),
     ...actionItems.filter(a => !normalizedQuery || a.label.toLowerCase().includes(normalizedQuery))
@@ -208,19 +231,19 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-start justify-center pt-12 sm:pt-20 px-4 bg-gray-900/50 backdrop-blur-xs animate-in fade-in duration-150"
+      className="fixed inset-0 z-50 flex items-start justify-center pt-12 sm:pt-20 px-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-150"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
       aria-label="Command search palette"
     >
       <div 
-        className="w-full max-w-2xl bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden flex flex-col max-h-[80vh] transition-all"
+        className="w-full max-w-2xl bg-white rounded-3xl shadow-[0_25px_70px_rgba(15,23,42,0.2)] border border-slate-200/90 overflow-hidden flex flex-col max-h-[80vh] transition-all"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Search Bar Input */}
-        <div className="flex items-center px-4 py-3.5 border-b border-gray-100 bg-gray-50/50 gap-3">
-          <Search className="w-5 h-5 text-gray-400 shrink-0" />
+        <div className="flex items-center px-6 py-4.5 border-b border-slate-100 bg-white gap-3.5">
+          <Search className="w-5 h-5 text-slate-400 shrink-0 stroke-[1.5]" />
           <input
             ref={inputRef}
             type="text"
@@ -231,19 +254,19 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
             }}
             onKeyDown={handleKeyDown}
             placeholder="Type a task, cue, outfit, or command (e.g. 'Haldi', 'Jaan', 'Boy', 'Garba')..."
-            className="flex-1 bg-transparent border-none text-sm sm:text-base text-gray-900 placeholder-gray-400 focus:outline-hidden focus:ring-0"
+            className="flex-1 bg-transparent border-none text-sm sm:text-base text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-0 font-sans"
             autoComplete="off"
             spellCheck={false}
           />
           {query && (
             <button
               onClick={() => { setQuery(''); inputRef.current?.focus(); }}
-              className="p-1 text-gray-400 hover:text-gray-600 rounded-md"
+              className="p-1 text-slate-400 hover:text-slate-700 rounded-full transition-colors cursor-pointer"
             >
-              <X className="w-4 h-4" />
+              <X className="w-4 h-4 stroke-[1.5]" />
             </button>
           )}
-          <kbd className="hidden sm:inline-flex items-center gap-0.5 px-2 py-0.5 text-[10px] font-mono text-gray-400 bg-gray-100 border border-gray-200 rounded">
+          <kbd className="hidden sm:inline-flex items-center gap-0.5 px-2 py-0.5 text-[10px] font-mono text-slate-400 bg-slate-100 border border-slate-200/70 rounded">
             ESC
           </kbd>
         </div>
@@ -251,10 +274,10 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         {/* Results List */}
         <div 
           ref={listRef}
-          className="flex-1 overflow-y-auto p-2 divide-y divide-gray-50 max-h-[60vh]"
+          className="flex-1 overflow-y-auto p-3 divide-y divide-slate-100 max-h-[60vh]"
         >
           {allResults.length === 0 ? (
-            <div className="py-12 text-center text-gray-400 text-xs">
+            <div className="py-12 text-center text-slate-400 text-xs font-sans">
               No matching tasks, cues, or commands found for "{query}".
             </div>
           ) : (
@@ -266,28 +289,32 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
                   key={item.id}
                   onClick={item.action}
                   onMouseEnter={() => setSelectedIndex(idx)}
-                  className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs cursor-pointer transition ${
+                  className={`flex items-center justify-between px-4 py-3 rounded-2xl text-xs cursor-pointer transition-all duration-150 ${
                     isSelected
-                      ? 'bg-indigo-50 text-indigo-950 font-medium'
-                      : 'text-gray-700 hover:bg-gray-50'
+                      ? 'bg-slate-900 text-white font-medium shadow-xs'
+                      : 'text-slate-700 hover:bg-slate-50'
                   }`}
                 >
                   <div className="flex items-center gap-3 min-w-0 flex-1">
-                    <Icon className={`w-4 h-4 shrink-0 ${'iconColor' in item ? item.iconColor : 'text-gray-400'}`} />
+                    <Icon className={`w-4 h-4 shrink-0 stroke-[1.5] ${'iconColor' in item ? (isSelected ? 'text-[#D4AF37]' : item.iconColor) : (isSelected ? 'text-[#D4AF37]' : 'text-slate-400')}`} />
                     <div className="min-w-0 flex-1">
-                      <div className="truncate text-gray-900 font-semibold">{item.label}</div>
+                      <div className={`truncate font-medium ${isSelected ? 'text-white' : 'text-slate-900'}`}>{item.label}</div>
                       {'sublabel' in item && (
-                        <div className="truncate text-[11px] text-gray-500">{item.sublabel}</div>
+                        <div className={`truncate text-[11px] ${isSelected ? 'text-slate-300' : 'text-slate-400'}`}>{item.sublabel}</div>
                       )}
                     </div>
                   </div>
 
                   <div className="flex items-center gap-2 shrink-0 ml-3">
-                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider px-2 py-0.5 rounded bg-gray-100">
+                    <span className={`text-[10px] font-sans font-medium uppercase tracking-wider px-2.5 py-0.5 rounded-full ${
+                      isSelected
+                        ? 'bg-white/20 text-slate-200'
+                        : 'bg-slate-100 text-slate-600 border border-slate-200/60'
+                    }`}>
                       {item.category}
                     </span>
                     {isSelected && (
-                      <ArrowRight className="w-3.5 h-3.5 text-indigo-600 animate-in slide-in-from-left-1 duration-150" />
+                      <ArrowRight className="w-3.5 h-3.5 text-[#D4AF37] stroke-[1.5] animate-in slide-in-from-left-1 duration-150" />
                     )}
                   </div>
                 </div>
@@ -297,20 +324,20 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         </div>
 
         {/* Command Bar Footer with Shortcuts */}
-        <div className="px-4 py-2.5 bg-gray-50 border-t border-gray-100 text-[11px] text-gray-500 flex items-center justify-between">
+        <div className="px-6 py-3.5 bg-slate-50/80 border-t border-slate-100 text-[11px] text-slate-500 font-sans flex items-center justify-between">
           <div className="flex items-center gap-3">
             <span>
-              <kbd className="px-1.5 py-0.5 bg-white border border-gray-200 rounded text-[10px] font-mono mr-1">↑</kbd>
-              <kbd className="px-1.5 py-0.5 bg-white border border-gray-200 rounded text-[10px] font-mono mr-1">↓</kbd>
+              <kbd className="px-1.5 py-0.5 bg-white border border-slate-200/80 rounded text-[10px] font-mono text-slate-600 mr-1 shadow-2xs">↑</kbd>
+              <kbd className="px-1.5 py-0.5 bg-white border border-slate-200/80 rounded text-[10px] font-mono text-slate-600 mr-1 shadow-2xs">↓</kbd>
               navigate
             </span>
             <span>
-              <kbd className="px-1.5 py-0.5 bg-white border border-gray-200 rounded text-[10px] font-mono mr-1">↵</kbd>
+              <kbd className="px-1.5 py-0.5 bg-white border border-slate-200/80 rounded text-[10px] font-mono text-slate-600 mr-1 shadow-2xs">↵</kbd>
               select
             </span>
           </div>
-          <span className="text-[10px] text-gray-400">
-            Press <kbd className="px-1 py-0.5 bg-white border border-gray-200 rounded text-[10px] font-mono">⌘K</kbd> anywhere
+          <span className="text-[10px] text-slate-400">
+            Press <kbd className="px-1.5 py-0.5 bg-white border border-slate-200/80 rounded text-[10px] font-mono text-slate-600 shadow-2xs">⌘K</kbd> anywhere
           </span>
         </div>
       </div>

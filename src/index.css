@@ -11,13 +11,12 @@
   --color-text-primary: #0f172a;
   --color-text-secondary: #475569;
   --color-text-muted: #94a3b8;
-  --color-accent: #6366f1;
-  --color-accent-light: #eef2ff;
-  --color-success: #10b981;
-  --color-warning: #f59e0b;
-  --color-danger: #f43f5e;
-  --color-boy: #3b82f6;
-  --color-girl: #fb7185;
+  --color-gold: #B89230;
+  --color-gold-light: #FEF3C7;
+  --color-gold-border: #D4AF37;
+  --color-boy: #2563EB;
+  --color-girl: #BE185D;
+  --color-family: #B45309;
 }
 
 @layer base {
@@ -31,8 +30,8 @@
 
 /* Minimal Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {

@@ -23,6 +23,7 @@ interface HeaderProps {
   weddingYear: number;
   onResetData: () => void;
   onOpenSearch?: () => void;
+  onNavigateToTaskSubView?: (subView: 'checklist' | 'outfits' | 'rentals' | 'pre-wedding') => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -35,7 +36,8 @@ export const Header: React.FC<HeaderProps> = ({
   activeSide = 'ALL',
   weddingYear,
   onResetData,
-  onOpenSearch
+  onOpenSearch,
+  onNavigateToTaskSubView
 }) => {
   const [timeLeft, setTimeLeft] = useState<{
     days: number;
@@ -73,10 +75,13 @@ export const Header: React.FC<HeaderProps> = ({
   // Filter tasks dynamically based on active perspective
   const filteredTasks = tasks.filter(task => {
     if (activeSide === 'BOY') {
-      return task.side === 'Boy' || task.side === 'Both' || !task.side || task.assignedTo === 'Groom' || task.assignedTo === 'Both' || task.assignedTo === 'Family';
+      return task.side === 'Boy' || task.side === 'Both' || !task.side || task.assignedTo === 'Groom' || task.assignedTo === 'Both';
     }
     if (activeSide === 'GIRL') {
-      return task.side === 'Girl' || task.side === 'Both' || !task.side || task.assignedTo === 'Bride' || task.assignedTo === 'Both' || task.assignedTo === 'Family';
+      return task.side === 'Girl' || task.side === 'Both' || !task.side || task.assignedTo === 'Bride' || task.assignedTo === 'Both';
+    }
+    if (activeSide === 'FAMILY') {
+      return task.assignedTo === 'Family';
     }
     return true;
   });
@@ -93,9 +98,17 @@ export const Header: React.FC<HeaderProps> = ({
     return true;
   });
 
-  const totalRentals = rentals.reduce((acc, r) => acc + (r.totalCost || 0), 0);
-  const totalRentalAdvance = rentals.reduce((acc, r) => acc + (r.advancePaid || 0), 0);
-  const rentalsPendingPickup = rentals.filter(r => r.status === 'To Book' || r.status === 'Reserved').length;
+  // Filter rentals based on perspective
+  const filteredRentals = rentals.filter(r => {
+    if (activeSide === 'BOY') return r.side === 'Boy' || r.side === 'Both' || !r.side;
+    if (activeSide === 'GIRL') return r.side === 'Girl' || r.side === 'Both' || !r.side;
+    if (activeSide === 'FAMILY') return r.side === 'Both' || !r.side;
+    return true;
+  });
+
+  const totalRentals = filteredRentals.reduce((acc, r) => acc + (r.totalCost || 0), 0);
+  const totalRentalAdvance = filteredRentals.reduce((acc, r) => acc + (r.advancePaid || 0), 0);
+  const rentalsPendingPickup = filteredRentals.filter(r => r.status === 'To Book' || r.status === 'Reserved').length;
   const rentalsBalanceDue = totalRentals - totalRentalAdvance;
 
   const totalDresses = filteredDresses.reduce((acc, d) => acc + (d.costEstimated || 0), 0);
@@ -131,72 +144,92 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header className="bg-white border-b border-slate-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 sm:py-4">
+      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-10 py-3.5 sm:py-4">
         {/* Top Header Row */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-slate-100">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-rose-500 via-indigo-600 to-amber-400 p-[1.5px] shadow-sm shrink-0">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-rose-500 via-indigo-600 to-amber-400 p-[1.5px] shadow-sm flex items-center justify-center">
               <div className="w-full h-full bg-white rounded-[10px] flex items-center justify-center">
                 <Heart className="w-4 h-4 text-rose-500 fill-rose-500" />
               </div>
             </div>
             <div>
-              <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
-                Wedding Dashboard
-              </h1>
+              <div className="flex items-center gap-2">
+                <h1 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight flex items-center gap-1.5">
+                  Wedding Dashboard
+                </h1>
+                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-100">
+                  Oct 22, 2026 – Feb 21, 2027
+                </span>
+              </div>
+              <p className="text-xs text-slate-500 flex items-center gap-1.5 font-medium">
+                <span>Silver Farm, Surat & Katargam</span>
+                <span className="text-slate-300">•</span>
+                <span>4:00 PM Jaan</span>
+              </p>
             </div>
           </div>
 
-          {/* Countdown & Quick Action Buttons */}
-          <div className="flex flex-wrap items-center gap-2">
-            {/* Live Countdown Clock */}
+          {/* Right Action Hub: Countdown, Search & Actions */}
+          <div className="flex items-center gap-2">
+            {/* Countdown Badge */}
             <div 
-              className="bg-slate-900 text-white px-3.5 py-1.5 rounded-xl flex items-center space-x-2 text-xs font-semibold shadow-sm"
+              className="bg-slate-900 text-white px-3 py-1.5 rounded-xl flex items-center gap-2 text-xs font-semibold shadow-xs"
               title="Countdown to 4:00 PM Jaan departure on Feb 21, 2027"
             >
-              <Clock className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
-              <span className="font-mono tabular-nums">
-                <strong className="text-white font-bold">{timeLeft.days}d</strong>{' '}
-                <span className="text-slate-200">{timeLeft.hours}h {timeLeft.minutes}m</span>
+              <Clock className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+              <span className="font-mono tabular-nums tracking-tight">
+                <strong>{timeLeft.days}d</strong> {timeLeft.hours}h {timeLeft.minutes}m
               </span>
             </div>
 
+            {/* Quick Search Button */}
             {onOpenSearch && (
               <button
+                type="button"
                 onClick={onOpenSearch}
-                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-900 active:bg-slate-100 text-xs font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-indigo-500 focus:outline-none"
+                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50 text-xs font-medium transition-colors"
               >
                 <Search className="w-3.5 h-3.5 text-slate-400" />
                 <span>Search</span>
-                <kbd className="text-[10px] font-mono text-slate-400 bg-slate-100 border border-slate-200 rounded px-1.5 py-0.5 ml-0.5">⌘K</kbd>
+                <kbd className="text-[10px] font-mono text-slate-400 bg-white border border-slate-200 rounded px-1 py-0.5">⌘K</kbd>
               </button>
             )}
 
+            {/* Backup JSON */}
             <button
+              type="button"
               onClick={handleExportJSON}
-              title="Backup entire dataset to JSON file"
-              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-900 active:bg-slate-100 text-xs font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-indigo-500 focus:outline-none"
+              title="Download full JSON backup of state"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50 text-xs font-medium transition-colors"
             >
               <Download className="w-3.5 h-3.5 text-slate-400" />
-              <span>Backup</span>
+              <span className="hidden sm:inline">Backup</span>
             </button>
 
+            {/* Clean Reset */}
             <button
+              type="button"
               onClick={onResetData}
-              title="Reset data back to clean defaults"
-              className="p-1.5 rounded-xl border border-slate-200 text-slate-400 hover:text-rose-600 hover:bg-rose-50 hover:border-rose-200 active:bg-rose-100 transition-colors focus-visible:ring-2 focus-visible:ring-rose-500 focus:outline-none"
-              aria-label="Reset all data"
+              title="Reset dashboard to clean defaults"
+              className="p-1.5 rounded-xl border border-slate-200 text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
             >
               <RotateCcw className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
 
-        {/* Dynamic Progress Ribbon */}
-        <div className="pt-3 pb-1">
+        {/* Global Progress Bar */}
+        <div className="pt-3">
           <div className="flex items-center justify-between text-xs mb-1.5">
-            <span className="font-semibold text-slate-600">
-              {activeSide === 'BOY' ? "Groom's Rituals & Tasks" : activeSide === 'GIRL' ? "Bride's Rituals & Tasks" : "Overall Wedding Progress"}
+            <span className="font-medium text-slate-500">
+              {activeSide === 'BOY' 
+                ? "Groom's Rituals & Tasks" 
+                : activeSide === 'GIRL' 
+                ? "Bride's Rituals & Tasks" 
+                : activeSide === 'FAMILY' 
+                ? "Family's Rituals & Tasks" 
+                : "Overall Wedding Progress"}
             </span>
             <span className="font-bold text-slate-900">
               {completedTasks}/{totalTasks} <span className="text-slate-400 font-normal">tasks completed ({progressPercent}%)</span>
@@ -210,59 +243,83 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         </div>
 
-        {/* 4 Clean Metric Cards */}
+        {/* 4 Clean Metric Cards (Clickable shortcuts to task modules) */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 pt-3">
           {/* Tasks Summary */}
-          <div className="p-3.5 bg-slate-50/80 rounded-2xl border border-slate-200 transition-all hover:border-slate-300 hover:bg-white hover:shadow-sm">
+          <button
+            type="button"
+            onClick={() => onNavigateToTaskSubView?.('checklist')}
+            className="text-left p-3.5 bg-slate-50/80 rounded-2xl border border-slate-200 transition-all hover:border-indigo-400 hover:bg-white hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 group cursor-pointer"
+            title="Click to view General Tasks checklist"
+          >
             <div className="flex items-center justify-between text-xs text-slate-600 font-semibold">
-              <span className="uppercase tracking-wider text-[11px] font-bold text-slate-500">
-                {activeSide === 'BOY' ? "Boy's Tasks" : activeSide === 'GIRL' ? "Girl's Tasks" : "Tasks Progress"}
+              <span className="uppercase tracking-wider text-[11px] font-bold text-slate-500 group-hover:text-indigo-600 transition-colors">
+                {activeSide === 'BOY' 
+                  ? "Boy's Tasks" 
+                  : activeSide === 'GIRL' 
+                  ? "Girl's Tasks" 
+                  : activeSide === 'FAMILY' 
+                  ? "Family's Tasks" 
+                  : "Tasks Progress"}
               </span>
-              <div className="w-6 h-6 rounded-lg bg-emerald-50 border border-emerald-200/60 flex items-center justify-center">
+              <div className="w-6 h-6 rounded-lg bg-emerald-50 border border-emerald-200/60 flex items-center justify-center group-hover:scale-105 transition-transform">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
               </div>
             </div>
             <div className="text-lg sm:text-xl font-bold text-slate-900 mt-1.5">
               {completedTasks} <span className="text-sm font-normal text-slate-400">/ {totalTasks}</span>
             </div>
-            <div className="text-xs text-amber-700 font-medium mt-0.5">
-              {remainingTasks} tasks remaining
+            <div className="text-xs text-amber-700 font-medium mt-0.5 flex items-center justify-between">
+              <span>{remainingTasks} tasks remaining</span>
+              <span className="text-[10px] text-indigo-500 font-semibold opacity-0 group-hover:opacity-100 transition-opacity">View →</span>
             </div>
-          </div>
+          </button>
 
           {/* Rentals Summary */}
-          <div className="p-3.5 bg-slate-50/80 rounded-2xl border border-slate-200 transition-all hover:border-slate-300 hover:bg-white hover:shadow-sm">
+          <button
+            type="button"
+            onClick={() => onNavigateToTaskSubView?.('rentals')}
+            className="text-left p-3.5 bg-slate-50/80 rounded-2xl border border-slate-200 transition-all hover:border-blue-400 hover:bg-white hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 group cursor-pointer"
+            title="Click to manage Rentals & DJ Sound Rigs in Tasks"
+          >
             <div className="flex items-center justify-between text-xs text-slate-600 font-semibold">
-              <span className="uppercase tracking-wider text-[11px] font-bold text-slate-500">Rentals & Sound</span>
-              <div className="w-6 h-6 rounded-lg bg-blue-50 border border-blue-200/60 flex items-center justify-center">
+              <span className="uppercase tracking-wider text-[11px] font-bold text-slate-500 group-hover:text-blue-600 transition-colors">Rentals & Sound</span>
+              <div className="w-6 h-6 rounded-lg bg-blue-50 border border-blue-200/60 flex items-center justify-center group-hover:scale-105 transition-transform">
                 <Truck className="w-3.5 h-3.5 text-blue-600" />
               </div>
             </div>
             <div className="text-lg sm:text-xl font-bold text-slate-900 mt-1.5">
               {rentalsPendingPickup} <span className="text-sm font-normal text-slate-400">/ {rentals.length}</span>
             </div>
-            <div className="text-xs text-slate-600 mt-0.5">
-              ₹{rentalsBalanceDue.toLocaleString('en-IN')} balance due
+            <div className="text-xs text-slate-600 mt-0.5 flex items-center justify-between">
+              <span>₹{rentalsBalanceDue.toLocaleString('en-IN')} balance due</span>
+              <span className="text-[10px] text-blue-500 font-semibold opacity-0 group-hover:opacity-100 transition-opacity">Manage →</span>
             </div>
-          </div>
+          </button>
 
           {/* Outfits Summary */}
-          <div className="p-3.5 bg-slate-50/80 rounded-2xl border border-slate-200 transition-all hover:border-slate-300 hover:bg-white hover:shadow-sm">
+          <button
+            type="button"
+            onClick={() => onNavigateToTaskSubView?.('outfits')}
+            className="text-left p-3.5 bg-slate-50/80 rounded-2xl border border-slate-200 transition-all hover:border-purple-400 hover:bg-white hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 group cursor-pointer"
+            title="Click to manage Outfits & Tailoring in Tasks"
+          >
             <div className="flex items-center justify-between text-xs text-slate-600 font-semibold">
-              <span className="uppercase tracking-wider text-[11px] font-bold text-slate-500">
+              <span className="uppercase tracking-wider text-[11px] font-bold text-slate-500 group-hover:text-purple-600 transition-colors">
                 {activeSide === 'BOY' ? "Groom Outfits" : activeSide === 'GIRL' ? "Bride Outfits" : "Outfits & Tailoring"}
               </span>
-              <div className="w-6 h-6 rounded-lg bg-purple-50 border border-purple-200/60 flex items-center justify-center">
+              <div className="w-6 h-6 rounded-lg bg-purple-50 border border-purple-200/60 flex items-center justify-center group-hover:scale-105 transition-transform">
                 <ShoppingBag className="w-3.5 h-3.5 text-purple-600" />
               </div>
             </div>
             <div className="text-lg sm:text-xl font-bold text-slate-900 mt-1.5">
               {dressesToFinish} <span className="text-sm font-normal text-slate-400">/ {filteredDresses.length}</span>
             </div>
-            <div className="text-xs text-slate-600 mt-0.5">
-              ₹{dressesBalanceDue.toLocaleString('en-IN')} pending
+            <div className="text-xs text-slate-600 mt-0.5 flex items-center justify-between">
+              <span>₹{dressesBalanceDue.toLocaleString('en-IN')} pending</span>
+              <span className="text-[10px] text-purple-500 font-semibold opacity-0 group-hover:opacity-100 transition-opacity">Manage →</span>
             </div>
-          </div>
+          </button>
 
           {/* Overall Financials */}
           <div className="p-3.5 bg-slate-50/80 rounded-2xl border border-slate-200 transition-all hover:border-slate-300 hover:bg-white hover:shadow-sm">

@@ -5,10 +5,13 @@ export type TaskCategory =
   | 'sound_dj'
   | 'catering'
   | 'venue'
-  | 'logistics';
+  | 'logistics'
+  | 'pre_wedding';
+
+export type TaskSubView = 'checklist' | 'outfits' | 'rentals' | 'pre-wedding';
 
 export type Assignee = 'Groom' | 'Bride' | 'Family' | 'Both';
-export type WeddingSide = 'ALL' | 'BOY' | 'GIRL';
+export type WeddingSide = 'ALL' | 'BOY' | 'GIRL' | 'FAMILY';
 export type EventSide = 'Boy' | 'Girl' | 'Both';
 
 export type MonthPeriod = 
@@ -19,6 +22,26 @@ export type MonthPeriod =
   | 'feb-prep'
   | 'feb-days';
 
+export type TaskStatus = 'todo' | 'in_progress' | 'review' | 'completed';
+export type TaskPriority = 'urgent' | 'high' | 'medium' | 'low';
+
+export interface Subtask {
+  id: string;
+  title: string;
+  completed: boolean;
+}
+
+export type CommentAuthorRole = 'Groom' | 'Bride' | 'Family' | 'Both' | 'Planner';
+
+export interface TaskComment {
+  id: string;
+  author: string;
+  role?: CommentAuthorRole;
+  content: string;
+  createdAt: string;
+  updatedAt?: string;
+}
+
 export interface Task {
   id: string;
   title: string;
@@ -27,9 +50,14 @@ export interface Task {
   side?: EventSide;
   monthId: MonthPeriod;
   completed: boolean;
-  priority: 'high' | 'medium' | 'low';
+  status?: TaskStatus;
+  priority: TaskPriority;
   dueDate?: string;
+  description?: string;
   notes?: string;
+  subtasks?: Subtask[];
+  comments?: TaskComment[];
+  tags?: string[];
 }
 
 export interface MonthMilestone {
@@ -126,7 +154,58 @@ export interface PlanningNote {
   updatedAt: string;
 }
 
-export type PreWeddingTripType = 'NATIONAL' | 'INTERNATIONAL' | 'REGIONAL';
+export type PreWeddingTripType = 'SURAT_REGIONAL' | 'HERITAGE_CIRCUIT' | 'ANAND_VILLA' | 'NATIONAL' | 'INTERNATIONAL' | 'REGIONAL';
+
+export interface StoryReelScene {
+  id: string;
+  sceneNumber: number;
+  locationName: string;
+  sceneAction: string;
+  shotType?: string;
+  lighting?: string;
+}
+
+export interface PreWeddingStoryReel {
+  id: string;
+  reelNumber: number;
+  title: string;
+  storyTheme: string;
+  groomOutfit: string;
+  brideOutfit: string;
+  outfitStatus: 'To Select' | 'Purchased' | 'Rental Booked' | 'Trial Done & Ready';
+  outfitNotes?: string;
+  audioSongVibe: string;
+  durationTarget: string;
+  scenes: StoryReelScene[];
+  status: 'Planning' | 'Outfits Ready' | 'Shot Done' | 'Edited';
+}
+
+export interface LocationOption {
+  id: string;
+  name: string;
+  tagline: string;
+  category: 'Coastal / Heritage' | 'Heritage Palace' | 'Nature & Lake' | 'Film City Studio' | 'Anand Villa (Reluctant)';
+  distanceFromSurat: string;
+  driveTime: string;
+  baseCost: number;
+  baseCostLabel: string;
+  propCostNotes: string;
+  rulesFlexibility: 'Very Flexible' | 'Moderate' | 'Strict (Extra Charges)';
+  bestBackdrops: string[];
+  pros: string[];
+  cons: string[];
+  isRecommended?: boolean;
+  isReluctant?: boolean;
+  status: 'Shortlisted' | 'Selected' | 'Declined' | 'Evaluating';
+}
+
+export interface PropItem {
+  id: string;
+  name: string;
+  cost: number;
+  selected: boolean;
+  notes?: string;
+}
 
 export interface PreWeddingLook {
   id: string;
@@ -150,6 +229,7 @@ export interface PreWeddingTripPlan {
   destination: string;
   durationLabel: string;
   targetDates: string;
+  travelMode?: string;
   flightStatus: 'To Book' | 'Booked' | 'Not Needed';
   hotelStatus: 'To Book' | 'Booked' | 'Not Needed';
   passportVisaStatus: 'Not Needed' | 'Check Validity' | 'Visa Applied' | 'Visa Approved';
@@ -157,9 +237,16 @@ export interface PreWeddingTripPlan {
   contactPerson: string;
   phone: string;
   crewCount: number;
+  baseVenueCost?: number;
+  propsCost?: number;
+  crewCost?: number;
+  travelCost?: number;
   totalEstimatedCost: number;
   advancePaid: number;
   deliverables: string[];
+  storyReels?: PreWeddingStoryReel[];
+  locationOptions?: LocationOption[];
+  props?: PropItem[];
   looks: PreWeddingLook[];
   checklist: PreWeddingChecklistItem[];
   notes: string;

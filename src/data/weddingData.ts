@@ -9,7 +9,11 @@ import {
   PreWeddingTripPlan,
   PreWeddingTripType,
   PreWeddingLook,
-  PreWeddingChecklistItem
+  PreWeddingChecklistItem,
+  PreWeddingStoryReel,
+  StoryReelScene,
+  LocationOption,
+  PropItem
 } from '../types/wedding';
 
 export const INITIAL_MILESTONES: MonthMilestone[] = [
@@ -30,6 +34,7 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Family', 
     side: 'Both',
     monthId: 'oct-2026', 
+    dueDate: '2026-10-05',
     completed: false, 
     priority: 'high',
     notes: 'Direct from user notes: Kam - Ask annual function first half or second half.'
@@ -41,9 +46,22 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Family', 
     side: 'Both',
     monthId: 'oct-2026', 
+    dueDate: '2026-10-08',
     completed: false, 
     priority: 'high',
     notes: 'Direct from user notes: Kam - Ask about marriage together or separate.'
+  },
+  { 
+    id: 't-oct-5', 
+    title: 'Check Silver Farm for dome availability vs constructing standalone mandvo', 
+    category: 'venue', 
+    assignedTo: 'Family', 
+    side: 'Both',
+    monthId: 'oct-2026', 
+    dueDate: '2026-10-12',
+    completed: false, 
+    priority: 'high',
+    notes: 'Direct from user notes: dome ma karvanu dome hoi to nakar mandvo banavano hoi.'
   },
   { 
     id: 't-oct-3', 
@@ -52,9 +70,22 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Groom', 
     side: 'Boy',
     monthId: 'oct-2026', 
+    dueDate: '2026-10-15',
     completed: false, 
     priority: 'high',
     notes: 'Direct from user notes: Get generator contact from dhaval, available on rent.'
+  },
+  { 
+    id: 't-oct-6', 
+    title: 'Lock DJ & Sound package with Dhaval Jajenwala (Haldi ₹4k, Garba ₹24k, Jaan ICER ₹15k, Lagan ₹4k)', 
+    category: 'sound_dj', 
+    assignedTo: 'Groom', 
+    side: 'Boy',
+    monthId: 'oct-2026', 
+    dueDate: '2026-10-18',
+    completed: false, 
+    priority: 'high',
+    notes: 'Direct from user notes: Dhaval jajenwala Silver ma karelu che 20, 21 feb 2027.'
   },
   { 
     id: 't-oct-4', 
@@ -63,6 +94,7 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Both', 
     side: 'Both',
     monthId: 'oct-2026', 
+    dueDate: '2026-10-22',
     completed: false, 
     priority: 'high',
     notes: 'Direct from user notes: Photo graphy - find location (we find). Multi-day travel shoot, independent from Feb 15 home rituals.'
@@ -74,78 +106,13 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Both', 
     side: 'Both',
     monthId: 'oct-2026', 
+    dueDate: '2026-10-28',
     completed: false, 
     priority: 'high',
     notes: 'Confirm package: 1 cinematic film, 2 Instagram reels, 40 edited photos, teaser, and Feb 20 Garba LED cut.'
   },
-  { 
-    id: 't-oct-5', 
-    title: 'Check Silver Farm for dome availability vs constructing standalone mandvo', 
-    category: 'venue', 
-    assignedTo: 'Family', 
-    side: 'Both',
-    monthId: 'oct-2026', 
-    completed: false, 
-    priority: 'high',
-    notes: 'Direct from user notes: dome ma karvanu dome hoi to nakar mandvo banavano hoi.'
-  },
-  { 
-    id: 't-oct-6', 
-    title: 'Lock DJ & Sound package with Dhaval Jajenwala (Haldi ₹4k, Garba ₹24k, Jaan ICER ₹15k, Lagan ₹4k)', 
-    category: 'sound_dj', 
-    assignedTo: 'Groom', 
-    side: 'Boy',
-    monthId: 'oct-2026', 
-    completed: false, 
-    priority: 'high',
-    notes: 'Direct from user notes: Dhaval jajenwala Silver ma karelu che 20, 21 feb 2027.'
-  },
 
   // November 2026 (Outfits, Makeup & Pre-Wedding)
-  { 
-    id: 't-nov-1', 
-    title: 'Groom: Buy Haldi kurta pajama (Blue / White / Lavender color theme)', 
-    category: 'outfits', 
-    assignedTo: 'Groom', 
-    side: 'Boy',
-    monthId: 'nov-2026', 
-    completed: false, 
-    priority: 'high',
-    notes: 'Direct from user notes: 20 saware haldi ma kurta payjama, blue theme, white, lavender.'
-  },
-  { 
-    id: 't-nov-2', 
-    title: 'Groom: Order or tailor Varghodo Jodhpuri / Suit (Feb 19 evening)', 
-    category: 'outfits', 
-    assignedTo: 'Groom', 
-    side: 'Boy',
-    monthId: 'nov-2026', 
-    completed: false, 
-    priority: 'high',
-    notes: 'Direct from user notes: Sanje varghodo jodhpuri jevu ka to suit.'
-  },
-  { 
-    id: 't-nov-3', 
-    title: 'Groom: Order or tailor Lagan Wedding Suit (Feb 21 morning)', 
-    category: 'outfits', 
-    assignedTo: 'Groom', 
-    side: 'Boy',
-    monthId: 'nov-2026', 
-    completed: false, 
-    priority: 'high',
-    notes: 'Direct from user notes: 21 lagan ma suit.'
-  },
-  { 
-    id: 't-nov-4', 
-    title: 'Groom: Buy traditional coty (bandi) & kurta for Grah Shanti & Mandvo (Feb 20 noon)', 
-    category: 'outfits', 
-    assignedTo: 'Groom', 
-    side: 'Boy',
-    monthId: 'nov-2026', 
-    completed: false, 
-    priority: 'high',
-    notes: 'Direct from user notes: Bapore ghrah shanti traditional coty.'
-  },
   { 
     id: 't-nov-5', 
     title: 'Bride: Book makeup parlour for Feb 20 (Strict morning slot: 11:00 AM – 12:00 PM start)', 
@@ -153,6 +120,7 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Bride', 
     side: 'Girl',
     monthId: 'nov-2026', 
+    dueDate: '2026-11-04',
     completed: false, 
     priority: 'high',
     notes: 'Direct from user notes: 20 th Feb Parlour: 11 AM or 12 PM start.'
@@ -164,9 +132,58 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Bride', 
     side: 'Girl',
     monthId: 'nov-2026', 
+    dueDate: '2026-11-08',
     completed: false, 
     priority: 'high',
     notes: 'Direct from user notes: GIRLS: Kapda, Mackup, Lagan - Lakhan, Vana - rasam, Mehndi, Geet gunjan.'
+  },
+  { 
+    id: 't-nov-2', 
+    title: 'Groom: Order or tailor Varghodo Jodhpuri / Suit (Feb 19 evening)', 
+    category: 'outfits', 
+    assignedTo: 'Groom', 
+    side: 'Boy',
+    monthId: 'nov-2026', 
+    dueDate: '2026-11-12',
+    completed: false, 
+    priority: 'high',
+    notes: 'Direct from user notes: Sanje varghodo jodhpuri jevu ka to suit.'
+  },
+  { 
+    id: 't-nov-3', 
+    title: 'Groom: Order or tailor Lagan Wedding Suit (Feb 21 morning)', 
+    category: 'outfits', 
+    assignedTo: 'Groom', 
+    side: 'Boy',
+    monthId: 'nov-2026', 
+    dueDate: '2026-11-15',
+    completed: false, 
+    priority: 'high',
+    notes: 'Direct from user notes: 21 lagan ma suit.'
+  },
+  { 
+    id: 't-nov-4', 
+    title: 'Groom: Buy traditional coty (bandi) & kurta for Grah Shanti & Mandvo (Feb 20 noon)', 
+    category: 'outfits', 
+    assignedTo: 'Groom', 
+    side: 'Boy',
+    monthId: 'nov-2026', 
+    dueDate: '2026-11-19',
+    completed: false, 
+    priority: 'high',
+    notes: 'Direct from user notes: Bapore ghrah shanti traditional coty.'
+  },
+  { 
+    id: 't-nov-1', 
+    title: 'Groom: Buy Haldi kurta pajama (Blue / White / Lavender color theme)', 
+    category: 'outfits', 
+    assignedTo: 'Groom', 
+    side: 'Boy',
+    monthId: 'nov-2026', 
+    dueDate: '2026-11-22',
+    completed: false, 
+    priority: 'high',
+    notes: 'Direct from user notes: 20 saware haldi ma kurta payjama, blue theme, white, lavender.'
   },
   { 
     id: 't-nov-7', 
@@ -175,6 +192,7 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Both', 
     side: 'Both',
     monthId: 'nov-2026', 
+    dueDate: '2026-11-28',
     completed: false, 
     priority: 'medium',
     notes: 'Direct from user notes: BOYS: Pre-wedding, Photo graphy - find location.'
@@ -188,20 +206,22 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Family', 
     side: 'Both',
     monthId: 'dec-2026', 
+    dueDate: '2026-12-05',
     completed: false, 
     priority: 'high',
     notes: 'Direct from user notes: jamanvar = 2 or 3 -> caters nu round table (Optional).'
   },
   { 
-    id: 't-dec-2', 
-    title: 'Hire dedicated "Pani valo" (water distributor for hot daytime vidhis)', 
-    category: 'catering', 
-    assignedTo: 'Family', 
-    side: 'Both',
+    id: 't-dec-7', 
+    title: 'Book generator on rent from Dhaval\'s contact for farm sound & lighting backup', 
+    category: 'rentals', 
+    assignedTo: 'Groom', 
+    side: 'Boy',
     monthId: 'dec-2026', 
+    dueDate: '2026-12-10',
     completed: false, 
     priority: 'high',
-    notes: 'Direct from user notes: Food: pani valo.'
+    notes: 'Direct from user notes: DJ - generater, Get generator contact from dhaval, available on rent.'
   },
   { 
     id: 't-dec-3', 
@@ -210,9 +230,34 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Family', 
     side: 'Both',
     monthId: 'dec-2026', 
+    dueDate: '2026-12-15',
     completed: false, 
     priority: 'high',
     notes: 'Direct from user notes: welcome drink, nasta = garba night.'
+  },
+  { 
+    id: 't-dec-2', 
+    title: 'Hire dedicated "Pani valo" (water distributor for hot daytime vidhis)', 
+    category: 'catering', 
+    assignedTo: 'Family', 
+    side: 'Both',
+    monthId: 'dec-2026', 
+    dueDate: '2026-12-20',
+    completed: false, 
+    priority: 'high',
+    notes: 'Direct from user notes: Food: pani valo.'
+  },
+  { 
+    id: 't-dec-6', 
+    title: 'Confirm food servers (pirsava vala) and dish cleaners (vasan utkva vala)', 
+    category: 'catering', 
+    assignedTo: 'Family', 
+    side: 'Both',
+    monthId: 'dec-2026', 
+    dueDate: '2026-12-24',
+    completed: false, 
+    priority: 'medium',
+    notes: 'Direct from user notes: pirsava vala, vasan utkva vala.'
   },
   { 
     id: 't-dec-4', 
@@ -221,6 +266,7 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Family', 
     side: 'Both',
     monthId: 'dec-2026', 
+    dueDate: '2026-12-28',
     completed: false, 
     priority: 'medium',
     notes: 'Direct from user notes: Place: Farm, saf safai loko.'
@@ -232,31 +278,10 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Family', 
     side: 'Both',
     monthId: 'dec-2026', 
+    dueDate: '2026-12-30',
     completed: false, 
     priority: 'medium',
     notes: 'Direct from user notes: Place: Farm, watchmen.'
-  },
-  { 
-    id: 't-dec-6', 
-    title: 'Confirm food servers (pirsava vala) and dish cleaners (vasan utkva vala)', 
-    category: 'catering', 
-    assignedTo: 'Family', 
-    side: 'Both',
-    monthId: 'dec-2026', 
-    completed: false, 
-    priority: 'medium',
-    notes: 'Direct from user notes: pirsava vala, vasan utkva vala.'
-  },
-  { 
-    id: 't-dec-7', 
-    title: 'Book generator on rent from Dhaval\'s contact for farm sound & lighting backup', 
-    category: 'rentals', 
-    assignedTo: 'Groom', 
-    side: 'Boy',
-    monthId: 'dec-2026', 
-    completed: false, 
-    priority: 'high',
-    notes: 'Direct from user notes: DJ - generater, Get generator contact from dhaval, available on rent.'
   },
 
   // January 2027 (Rituals Preparation & Protocol Checks)
@@ -267,6 +292,7 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Both', 
     side: 'Both',
     monthId: 'jan-2027', 
+    dueDate: '2027-01-08',
     completed: false, 
     priority: 'high',
     notes: 'Direct from user notes: mando pate pachi eni chab devani hoi, bei side ek bija ne dei de.'
@@ -278,6 +304,7 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Family', 
     side: 'Both',
     monthId: 'jan-2027', 
+    dueDate: '2027-01-14',
     completed: false, 
     priority: 'high',
     notes: 'Direct from user notes: mandvo pate pachi paat utraman karvanu hoi, badha cover deva ave.'
@@ -289,6 +316,7 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Both', 
     side: 'Both',
     monthId: 'jan-2027', 
+    dueDate: '2027-01-24',
     completed: false, 
     priority: 'medium',
     notes: 'Direct from user notes: garba chelle icream hoi, garba bhega hoi to bhega, nakar pot potani tya icream.'
@@ -300,23 +328,31 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Both', 
     side: 'Both',
     monthId: 'jan-2027', 
+    dueDate: '2027-01-28',
     completed: false, 
     priority: 'high',
     notes: 'Direct from user notes: Close at 10 if police comes else till 12 AM.'
   },
   { 
     id: 't-jan-5', 
-    title: 'Jan 20 11:00 AM: Visit police station to obtain sound permit for DJ at low voice / decibel for Garba', 
+    title: 'Police Station Visit for DJ Sound Permit (Low Decibel)', 
     category: 'sound_dj', 
     assignedTo: 'Both', 
     side: 'Both',
     monthId: 'jan-2027', 
     completed: false, 
     priority: 'high',
-    notes: 'Visit local police station on 20 January 2027 with venue booking slip & invite to get permit for regulated low voice DJ for marriage Garba.'
+    dueDate: '2027-01-20',
+    notes: 'Visit local police station on 20 January 2027 (11:00 AM) with marriage invitation card, Silver Farm venue booking receipt & Dhaval sound specs to secure official written permit for low-decibel DJ music during Feb 20 Raas Garba celebration.',
+    subtasks: [
+      { id: 'sub-ps-1', title: 'Bring marriage invitation card & venue booking slip', completed: false },
+      { id: 'sub-ps-2', title: 'Get sound wattage & speaker specs from Dhaval sound operator', completed: false },
+      { id: 'sub-ps-3', title: 'Submit application & collect official signed permit copy', completed: false }
+    ],
+    tags: ['Permit', 'DJ Sound', 'Police Station', 'Garba']
   },
 
-  // February 1 - 16, 2027 (Final Prep & Fittings)
+  // February 1 - 14, 2027 (Final Prep & Fittings)
   { 
     id: 't-feb-1', 
     title: 'Final outfit fittings: Groom (Kurtas, Coty, Jodhpuri, Suits) & Bride (Chaniya Choli, Sarees)', 
@@ -324,9 +360,22 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Both', 
     side: 'Both',
     monthId: 'feb-prep', 
+    dueDate: '2027-02-05',
     completed: false, 
     priority: 'high',
     notes: 'Ensure all tailoring adjustments are completed before wedding week.'
+  },
+  { 
+    id: 't-feb-4', 
+    title: 'Coordinate Joint Jamanvar (Dinner together on Feb 20, 6:00 - 6:30 PM)', 
+    category: 'catering', 
+    assignedTo: 'Family', 
+    side: 'Both',
+    monthId: 'feb-prep', 
+    dueDate: '2027-02-08',
+    completed: false, 
+    priority: 'high',
+    notes: 'Direct from user notes: jamanvar (boy and girl nu hare che 6-6:30 PM).'
   },
   { 
     id: 't-feb-2', 
@@ -335,6 +384,7 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Groom', 
     side: 'Boy',
     monthId: 'feb-prep', 
+    dueDate: '2027-02-11',
     completed: false, 
     priority: 'high',
     notes: 'Direct from user notes: Boy ne Bapor pachi jan leine javanu 4 wage, katargam farm thi one km away.'
@@ -346,20 +396,10 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Bride', 
     side: 'Girl',
     monthId: 'feb-prep', 
+    dueDate: '2027-02-14',
     completed: true, 
     priority: 'high',
     notes: 'FINALIZED: Gor Maharaj confirmed Lagan Lakhan & Haldi on Feb 15, 2027!'
-  },
-  { 
-    id: 't-feb-4', 
-    title: 'Coordinate Joint Jamanvar (Dinner together on Feb 20, 6:00 - 6:30 PM)', 
-    category: 'catering', 
-    assignedTo: 'Family', 
-    side: 'Both',
-    monthId: 'feb-prep', 
-    completed: false, 
-    priority: 'high',
-    notes: 'Direct from user notes: jamanvar (boy and girl nu hare che 6-6:30 PM).'
   },
 
   // February 15 - 21, 2027 (Wedding Execution Days)
@@ -370,6 +410,7 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Family', 
     side: 'Boy',
     monthId: 'feb-days', 
+    dueDate: '2027-02-15',
     completed: false, 
     priority: 'high',
     notes: 'Direct from user notes: Sawar ma ran dal tedvana boy na ghare, Randel tedvanu: 8 AM. Finalized for Feb 15.'
@@ -381,6 +422,7 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Bride', 
     side: 'Girl',
     monthId: 'feb-days', 
+    dueDate: '2027-02-15',
     completed: false, 
     priority: 'high',
     notes: 'Direct from user notes: Gor maharaj girl na ghare lagan lakhavanu patave around 10-11 AM on Feb 15.'
@@ -392,6 +434,7 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Both', 
     side: 'Both',
     monthId: 'feb-days', 
+    dueDate: '2027-02-15',
     completed: false, 
     priority: 'high',
     notes: 'Direct from user notes: pachi Lagan laine ave girl wala (pn girl nai, emna brothers) (5-6 people saman leine, boy side around 100 present hoi).'
@@ -403,6 +446,7 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Family', 
     side: 'Boy',
     monthId: 'feb-days', 
+    dueDate: '2027-02-15',
     completed: false, 
     priority: 'high',
     notes: 'Direct from user notes: Boy ne emna meman ne jamadvana 12-1 PM.'
@@ -414,6 +458,7 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Groom', 
     side: 'Boy',
     monthId: 'feb-days', 
+    dueDate: '2027-02-15',
     completed: false, 
     priority: 'high',
     notes: 'Direct from user notes: Haldi Rasam : 4 Wage, meman ne 4 wage bolavana. Finalized for Feb 15.'
@@ -425,6 +470,7 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Family', 
     side: 'Both',
     monthId: 'feb-days', 
+    dueDate: '2027-02-15',
     completed: false, 
     priority: 'high',
     notes: 'Direct from user notes: Sanj Jamanvar : 6-7 Wage, girl side tyre meman pn vadhare hase.'
@@ -436,6 +482,7 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Bride', 
     side: 'Girl',
     monthId: 'feb-days', 
+    dueDate: '2027-02-16',
     completed: false, 
     priority: 'high',
     notes: 'Auspicious Randal Tedva function at girl\'s house around 8-9 AM on 16th Feb 2027.'
@@ -447,6 +494,7 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Both', 
     side: 'Both',
     monthId: 'feb-days', 
+    dueDate: '2027-02-17',
     completed: false, 
     priority: 'high',
     notes: 'Vana Rasam on 17th Feb at girl\'s place: boy is called for the rasam together and photosession.'
@@ -458,6 +506,7 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Both', 
     side: 'Both',
     monthId: 'feb-days', 
+    dueDate: '2027-02-18',
     completed: false, 
     priority: 'high',
     notes: 'Mehndi at girl\'s place on 18th Feb: boy will be called upon for photoshoot.'
@@ -469,6 +518,7 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Bride', 
     side: 'Girl',
     monthId: 'feb-days', 
+    dueDate: '2027-02-19',
     completed: false, 
     priority: 'high',
     notes: 'Mameru on 19th Feb: only girl\'s side function with maternal uncle & family.'
@@ -480,6 +530,7 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Both', 
     side: 'Both',
     monthId: 'feb-days', 
+    dueDate: '2027-02-19',
     completed: false, 
     priority: 'high',
     notes: 'Boy\'s side is called on 19th Feb to present and give Chab gift items to girl\'s side.'
@@ -491,6 +542,7 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Bride', 
     side: 'Girl',
     monthId: 'feb-days', 
+    dueDate: '2027-02-19',
     completed: false, 
     priority: 'high',
     notes: 'Sanji na geet around 9:00 PM on 19th Feb with girl side guests only.'
@@ -502,6 +554,7 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Groom', 
     side: 'Boy',
     monthId: 'feb-days', 
+    dueDate: '2027-02-20',
     completed: false, 
     priority: 'high',
     notes: 'Boy makeup, hair styling, beard grooming, and Mandvo outfit readyness between 9:00 AM – 11:00 AM.'
@@ -513,6 +566,7 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Bride', 
     side: 'Girl',
     monthId: 'feb-days', 
+    dueDate: '2027-02-20',
     completed: false, 
     priority: 'high',
     notes: 'Direct from user notes: 20 th Feb Parlour : 11 AM or 12 PM.'
@@ -524,6 +578,7 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Family', 
     side: 'Both',
     monthId: 'feb-days', 
+    dueDate: '2027-02-20',
     completed: false, 
     priority: 'high',
     notes: 'Direct from user notes: Mandvo - 2 PM (from boys side, need to ask girl’s side). ek bija na mandvo nakhshe, pachi boy ne chandlo karva ave.'
@@ -535,6 +590,7 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Family', 
     side: 'Both',
     monthId: 'feb-days', 
+    dueDate: '2027-02-20',
     completed: false, 
     priority: 'high',
     notes: 'Direct from user notes: jamanvar (boy and girl nu hare che 6-6:30 PM).'
@@ -546,6 +602,7 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Both', 
     side: 'Both',
     monthId: 'feb-days', 
+    dueDate: '2027-02-20',
     completed: false, 
     priority: 'high',
     notes: 'Direct from user notes: Garba - 8 PM, Close at 10 if police comes else till 12 AM.'
@@ -557,6 +614,7 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Groom', 
     side: 'Boy',
     monthId: 'feb-days', 
+    dueDate: '2027-02-21',
     completed: false, 
     priority: 'high',
     notes: 'Direct from user notes: Boy ne Bapor pachi jan leine javanu 4 wage, katargam farm thi one km away.'
@@ -568,6 +626,7 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Both', 
     side: 'Both',
     monthId: 'feb-days', 
+    dueDate: '2027-02-21',
     completed: false, 
     priority: 'high',
     notes: 'Direct from user notes: Entry event, Mandap ma besi javanu.'
@@ -579,11 +638,13 @@ export const INITIAL_TASKS: Task[] = [
     assignedTo: 'Both', 
     side: 'Both',
     monthId: 'feb-days', 
+    dueDate: '2027-02-21',
     completed: false, 
     priority: 'high',
     notes: 'Direct from user notes: Lagan thay jay 12 wage etle ek mandir e jay avanu.'
   }
 ];
+
 
 export const INITIAL_RENTALS: RentalItem[] = [
   {
@@ -707,6 +768,7 @@ export const INITIAL_RENTALS: RentalItem[] = [
     notes: 'Direct from user notes: dome ma karvanu dome hoi to nakar mandvo banavano hoi. 2 PM mandvo on Feb 20.'
   }
 ];
+
 
 export const INITIAL_DRESSES: DressItem[] = [
   // Groom Outfits (Boy's Side)
@@ -948,26 +1010,8 @@ export const INITIAL_DRESSES: DressItem[] = [
   }
 ];
 
+
 export const INITIAL_DAY_SCHEDULES: EventDaySchedule[] = [
-  {
-    id: 'jan-20',
-    dateString: '2027-01-20',
-    dayName: 'Wednesday / 20 Jan',
-    title: 'Police Station Permit Visit (DJ Sound)',
-    location: 'Surat Police Station (Local Jurisdiction)',
-    items: [
-      {
-        id: 's-jan20-1',
-        time: '11:00 AM – 01:00 PM',
-        title: 'Police Station Visit for DJ Sound Permit (Low Decibel)',
-        gujaratiTitle: 'પોલીસ સ્ટેશન મુલાકાત: ગરબા ડીજે સાઉન્ડ પરમિશન (ધીમા અવાજે)',
-        location: 'Surat City Police Station / Commissioner Office',
-        actionNotes: 'Visit the local police station to apply for & secure official written permit for DJ sound setup (at regulated low decibel / volume) for marriage Raas Garba celebration at Silver Farm.',
-        side: 'Both',
-        urgentRule: 'Submit marriage invitation card, venue booking slip & Dhaval sound specs for DJ permit!'
-      }
-    ]
-  },
   {
     id: 'feb-15',
     dateString: '2027-02-15',
@@ -1430,6 +1474,7 @@ export const INITIAL_DAY_SCHEDULES: EventDaySchedule[] = [
   }
 ];
 
+
 export const INITIAL_DECISION_POINTS: DecisionPoint[] = [
   {
     id: 'dec-prewed',
@@ -1484,6 +1529,7 @@ export const INITIAL_DECISION_POINTS: DecisionPoint[] = [
     side: 'Both'
   }
 ];
+
 
 export const INITIAL_NOTES: PlanningNote[] = [
   {
@@ -1631,352 +1677,559 @@ export const INITIAL_NOTES: PlanningNote[] = [
 ];
 
 
-// Pre-Wedding Shoot Presets & Initial State
-export const NATIONAL_PREWEDDING_PRESET: PreWeddingTripPlan = {
-  tripType: 'NATIONAL',
-  destination: 'Udaipur, Rajasthan (Lake Pichola & Heritage Palaces) OR Goa Beach',
-  durationLabel: '2–3 Days Trip',
-  targetDates: 'Dec 11 – Dec 14, 2026',
-  flightStatus: 'To Book',
+
+// Pre-Wedding Story Reels, Location Scouts & Presets
+export const DEFAULT_STORY_REELS: PreWeddingStoryReel[] = [
+  {
+    id: 'story-reel-1',
+    reelNumber: 1,
+    title: 'Story Reel 1: Timeless Royal Heritage',
+    storyTheme: 'A classic, regal romance beginning from majestic stone arches, walking through a quiet colonnade, and concluding atop sunset ramparts overlooking the sea.',
+    groomOutfit: 'Royal Navy / Emerald Jodhpuri Bandhgala Suit with pocket square & tan formal leather shoes',
+    brideOutfit: 'Rich Wine-Red / Deep Crimson Embroidered Silk Heritage Lehenga with subtle temple jewelry',
+    outfitStatus: 'To Select',
+    outfitNotes: 'Same royal outfit is worn across all 3 scene locations to create a seamless continuous story narrative cut.',
+    audioSongVibe: 'Soulful acoustic fusion (Classical Flute / Kesariya Gujarati instrumental strings)',
+    durationTarget: '30–45s (9:16 vertical)',
+    status: 'Planning',
+    scenes: [
+      {
+        id: 's-r1-1',
+        sceneNumber: 1,
+        locationName: 'Historic Stone Fortress Arches (Moti Daman / Champaner)',
+        sceneAction: 'Groom checks watch and looks up; Bride arrives gracefully through the massive stone archway; slow-motion turning eye contact and radiant smile.',
+        shotType: 'Cinematic wide reveal zooming smoothly into medium portrait (f/1.8 bokeh)',
+        lighting: 'Early Morning Golden Hour (07:30 AM)'
+      },
+      {
+        id: 's-r1-2',
+        sceneNumber: 2,
+        locationName: 'Ancient Monastery Colonnade / Shaded Courtyard',
+        sceneAction: 'Couple strolling together along carved stone pillars, laughing candidly, Groom gently guiding Bride through the walkway.',
+        shotType: 'Smooth 3-axis gimbal backward tracking walking shot',
+        lighting: 'Soft diffused morning sunlight (08:45 AM)'
+      },
+      {
+        id: 's-r1-3',
+        sceneNumber: 3,
+        locationName: 'Fortress Ramparts / Sea Wall Panoramic Overlook',
+        sceneAction: 'Couple leaning together over stone battlements watching the ocean horizon; warm golden sunset embrace and twirl.',
+        shotType: 'Low-angle golden rim-light silhouette followed by high aerial drone pull-back',
+        lighting: 'Golden Hour Sunset (05:45 PM)'
+      }
+    ]
+  },
+  {
+    id: 'story-reel-2',
+    reelNumber: 2,
+    title: 'Story Reel 2: Coastal Breeze & Golden Hour Sunset',
+    storyTheme: 'Breezy, carefree romantic journey transitioning from shaded casuarina pine woods to a windswept rocky shoreline and sunset sand reflection.',
+    groomOutfit: 'Crisp Ivory / Sage-Green Linen open-collar shirt, tailored beige cotton chinos & loafers',
+    brideOutfit: 'Flowing Pastel Silk / Georgette Satin Gown (Dusty Rose or Champagne) with graceful wind sweep',
+    outfitStatus: 'To Select',
+    outfitNotes: 'Light, breathable resort styling kept consistent across the 3 nature backdrops.',
+    audioSongVibe: 'Dreamy romantic Bollywood slow reverb / Indie acoustic guitar rhythm',
+    durationTarget: '30–45s (9:16 vertical)',
+    status: 'Planning',
+    scenes: [
+      {
+        id: 's-r2-1',
+        sceneNumber: 1,
+        locationName: 'Casuarina Pine Woods / Forest Pathway (Dumas / Daman Coast)',
+        sceneAction: 'Running hand-in-hand through rows of tall pine trees; natural candid laughter as pine needles scatter; sunbeams cutting through branches.',
+        shotType: 'Medium forward tracking shot with natural lens flare (60 fps slow-mo)',
+        lighting: 'Morning / Early Afternoon Sunlight (10:30 AM)'
+      },
+      {
+        id: 's-r2-2',
+        sceneNumber: 2,
+        locationName: 'Rocky Shoreline / Coastal Sea Promenade',
+        sceneAction: 'Bride\'s dress flowing in sea breeze; seated on rocks sharing a whisper; close-up hand holding and affectionate laughter.',
+        shotType: 'Tight 85mm prime lens close-up with soft ocean spray bokeh',
+        lighting: 'Late Afternoon Warm Glow (04:30 PM)'
+      },
+      {
+        id: 's-r2-3',
+        sceneNumber: 3,
+        locationName: 'Black Sand Beach Shoreline (Dumas / Jampore Beach)',
+        sceneAction: 'Couple dancing slowly in ankle-deep wet sand reflecting orange and purple twilight skies; iconic slow-motion dip and silhouette embrace.',
+        shotType: 'Wide 4K horizontal/vertical hybrid cut with sky reflection & smooth orbit',
+        lighting: 'Golden Sunset into Blue Hour (06:00 PM)'
+      }
+    ]
+  },
+  {
+    id: 'story-reel-3',
+    reelNumber: 3,
+    title: 'Story Reel 3: Modern Glamour & Playful City Date',
+    storyTheme: 'High-energy stylish modern romance starting with an aesthetic cafe date, walking past retro street elements, and climaxing under evening fairy lights.',
+    groomOutfit: 'Sharp Black / Charcoal 3-piece Suit or Structured Tuxedo Blazer with crisp open collar',
+    brideOutfit: 'Contemporary Black / Emerald Satin High-Slit Gown or Modern Draped Indo-Western Saree',
+    outfitStatus: 'To Select',
+    outfitNotes: 'Glamorous evening attire maintained across cafe, street and twilight lights scenes.',
+    audioSongVibe: 'Upbeat romantic indie pop with crisp beat-drops timed to scene cuts',
+    durationTarget: '30–45s (9:16 vertical)',
+    status: 'Planning',
+    scenes: [
+      {
+        id: 's-r3-1',
+        sceneNumber: 1,
+        locationName: 'Aesthetic European Cafe Terrace / Glasshouse Set (Surat / Studio)',
+        sceneAction: 'Espresso toast across marble bistro table, shared smiling glances, Groom gently adjusting Bride\'s earring.',
+        shotType: 'Over-the-shoulder medium shot cutting to intimate eye-contact portrait',
+        lighting: 'Afternoon Soft Indoor / Covered Terrace (03:00 PM)'
+      },
+      {
+        id: 's-r3-2',
+        sceneNumber: 2,
+        locationName: 'Retro Cobblestone Alley / Vintage Roadster Car (Surat Sets / Daman)',
+        sceneAction: 'Couple walking with confidence side-by-side in stylish sunglasses; playful bump of shoulders and twirl beside vintage vehicle.',
+        shotType: 'Full-body strut tracking shot from low angle',
+        lighting: 'Late Afternoon Golden Light (05:00 PM)'
+      },
+      {
+        id: 's-r3-3',
+        sceneNumber: 3,
+        locationName: 'Twilight Fairy Light Canopy & Illuminated Fountain',
+        sceneAction: 'Slow romantic dance beneath hanging Edison bulbs and fairy lights; Groom lifts/dips Bride under sparkling golden bokeh.',
+        shotType: 'Dramatic 360-degree orbit shot at 120fps with bokeh burst',
+        lighting: 'Blue Hour & Night Illumination (07:15 PM)'
+      }
+    ]
+  }
+];
+
+
+export const DEFAULT_LOCATION_OPTIONS: LocationOption[] = [
+  {
+    id: 'loc-daman',
+    name: 'Daman (Moti Daman Fort, Lighthouse & Jampore Beach)',
+    tagline: 'Top Pick: 400-Yr Portuguese Stone Forts & Ocean Views — Only 2h Drive',
+    category: 'Coastal / Heritage',
+    distanceFromSurat: '110 km',
+    driveTime: '1.5 – 2 hours via NH48',
+    baseCost: 0,
+    baseCostLabel: 'Free / Zero Venue Charge',
+    propCostNotes: 'Zero prop surcharges! Beach horse ride or boat is standard tourist rate (₹200–₹500), not ₹3,000 venue fee.',
+    rulesFlexibility: 'Very Flexible',
+    bestBackdrops: [
+      'Moti Daman Fort 400-year massive carved stone arches',
+      'Dominican Monastery ancient stone pillar ruins',
+      'Lighthouse & stone ramparts overlooking Arabian Sea',
+      'Jampore Beach black sand sunset & coastal promenade'
+    ],
+    pros: [
+      'Zero base venue fee (public heritage monument) — saves ₹25,000 immediately compared to Anand villa',
+      'Super easy 1.5–2 hours smooth highway drive from Surat (NH48) — can be done as a comfortable 1-day trip or relaxed 1-night weekend',
+      'Real 16th-century Portuguese stone arches look far more authentic and cinematic than artificial studio sets',
+      'Relaxed atmosphere with zero rigid hourly rules or intrusive property guards',
+      'Boutique luxury hotels (The Deltin, Mirasol) available for affordable day-use rooms for makeup and outfit changes'
+    ],
+    cons: [
+      'Public monument: best to shoot on a weekday (Tuesday–Thursday) to enjoy empty arches without tourist crowds',
+      'Outdoor weather dependent (Nov/Dec is ideal pleasant winter season)'
+    ],
+    isRecommended: true,
+    status: 'Selected'
+  },
+  {
+    id: 'loc-surat-sets',
+    name: 'Surat Film City & Pre-Wedding Studios (The Frame / Photo Palace)',
+    tagline: 'Zero Travel Fatigue: 35+ Backdrops Right in Surat with Makeup Rooms',
+    category: 'Film City Studio',
+    distanceFromSurat: '15 – 25 km',
+    driveTime: '25 – 45 mins within Surat',
+    baseCost: 12000,
+    baseCostLabel: '₹10,000 – ₹15,000 (Full Day Slot)',
+    propCostNotes: 'ALL major props (vintage car, telephone booth, rustic swing, neon glasshouse, retro bike) INCLUDED in base fee!',
+    rulesFlexibility: 'Moderate',
+    bestBackdrops: [
+      'European Cobblestone Alley with warm street lamps',
+      'Santorini Greek white-and-blue dome sets',
+      'Rustic Barn, hay bales & vintage green truck',
+      'Glasshouse conservatory with fairy light canopy'
+    ],
+    pros: [
+      'Zero highway travel fatigue — wake up at normal time and shoot 20 minutes from home',
+      'Private air-conditioned vanity rooms dedicated for Bride & Groom outfit changes and makeup touchups',
+      'Props like vintage cars and swings are included in the slot price without extra ₹3,000 charges',
+      'Guaranteed consistent artificial lighting and zero public crowd interference',
+      'Can easily shoot 3 distinct looks and 9 scenes within a single 8-hour shift'
+    ],
+    cons: [
+      'Man-made studio sets rather than authentic historic architecture',
+      'Must book weekend slots 2–3 weeks in advance'
+    ],
+    isRecommended: true,
+    status: 'Shortlisted'
+  },
+  {
+    id: 'loc-vadodara',
+    name: 'Vadodara & Champaner UNESCO Heritage Corridor',
+    tagline: 'Grand Royal Indo-Saracenic Architecture & 15th-Century Stone Arches',
+    category: 'Heritage Palace',
+    distanceFromSurat: '140 km',
+    driveTime: '2 – 2.5 hours via NH48 / Vande Bharat',
+    baseCost: 500,
+    baseCostLabel: 'Nominal ASI ticket (₹25–₹50 / person)',
+    propCostNotes: 'Public heritage monument; no prop fees',
+    rulesFlexibility: 'Moderate',
+    bestBackdrops: [
+      'Laxmi Vilas Palace sprawling royal lawns & grand facade',
+      'Champaner Jami Masjid 15th-century carved stone arches & minarets',
+      'Kabutarkhana scenic lake pavilion',
+      'Sayaji Baug vintage garden gazebo'
+    ],
+    pros: [
+      'Unmatched royal grandeur — Laxmi Vilas Palace is 4 times larger than Buckingham Palace',
+      'Champaner stone arches create dramatic high-fashion cinematic frames',
+      'Super easy 1h 45m train connection via Vande Bharat or 2.5h smooth highway drive from Surat'
+    ],
+    cons: [
+      'Laxmi Vilas Palace interior shoots have restricted photography; exterior lawns and courtyards accessible',
+      'ASI monuments at Champaner prohibit large heavy light setups (handheld gimbals and drone outside restricted perimeter are fine)'
+    ],
+    status: 'Shortlisted'
+  },
+  {
+    id: 'loc-silvassa',
+    name: 'Silvassa & Dudhani Lake / Luxury Nature Resort',
+    tagline: 'Genuine Lakefront Boating & Lush Green Foothills',
+    category: 'Nature & Lake',
+    distanceFromSurat: '120 km',
+    driveTime: '2 hours via NH48',
+    baseCost: 3500,
+    baseCostLabel: '₹0 (Public Lake) to ₹4,000 (Resort Day pass)',
+    propCostNotes: 'Real shikara / speedboat on Dudhani Lake at standard tourist rates (~₹400 for 30 mins) instead of ₹3,000 venue upcharge!',
+    rulesFlexibility: 'Very Flexible',
+    bestBackdrops: [
+      'Dudhani Lake open waters with wooden shikara boat',
+      'Madhuban Dam water reservoir waterfront',
+      'Treat Resort landscaped swimming pool & manicured lawns',
+      'Vasona forest trail canopy'
+    ],
+    pros: [
+      'Authentic open lake with real water boating without venue extortion',
+      'Lush green hills and peaceful calm environment away from crowds',
+      'Only 2 hours highway drive from Surat'
+    ],
+    cons: [
+      'Fewer palace or European backdrops (best suited for nature, water, and resort glamor)'
+    ],
+    status: 'Evaluating'
+  },
+  {
+    id: 'loc-dumas',
+    name: 'Dumas Coastline & Casuarina Pine Woods (Surat)',
+    tagline: 'Local Moody Coastal Sunset & Tall Pine Groves',
+    category: 'Coastal / Heritage',
+    distanceFromSurat: '18 km',
+    driveTime: '30 mins from city center',
+    baseCost: 0,
+    baseCostLabel: 'Free / Public',
+    propCostNotes: 'Beach camel/horse ride costs ₹100–₹200 only; zero property fees',
+    rulesFlexibility: 'Very Flexible',
+    bestBackdrops: [
+      'Casuarina pine tree shaded walkway',
+      'Moody dark sand coastline at golden hour',
+      'Waves breaking over wet sand reflecting twilight clouds',
+      'Sultanpur coastal road & quiet rock pier'
+    ],
+    pros: [
+      'Inside Surat — perfect for an effortless golden hour sunset reel (Reel 2)',
+      'Can be paired in the same afternoon with a morning Surat studio set shoot',
+      'Completely free with zero commercial permits needed for small gimbal crew'
+    ],
+    cons: [
+      'Public visitors on weekend evenings (recommend weekday sunset or 6:30 AM sunrise shoot)'
+    ],
+    status: 'Shortlisted'
+  },
+  {
+    id: 'loc-anand-villa',
+    name: 'The Rustic Villa (Anand)',
+    tagline: 'Evaluated Reluctant Pick: Base ₹25,000 + ₹3,000 / Prop + Strict Rules',
+    category: 'Anand Villa (Reluctant)',
+    distanceFromSurat: '185 km',
+    driveTime: '3.5 – 4 hours each way',
+    baseCost: 25000,
+    baseCostLabel: '₹25,000 Base Charge',
+    propCostNotes: '₹3,000 EXTRA per prop: Horse (₹3,000), Boat (₹3,000), Vintage Car (₹3,000), Smoke (₹2,000) -> Quickly adds ₹11,000+!',
+    rulesFlexibility: 'Strict (Extra Charges)',
+    bestBackdrops: [
+      'Rustic farmhouse wooden facade',
+      'Artificial pond with small rowboat',
+      'Equestrian paddock & horse path',
+      'Cobblestone courtyard set'
+    ],
+    pros: [
+      'Consolidated variety of sets in one private gated property',
+      'Horse and boat props are physically on the premise'
+    ],
+    cons: [
+      'High base charge of ₹25,000 PLUS ₹3,000 extra per prop pushes total venue cost to ₹35,000–₹40,000+',
+      'Strict rules on slot duration, rigid staff surveillance, and overtime penalties',
+      'Long 3.5 to 4-hour highway drive from Surat each way (causes tiredness before shooting)',
+      'Artificial constructed sets compared to genuine heritage forts like Daman or Champaner'
+    ],
+    isReluctant: true,
+    status: 'Evaluating'
+  }
+];
+
+
+export const DEFAULT_PROPS: PropItem[] = [
+  { id: 'prop-smoke', name: 'Colored Smoke Bombs / Cold Pyro Sparks', cost: 1500, selected: true, notes: 'Adds dramatic color pop to slow-motion walking cuts' },
+  { id: 'prop-lights', name: 'Portable Fairy Lights & Edison Bulbs String', cost: 2000, selected: true, notes: 'Warm twilight ambiance for Reel 3 evening scene' },
+  { id: 'prop-steamer', name: 'Garment Steamer & Pop-up Changing Vanity Tent', cost: 1500, selected: true, notes: 'Essential for crisp outfit changes on location' },
+  { id: 'prop-horse', name: 'Horse Photoshoot Setup', cost: 3000, selected: false, notes: 'Charged ₹3,000 at Anand Villa; local beach horse in Daman/Dumas is ~₹300' },
+  { id: 'prop-boat', name: 'Row Boat / Water Setup', cost: 3000, selected: false, notes: 'Charged ₹3,000 at Anand Villa; Dudhani Lake shikara is ~₹400' },
+  { id: 'prop-car', name: 'Vintage Open Car / Scooter Setup', cost: 3000, selected: false, notes: 'Free/included at Surat Studio Sets; ₹3,000 extra at Anand Villa' }
+];
+
+export const SURAT_REGIONAL_PRESET: PreWeddingTripPlan = {
+  tripType: 'SURAT_REGIONAL',
+  destination: 'Daman (Moti Daman Fort & Jampore Coast) + Surat Local Sets (1–2 Days)',
+  durationLabel: '1–2 Days Easy Road Trip',
+  targetDates: 'Dec 08 – Dec 09, 2026',
+  travelMode: 'Private AC Innova / Road Trip from Surat (1.5–2 hours)',
+  flightStatus: 'Not Needed',
   hotelStatus: 'To Book',
   passportVisaStatus: 'Not Needed',
-  photographerAgency: 'To Book (Candid + Cinematography + Drone)',
+  photographerAgency: 'To Book (Candid Cinematographer + Drone Specialist)',
   contactPerson: 'Lead Cinematographer',
   phone: '',
   crewCount: 3,
-  totalEstimatedCost: 150000,
+  baseVenueCost: 5000,
+  propsCost: 5000,
+  crewCost: 60000,
+  travelCost: 5000,
+  totalEstimatedCost: 75000,
   advancePaid: 0,
   deliverables: [
-    '1 Cinematic Pre-Wedding Film (3-4 mins 4K with custom music soundtrack)',
-    '2 Instagram Reels (9:16 vertical cuts for social media announcements)',
-    '40-50 Color-graded High-Res Master Photos (framed portraits & digital)',
-    '1 Teaser Trailer (30-45s) for Save-The-Date digital invitations',
-    'Full HD Landscape Cut formatted for LED Wall display on Feb 20 Garba Night'
+    '3 Cinematic Story Reels (9:16 vertical 4K edits, 1 outfit each across 3 distinct locations)',
+    '1 Cinematic Pre-Wedding Highlight Film (3-4 mins 4K combining all 3 story themes with custom music)',
+    '1 Full 4K Horizontal Cut formatted for Feb 20 Raas-Garba LED screen at Silver Farm',
+    '40-50 Color-graded High-Res Master Retouched Photos (framed portraits & digital)',
+    '1 Quick Save-The-Date Teaser Reel (30-45s) for WhatsApp digital invitations'
   ],
+  storyReels: DEFAULT_STORY_REELS,
+  locationOptions: DEFAULT_LOCATION_OPTIONS,
+  props: DEFAULT_PROPS,
   looks: [
     {
-      id: 'pw-look-1',
-      themeTitle: 'Royal Heritage / Palace Elegance',
-      groomOutfit: 'Royal Navy / Emerald Jodhpuri Bandhgala Suit with pocket square & formal shoes',
-      brideOutfit: 'Heavy Embroidered Royal Heritage Lehenga / Anarkali with royal dupatta',
-      locationBackdrop: 'Heritage palace courtyards, grand archways, marble jharokhas, or fort walls',
+      id: 'look-1',
+      themeTitle: 'Story Reel 1: Timeless Royal Heritage',
+      groomOutfit: 'Royal Navy / Emerald Jodhpuri Bandhgala Suit with pocket square & formal leather shoes',
+      brideOutfit: 'Rich Wine-Red / Deep Crimson Embroidered Silk Heritage Lehenga',
+      locationBackdrop: 'Moti Daman Fort arched gates, monastery ruins & stone ramparts',
       status: 'Planning'
     },
     {
-      id: 'pw-look-2',
-      themeTitle: 'Western Glamour & Golden Hour Sunset',
-      groomOutfit: 'Classic Black Tuxedo with bowtie or sleek Charcoal 3-piece Suit',
-      brideOutfit: 'Dramatic Evening Gown / Satin Silk Trail Dress in wine red or emerald',
-      locationBackdrop: 'Lakeside sunset, rooftop infinity pool, or palace terrace at twilight',
+      id: 'look-2',
+      themeTitle: 'Story Reel 2: Coastal Breeze & Golden Sunset',
+      groomOutfit: 'Crisp Ivory / Sage Linen open-collar shirt with tailored beige chinos & loafers',
+      brideOutfit: 'Flowing Pastel Silk / Georgette Satin Gown (Dusty Rose / Champagne)',
+      locationBackdrop: 'Pine wood forest groves & black sand beach shoreline at sunset',
       status: 'Planning'
     },
     {
-      id: 'pw-look-3',
-      themeTitle: 'Breezy Romantic / Casual Chic',
-      groomOutfit: 'Pastel Linen shirt (Sky Blue / White / Sage), slim chinos, loafers',
-      brideOutfit: 'Flowy floral sundress, pastel resort-wear, or chic co-ord set',
-      locationBackdrop: 'Lake promenade, scenic waterfront, blooming gardens, or desert dunes',
-      status: 'Planning'
-    },
-    {
-      id: 'pw-look-4',
-      themeTitle: 'Contemporary Coordinated / Cinematic Night',
-      groomOutfit: 'Smart casual layered blazer or textured knit with dark trousers',
-      brideOutfit: 'Modern draped saree / contemporary Indo-western fusion gown',
-      locationBackdrop: 'Fairy lights night installation, candle-lit courtyard, or boat cruise',
+      id: 'look-3',
+      themeTitle: 'Story Reel 3: Modern Glamour & City Date',
+      groomOutfit: 'Sharp Black Tuxedo / Charcoal Structured 3-piece Suit',
+      brideOutfit: 'Contemporary Black / Emerald Satin Gown or Modern Indo-Western Saree',
+      locationBackdrop: 'Aesthetic cafe terrace, cobblestone alley & evening fairy lights',
       status: 'Planning'
     }
   ],
   checklist: [
     {
       id: 'pw-chk-1',
-      stage: 'Scope & Destination',
-      title: 'Decide Trip Scope: National (2-3 days in Udaipur/Goa) vs International (1 week in Dubai/Bali)',
+      stage: 'Location & Scope Decision',
+      title: 'Finalize Shoot Destination: Daman Portuguese Heritage vs Surat Studio Sets (Avoid Anand Villa fees)',
       completed: false,
-      notes: 'Evaluate leave availability, budget, flight travel times, and photography permits.'
+      notes: 'Daman is 1.5h drive from Surat with free 400-yr fort arches. Surat studio sets have 35+ backdrops with props included.'
     },
     {
       id: 'pw-chk-2',
-      stage: 'Scope & Destination',
-      title: 'Shortlist top 2 destination choices & check seasonal weather / photography permit guidelines',
+      stage: 'Location & Scope Decision',
+      title: 'Lock shoot dates (Recommended weekday Tue–Thu in Nov/Dec to ensure empty backdrops without tourist footfall)',
       completed: false,
-      notes: 'Dec / Jan is peak pleasant weather for Rajasthan, Goa, and UAE.'
+      notes: 'Avoid weekend crowds at Daman Fort and Dumas Beach.'
     },
     {
       id: 'pw-chk-3',
-      stage: 'Photography Crew',
-      title: 'Interview & book Photography + Cinematography crew (Lead shooter, Cinematographer, Drone pilot)',
+      stage: 'Storyboards & 3 Reel Scripts',
+      title: 'Review 3 Story Reel concepts with Cinematographer (Story 1: Royal, Story 2: Sunset Coastal, Story 3: Modern Date)',
       completed: false,
-      notes: 'Ensure drone camera permits are handled by the crew in designated zones.'
+      notes: 'Each reel has 1 consistent outfit across 3 scenes to tell one fluid story.'
     },
     {
       id: 'pw-chk-4',
-      stage: 'Photography Crew',
-      title: 'Confirm deliverable package: 1 cinematic film, 2 reels, 40 photos, 1 teaser, and Garba LED cut',
+      stage: 'Storyboards & 3 Reel Scripts',
+      title: 'Select 3 audio tracks / song rhythms matching the story moods and edit transition beats',
       completed: false,
-      notes: 'Lock turnaround times: Teaser within 10 days, full video before mid-January.'
+      notes: 'Reel 1: Acoustic Gujarati folk flute, Reel 2: Breezy Bollywood reverb, Reel 3: Upbeat indie pop.'
     },
     {
       id: 'pw-chk-5',
-      stage: 'Travel & Lodging',
-      title: 'Book return flight / train tickets for Couple and photography team',
+      stage: 'Wardrobe & Outfits',
+      title: 'Finalize Outfit 1 for Reel 1 (Groom Royal Jodhpuri + Bride Wine-Red Lehenga)',
       completed: false,
-      notes: 'Coordinate baggage allowances for camera gear, drone batteries, and wedding gowns.'
+      notes: 'Ensure steam-ironed and packed with matching accessories.'
     },
     {
       id: 'pw-chk-6',
-      stage: 'Travel & Lodging',
-      title: 'Book picturesque heritage resort / villa with shoot permissions included in room stay',
+      stage: 'Wardrobe & Outfits',
+      title: 'Finalize Outfit 2 for Reel 2 (Groom Linen Shirt + Bride Flowing Pastel Gown)',
       completed: false,
-      notes: 'Many palace hotels include courtyard shooting rights for resident guests.'
+      notes: 'Lightweight fabric with maximum wind sweep for coastal shots.'
     },
     {
       id: 'pw-chk-7',
-      stage: 'Travel & Lodging',
-      title: 'Arrange dedicated local SUV / transportation for moving props and gear between locations',
+      stage: 'Wardrobe & Outfits',
+      title: 'Finalize Outfit 3 for Reel 3 (Groom Black Tuxedo + Bride Modern Evening Gown)',
       completed: false,
-      notes: 'Allows fast outfit changes on location.'
+      notes: 'Fitted formal evening styling for cafe and twilight fairy lights.'
     },
     {
       id: 'pw-chk-8',
-      stage: 'Wardrobe & Styling',
-      title: 'Curate and buy/tailor 4 distinct looks for Groom & Bride (Royal, Western Gown/Tux, Casual, Modern)',
+      stage: 'Wardrobe & Outfits',
+      title: 'Pack portable garment steamer, hair vanity kit, and pop-up changing tent in car',
       completed: false,
-      notes: 'Steam iron outfits in advance; pack portable garment steamer.'
+      notes: 'Ensures quick 15-minute outfit changes right near the shoot location.'
     },
     {
       id: 'pw-chk-9',
-      stage: 'Wardrobe & Styling',
-      title: 'Book travel Makeup Artist & Hair Stylist (or pack comprehensive travel bridal vanity kit)',
+      stage: 'Photography Crew & Contract',
+      title: 'Contract Cinematography Crew (Lead Director, Gimbal Operator, Drone Pilot)',
       completed: false,
-      notes: 'Waterproof makeup essential for outdoor and humid shoots.'
+      notes: 'Confirm package: 3 Story Reels (9:16) + 1 Full Master Film + 1 Garba LED Wall Cut + 40 Master Photos.'
     },
     {
       id: 'pw-chk-10',
-      stage: 'Shoot Execution',
-      title: 'Execute Pre-Wedding Shoot Trip: Golden hour shoots, drone sweeps, and romantic candid clips',
+      stage: 'Travel & Lodging',
+      title: 'Arrange dedicated AC Innova car from Surat for couple, vanity trunk, and camera gear',
       completed: false,
-      notes: 'Schedule early morning 6:30 AM sunrise shoot to beat crowds!'
+      notes: '1.5–2 hours smooth drive via NH48.'
     },
     {
       id: 'pw-chk-11',
-      stage: 'Post-Production',
-      title: 'Review raw photo proofs and shortlist 40 master photos for retouching and album',
+      stage: 'Travel & Lodging',
+      title: 'Book 1 luxury hotel day-use room in Daman (e.g. The Deltin or Mirasol) for makeup prep',
       completed: false,
-      notes: 'Select photos for digital Save-The-Date cards and Instagram announcements.'
+      notes: 'Much more comfortable than changing in public restrooms.'
     },
     {
       id: 'pw-chk-12',
-      stage: 'Post-Production',
-      title: 'Receive edited Pre-Wedding Teaser video and share digital wedding invitation with family',
+      stage: 'Shoot Day Execution',
+      title: 'Execute Day 1 morning shoot (07:00 AM) at Fort Arches for Story Reel 1',
       completed: false,
-      notes: 'Deliver before Jan 15 for digital distribution.'
+      notes: 'Catch morning golden hour light on stone walls.'
     },
     {
       id: 'pw-chk-13',
-      stage: 'Post-Production',
-      title: 'Receive 4K horizontal master cut ready for projection on Feb 20 Raas-Garba night LED screen',
+      stage: 'Shoot Day Execution',
+      title: 'Execute afternoon pine woods & golden hour sunset beach shoot for Story Reel 2',
       completed: false,
-      notes: 'Hand over file to Dhaval Jajenwala\'s LED wall operator at Silver Farm!'
+      notes: 'Golden sunset over black sand coastline.'
+    },
+    {
+      id: 'pw-chk-14',
+      stage: 'Shoot Day Execution',
+      title: 'Execute twilight evening date shoot under fairy lights for Story Reel 3',
+      completed: false,
+      notes: 'Capture warm Edison bulb bokeh and dancing twirl.'
+    },
+    {
+      id: 'pw-chk-15',
+      stage: 'Post-Production & Garba LED Delivery',
+      title: 'Review raw footage cuts and approve sound sync for the 3 Instagram Story Reels',
+      completed: false,
+      notes: 'Deliver 3 reels sequentially for social media announcements.'
+    },
+    {
+      id: 'pw-chk-16',
+      stage: 'Post-Production & Garba LED Delivery',
+      title: 'Receive final 4K horizontal master cut by January 15 for Feb 20 Raas-Garba LED screen',
+      completed: false,
+      notes: 'Hand over master cut to Dhaval Jajenwala\'s LED wall operator at Silver Farm!'
     }
   ],
-  notes: 'Pre-wedding shoot is an independent multi-day trip planned for Nov/Dec 2026. Totally distinct from Feb 15 home rituals (Randel, Lagan Lakhan, Haldi & Mehndi).'
+  notes: 'Pre-wedding shoot planned as an easy 1–2 day road trip from Surat focusing on 3 high-impact Story Reels (same clothes, multi-location cuts). Replaced Anand Rustic Villa to eliminate high base fees and ₹3,000 prop charges.'
 };
 
-export const INTERNATIONAL_PREWEDDING_PRESET: PreWeddingTripPlan = {
-  tripType: 'INTERNATIONAL',
-  destination: 'Dubai, UAE (Desert Safari, Downtown Skyline & Luxury Yacht) OR Bali, Indonesia',
-  durationLabel: '1 Week / 5–7 Days Trip',
-  targetDates: 'Nov 25 – Dec 02, 2026',
-  flightStatus: 'To Book',
-  hotelStatus: 'To Book',
-  passportVisaStatus: 'Check Validity',
-  photographerAgency: 'To Book (Destination Specialist Crew)',
-  contactPerson: 'Lead Destination Photographer',
-  phone: '',
-  crewCount: 3,
-  totalEstimatedCost: 320000,
-  advancePaid: 0,
-  deliverables: [
-    '1 Cinematic Pre-Wedding Film (4-5 mins 4K with international landscape & aerial drone cuts)',
-    '3 Instagram Reels (9:16 vertical 4K edits)',
-    '50 Color-graded Master Photos (High-res print & digital)',
-    '1 Teaser Trailer (45s) for Save-The-Date cards',
-    'Full 4K Horizontal Cut for Feb 20 Raas-Garba LED screen projection'
-  ],
-  looks: [
-    {
-      id: 'pw-intl-1',
-      themeTitle: 'Desert Dunes & Sunset Romance',
-      groomOutfit: 'Breezy Linen suit or crisp white open-collar shirt with camel trousers',
-      brideOutfit: 'Flying red trail dress / flowing chiffon gown with dramatic wind sweep',
-      locationBackdrop: 'Red sand dunes at sunset, camel safari camp, or desert resort oasis',
-      status: 'Planning'
-    },
-    {
-      id: 'pw-intl-2',
-      themeTitle: 'Metropolitan Luxury / Evening Skyline',
-      groomOutfit: 'Tailored Black Tuxedo with satin lapel & cufflinks',
-      brideOutfit: 'Sparkling cocktail evening gown or high-slit metallic gown',
-      locationBackdrop: 'Dubai Marina rooftop, illuminated Burj Khalifa skyline, or private yacht',
-      status: 'Planning'
-    },
-    {
-      id: 'pw-intl-3',
-      themeTitle: 'Beachfront / Resort Tropical Glam',
-      groomOutfit: 'Pastel resort-wear polo / linen shirt & espadrilles',
-      brideOutfit: 'Boho chic crochet maxi dress or tropical resort co-ord',
-      locationBackdrop: 'Private beach cabana, infinity pool edge, or cliffside coastline',
-      status: 'Planning'
-    },
-    {
-      id: 'pw-intl-4',
-      themeTitle: 'Royal Traditional Heritage',
-      groomOutfit: 'Handcrafted Indo-Western Bandhgala in royal beige / ivory gold',
-      brideOutfit: 'Rich pastel embroidered designer lehenga',
-      locationBackdrop: 'Traditional Arabic palace courtyard / heritage souk architecture',
-      status: 'Planning'
-    }
-  ],
-  checklist: [
-    {
-      id: 'pw-intl-chk-1',
-      stage: 'Scope & Destination',
-      title: 'Confirm Passports have minimum 6 months validity from travel date',
-      completed: false,
-      notes: 'Check both Groom and Bride passports immediately.'
-    },
-    {
-      id: 'pw-intl-chk-2',
-      stage: 'Scope & Destination',
-      title: 'Apply for tourist e-visas (Dubai 30-day visa / Bali VoA)',
-      completed: false,
-      notes: 'Takes 3-5 working days.'
-    },
-    {
-      id: 'pw-intl-chk-3',
-      stage: 'Travel & Lodging',
-      title: 'Book international flight tickets (Surat/Ahmedabad/Mumbai to destination)',
-      completed: false,
-      notes: 'Coordinate crew baggage for heavy lenses and gimbal gear.'
-    },
-    {
-      id: 'pw-intl-chk-4',
-      stage: 'Travel & Lodging',
-      title: 'Book 5–7 nights hotel/resort stay + private luxury yacht / desert safari camp charter',
-      completed: false,
-      notes: 'Charter 2-hour private yacht for sunset golden hour shoot.'
-    },
-    {
-      id: 'pw-intl-chk-5',
-      stage: 'Photography Crew',
-      title: 'Contract destination cinema crew & verify commercial drone flying permissions',
-      completed: false,
-      notes: 'Verify local UAE GCAA or Indonesian drone laws.'
-    },
-    {
-      id: 'pw-intl-chk-6',
-      stage: 'Wardrobe & Styling',
-      title: 'Pack 4-5 luxury looks including flying dress, tuxedo, and beachwear',
-      completed: false,
-      notes: 'Pack portable steamer and safety pins.'
-    },
-    {
-      id: 'pw-intl-chk-7',
-      stage: 'Shoot Execution',
-      title: 'Execute 5-7 days international pre-wedding shoot & holiday trip!',
-      completed: false,
-      notes: 'Combine couple leisure time with scheduled morning and sunset shoot slots.'
-    },
-    {
-      id: 'pw-intl-chk-8',
-      stage: 'Post-Production',
-      title: 'Deliver Save-the-Date video trailer and final 4K cut for Feb 20 Garba LED wall',
-      completed: false,
-      notes: 'Ensure files delivered by Jan 15 for invitations.'
-    }
-  ],
-  notes: '1-week international pre-wedding travel experience. Combines photoshoot with couple getaway in Nov/Dec 2026.'
-};
-
-export const REGIONAL_PREWEDDING_PRESET: PreWeddingTripPlan = {
-  tripType: 'REGIONAL',
-  destination: 'Vadodara (Laxmi Vilas Palace), Dumas Coastline & Surat Film City Studios',
-  durationLabel: '1–2 Days Trip',
-  targetDates: 'Dec 05 – Dec 06, 2026',
+export const HERITAGE_CIRCUIT_PRESET: PreWeddingTripPlan = {
+  tripType: 'HERITAGE_CIRCUIT',
+  destination: 'Vadodara (Laxmi Vilas Palace) & Champaner UNESCO Stone Arches (1–2 Days)',
+  durationLabel: '1–2 Days Road / Train Trip',
+  targetDates: 'Dec 12 – Dec 13, 2026',
+  travelMode: 'Expressway Drive / Vande Bharat Train from Surat (2 hours)',
   flightStatus: 'Not Needed',
   hotelStatus: 'To Book',
   passportVisaStatus: 'Not Needed',
-  photographerAgency: 'To Book (Local Surat/Gujarat Specialists)',
-  contactPerson: 'Lead Photographer',
+  photographerAgency: 'To Book (Heritage Cinematography Specialists)',
+  contactPerson: 'Lead Cinematographer',
   phone: '',
-  crewCount: 2,
-  totalEstimatedCost: 65000,
+  crewCount: 3,
+  baseVenueCost: 3000,
+  propsCost: 3000,
+  crewCost: 65000,
+  travelCost: 6000,
+  totalEstimatedCost: 77000,
   advancePaid: 0,
   deliverables: [
-    '1 Cinematic Pre-Wedding Highlight Video (2-3 mins 4K)',
-    '2 Instagram Reels (9:16 vertical cuts)',
-    '30-40 Color-graded High-Res Master Photos',
-    '1 Teaser Trailer for digital invitation cards',
-    'Full HD Landscape Cut for Feb 20 Garba LED screen'
+    '3 Story Reels (9:16 vertical 4K edits)',
+    '1 Cinematic Pre-Wedding Highlight Film (3-4 mins 4K)',
+    '1 Full 4K Horizontal Cut for Feb 20 Garba LED screen at Silver Farm',
+    '40-50 Master Color-Graded Photos',
+    '1 Save-The-Date Teaser Reel'
   ],
-  looks: [
-    {
-      id: 'pw-reg-1',
-      themeTitle: 'Royal Palace Heritage',
-      groomOutfit: 'Regal Bandhgala / Jodhpuri',
-      brideOutfit: 'Heritage Royal Lehenga',
-      locationBackdrop: 'Laxmi Vilas Palace grounds / Champaner stepwell',
-      status: 'Planning'
-    },
-    {
-      id: 'pw-reg-2',
-      themeTitle: 'Western Glamour Sunset',
-      groomOutfit: 'Tailored Blazer with crisp shirt',
-      brideOutfit: 'Evening Gown',
-      locationBackdrop: 'Dumas coast golden hour or luxury hotel terrace',
-      status: 'Planning'
-    },
-    {
-      id: 'pw-reg-3',
-      themeTitle: 'Film Studio Set Variety',
-      groomOutfit: 'Casual chic jacket / shirt',
-      brideOutfit: 'Trendy fusion dress',
-      locationBackdrop: 'European street / Santorini sets at photography film city',
-      status: 'Planning'
-    }
-  ],
-  checklist: [
-    {
-      id: 'pw-reg-chk-1',
-      stage: 'Scope & Destination',
-      title: 'Book photography slots at Laxmi Vilas Palace / Surat set studio',
-      completed: false,
-      notes: 'Pay photography entry camera fee.'
-    },
-    {
-      id: 'pw-reg-chk-2',
-      stage: 'Wardrobe & Styling',
-      title: 'Finalize 3 coordinated looks for Groom & Bride',
-      completed: false,
-      notes: 'Prepare vanity makeup kit.'
-    },
-    {
-      id: 'pw-reg-chk-3',
-      stage: 'Shoot Execution',
-      title: 'Complete 1-2 days shoot schedule across heritage and set locations',
-      completed: false,
-      notes: 'Quick weekend shoot without long-distance flights.'
-    },
-    {
-      id: 'pw-reg-chk-4',
-      stage: 'Post-Production',
-      title: 'Receive teaser video and Garba LED screen master cut',
-      completed: false,
-      notes: 'Ready for Save-the-date cards.'
-    }
-  ],
-  notes: 'Budget-friendly 1-2 days regional Gujarat shoot with minimal travel fatigue.'
+  storyReels: DEFAULT_STORY_REELS,
+  locationOptions: DEFAULT_LOCATION_OPTIONS,
+  props: DEFAULT_PROPS,
+  looks: SURAT_REGIONAL_PRESET.looks,
+  checklist: SURAT_REGIONAL_PRESET.checklist,
+  notes: 'Heritage circuit focus around Vadodara & Champaner arches. Grand scale without artificial studio sets.'
 };
 
-export const INITIAL_PREWEDDING_PLAN = NATIONAL_PREWEDDING_PRESET;
+export const ANAND_VILLA_PRESET: PreWeddingTripPlan = {
+  tripType: 'ANAND_VILLA',
+  destination: 'The Rustic Villa, Anand (Evaluated Option — High Base & Prop Fees)',
+  durationLabel: '1–2 Days Highway Trip',
+  targetDates: 'Dec 15 – Dec 16, 2026',
+  travelMode: 'Highway Drive via NE1 / NH48 from Surat (3.5 – 4 hours each way)',
+  flightStatus: 'Not Needed',
+  hotelStatus: 'To Book',
+  passportVisaStatus: 'Not Needed',
+  photographerAgency: 'To Book',
+  contactPerson: 'Lead Cinematographer',
+  phone: '',
+  crewCount: 3,
+  baseVenueCost: 25000,
+  propsCost: 9000,
+  crewCost: 60000,
+  travelCost: 8000,
+  totalEstimatedCost: 102000,
+  advancePaid: 0,
+  deliverables: [
+    '3 Story Reels (9:16 vertical 4K edits)',
+    '1 Cinematic Pre-Wedding Film (3-4 mins)',
+    '1 Horizontal Cut for Garba LED Wall',
+    '40 Master Photos',
+    '1 Teaser Reel'
+  ],
+  storyReels: DEFAULT_STORY_REELS,
+  locationOptions: DEFAULT_LOCATION_OPTIONS,
+  props: DEFAULT_PROPS.map(p => ({ ...p, selected: true })),
+  looks: SURAT_REGIONAL_PRESET.looks,
+  checklist: SURAT_REGIONAL_PRESET.checklist,
+  notes: 'Evaluated plan for The Rustic Villa (Anand). Base venue fee is ₹25,000 + ₹3,000 per prop (horse, boat, car) adding ₹9,000+ extra. 4-hour drive from Surat.'
+};
+
+// Legacy presets kept for backwards compatibility
+export const NATIONAL_PREWEDDING_PRESET = SURAT_REGIONAL_PRESET;
+export const INTERNATIONAL_PREWEDDING_PRESET = SURAT_REGIONAL_PRESET;
+export const REGIONAL_PREWEDDING_PRESET = SURAT_REGIONAL_PRESET;
+
+export const INITIAL_PREWEDDING_PLAN = SURAT_REGIONAL_PRESET;

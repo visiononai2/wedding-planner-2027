@@ -1,16 +1,17 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { 
   Clock, 
   MapPin, 
-  Volume2, 
   AlertTriangle, 
   Shirt, 
   Plus, 
   Edit3, 
-  Trash2,
-  ChevronUp,
-  ChevronDown,
-  GripVertical
+  Trash2, 
+  ChevronUp, 
+  ChevronDown, 
+  Calendar,
+  Users,
+  Sparkles
 } from 'lucide-react';
 import { EventDaySchedule, ScheduleEvent, WeddingSide, EventSide } from '../types/wedding';
 import { EditableText } from './EditableText';
@@ -22,6 +23,32 @@ interface EventItineraryProps {
   onEditScheduleItem: (dayId: string, itemId: string, updates: Partial<ScheduleEvent>) => void;
   onDeleteScheduleItem: (dayId: string, itemId: string) => void;
   onReorderScheduleItems: (dayId: string, fromIndex: number, toIndex: number) => void;
+  resetEventSignal?: number;
+}
+
+function parseDayDetails(d: EventDaySchedule, index: number) {
+  const parts = d.dayName.split('/');
+  const weekday = parts[0]?.trim() || '';
+  const dateStr = parts[1]?.trim() || '';
+  const dateParts = dateStr.split(' ');
+  const dayNum = dateParts[0] || `${15 + index}`;
+  const month = dateParts[1] || 'Feb';
+
+  const boyCount = d.items.filter(i => i.side === 'Boy').length;
+  const girlCount = d.items.filter(i => i.side === 'Girl').length;
+  const jointCount = d.items.filter(i => i.side === 'Both' || !i.side).length;
+
+  return {
+    dayNumber: index + 1,
+    weekday,
+    shortWeekday: weekday.slice(0, 3).toUpperCase(),
+    dayNum,
+    month,
+    boyCount,
+    girlCount,
+    jointCount,
+    totalCues: d.items.length
+  };
 }
 
 export const EventItinerary: React.FC<EventItineraryProps> = ({
@@ -30,9 +57,27 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
   onAddScheduleItem,
   onEditScheduleItem,
   onDeleteScheduleItem,
-  onReorderScheduleItems
+  onReorderScheduleItems,
+  resetEventSignal
 }) => {
-  const [selectedDayId, setSelectedDayId] = useState<string>('feb-15');
+  // Always default to the first event/day in the itinerary
+  const [selectedDayId, setSelectedDayId] = useState<string>(() => days[0]?.id || 'feb-15');
+
+  // When event schedule tab is selected, show the first event
+  useEffect(() => {
+    if (resetEventSignal !== undefined && resetEventSignal > 0) {
+      if (days.length > 0) {
+        setSelectedDayId(days[0].id);
+      }
+    }
+  }, [resetEventSignal, days]);
+
+  // Ensure selectedDayId always points to a valid day
+  useEffect(() => {
+    if (days.length > 0 && !days.some(d => d.id === selectedDayId)) {
+      setSelectedDayId(days[0].id);
+    }
+  }, [days, selectedDayId]);
 
   // Add Item Modal
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -44,67 +89,71 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
   const [newSide, setNewSide] = useState<EventSide>('Both');
   const [newSoundRig, setNewSoundRig] = useState('');
   const [newOutfitGroom, setNewOutfitGroom] = useState('');
+  const [newOutfitBride, setNewOutfitBride] = useState('');
   const [newUrgentRule, setNewUrgentRule] = useState('');
 
   // Edit Item Modal
   const [editingItem, setEditingItem] = useState<{ dayId: string; item: ScheduleEvent } | null>(null);
 
-  // Drag-and-drop state
-  const dragIndexRef = useRef<number | null>(null);
-  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
-
-  // Keyboard Escape listener for modals
-  React.useEffect(() => {
+  // Keyboard Escape and Arrow Navigation listener
+  useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      const isInputActive = 
+        target.tagName === 'INPUT' || 
+        target.tagName === 'TEXTAREA' || 
+        target.isContentEditable;
+
       if (e.key === 'Escape') {
         if (isAddModalOpen) setIsAddModalOpen(false);
         if (editingItem) setEditingItem(null);
+        return;
+      }
+
+      if (isInputActive || isAddModalOpen || editingItem !== null) {
+        return;
+      }
+
+      if (e.key === 'ArrowLeft') {
+        const activeIdx = days.findIndex(d => d.id === selectedDayId);
+        if (activeIdx > 0) {
+          setSelectedDayId(days[activeIdx - 1].id);
+        }
+      } else if (e.key === 'ArrowRight') {
+        const activeIdx = days.findIndex(d => d.id === selectedDayId);
+        if (activeIdx < days.length - 1) {
+          setSelectedDayId(days[activeIdx + 1].id);
+        }
       }
     };
+
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isAddModalOpen, editingItem]);
+  }, [days, selectedDayId, isAddModalOpen, editingItem]);
 
   const activeDay = days.find(d => d.id === selectedDayId) || days[0];
 
+  const totalWeekCues = useMemo(() => {
+    return days.reduce((sum, d) => sum + d.items.length, 0);
+  }, [days]);
+
   // Filter items by side if selected — keep original indices for reorder
-  const displayedItems = activeDay.items
-    .map((item, originalIndex) => ({ item, originalIndex }))
-    .filter(({ item }) => {
-      if (activeSide === 'BOY') {
-        return item.side === 'Boy' || item.side === 'Both' || !item.side;
-      }
-      if (activeSide === 'GIRL') {
-        return item.side === 'Girl' || item.side === 'Both' || !item.side;
-      }
-      return true;
-    });
-
-  // Drag-and-drop handlers (operate on original indices in activeDay.items)
-  const handleDragStart = (originalIndex: number) => {
-    dragIndexRef.current = originalIndex;
-  };
-
-  const handleDragOver = (e: React.DragEvent, displayIndex: number) => {
-    e.preventDefault();
-    setDragOverIndex(displayIndex);
-  };
-
-  const handleDrop = (e: React.DragEvent, targetOriginalIndex: number) => {
-    e.preventDefault();
-    if (dragIndexRef.current === null || dragIndexRef.current === targetOriginalIndex) {
-      setDragOverIndex(null);
-      return;
-    }
-    onReorderScheduleItems(selectedDayId, dragIndexRef.current, targetOriginalIndex);
-    dragIndexRef.current = null;
-    setDragOverIndex(null);
-  };
-
-  const handleDragEnd = () => {
-    dragIndexRef.current = null;
-    setDragOverIndex(null);
-  };
+  const displayedItems = useMemo(() => {
+    return activeDay.items
+      .map((item, originalIndex) => ({ item, originalIndex }))
+      .filter(({ item }) => {
+        if (activeSide === 'BOY') {
+          return item.side === 'Boy' || item.side === 'Both' || !item.side;
+        }
+        if (activeSide === 'GIRL') {
+          return item.side === 'Girl' || item.side === 'Both' || !item.side;
+        }
+        if (activeSide === 'FAMILY') {
+          return item.side === 'Both' || !item.side;
+        }
+        return true;
+      });
+  }, [activeDay.items, activeSide]);
 
   const handleMoveUp = (originalIndex: number) => {
     if (originalIndex === 0) return;
@@ -130,6 +179,7 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
       side: newSide,
       soundRig: newSoundRig.trim() || undefined,
       outfitGroom: newOutfitGroom.trim() || undefined,
+      outfitBride: newOutfitBride.trim() || undefined,
       urgentRule: newUrgentRule.trim() || undefined
     });
 
@@ -140,6 +190,7 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
     setNewSide('Both');
     setNewSoundRig('');
     setNewOutfitGroom('');
+    setNewOutfitBride('');
     setNewUrgentRule('');
     setIsAddModalOpen(false);
   };
@@ -157,6 +208,7 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
       side: editingItem.item.side || 'Both',
       soundRig: editingItem.item.soundRig?.trim() || undefined,
       outfitGroom: editingItem.item.outfitGroom?.trim() || undefined,
+      outfitBride: editingItem.item.outfitBride?.trim() || undefined,
       urgentRule: editingItem.item.urgentRule?.trim() || undefined
     });
 
@@ -166,7 +218,7 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
   const renderSideBadge = (side?: EventSide) => {
     if (side === 'Boy') {
       return (
-        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-900 border border-blue-200/80 flex items-center gap-1">
+        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-blue-50 text-blue-800 border border-blue-200">
           <span>👦</span>
           <span>Boy's Side</span>
         </span>
@@ -174,14 +226,14 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
     }
     if (side === 'Girl') {
       return (
-        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-900 border border-rose-200/80 flex items-center gap-1">
+        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-rose-50 text-rose-800 border border-rose-200">
           <span>👧</span>
           <span>Girl's Side</span>
         </span>
       );
     }
     return (
-      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-100 text-purple-900 border border-purple-200/80 flex items-center gap-1">
+      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-purple-50 text-purple-800 border border-purple-200">
         <span>🤝</span>
         <span>Joint / Both Sides</span>
       </span>
@@ -189,298 +241,325 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
   };
 
   return (
-    <div className="space-y-4">
-      {/* Day Selector and Actions */}
-      <div className="bg-white rounded-2xl p-3 sm:p-4 border border-slate-200 shadow-sm flex flex-wrap items-center justify-between gap-3">
-        <div className="flex flex-wrap gap-2">
-          {days.map((d) => {
+    <div className="space-y-6">
+      {/* 7-Day Wedding Journey Navigation Bar (Vivah Saptah) */}
+      <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-4">
+        {/* Navigation strip header */}
+        <div className="flex flex-wrap items-center justify-between gap-2 px-1">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#B89230] animate-pulse" />
+            <span className="text-xs sm:text-sm font-serif font-bold tracking-wider uppercase text-slate-900">
+              Vivah Saptah • 7-Day Wedding Journey
+            </span>
+            <span className="hidden sm:inline-block text-[11px] font-mono text-slate-400">
+              (Feb 15 – Feb 21, 2027)
+            </span>
+          </div>
+          
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] font-mono px-3 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200/70 font-semibold">
+              {totalWeekCues} Total Cues
+            </span>
+            <button
+              onClick={() => setIsAddModalOpen(true)}
+              className="inline-flex items-center px-4 py-2 bg-slate-900 hover:bg-slate-800 active:bg-black text-white rounded-xl text-xs font-semibold shadow-xs hover:-translate-y-0.5 transition-all cursor-pointer"
+            >
+              <Plus className="w-3.5 h-3.5 mr-1.5" />
+              Add Event Cue
+            </button>
+          </div>
+        </div>
+
+        {/* 7-Day Grid Ribbon */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5 sm:gap-3">
+          {days.map((d, index) => {
             const isSelected = selectedDayId === d.id;
+            const details = parseDayDetails(d, index);
+
             return (
               <button
                 key={d.id}
+                type="button"
                 onClick={() => setSelectedDayId(d.id)}
-                className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all border text-left ${
+                className={`group relative text-left p-3.5 rounded-xl transition-all duration-200 border flex flex-col justify-between cursor-pointer ${
                   isSelected
-                    ? 'bg-slate-900 text-white border-slate-900 shadow-sm'
-                    : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 hover:border-slate-300'
+                    ? 'bg-slate-900 text-white border-slate-900 shadow-md ring-2 ring-slate-900/10 -translate-y-0.5'
+                    : 'bg-slate-50/70 border-slate-200/80 hover:border-slate-300 hover:bg-white hover:-translate-y-0.5 shadow-2xs'
                 }`}
               >
-                <div className="font-bold">{d.title}</div>
-                <div className={`text-[10px] mt-0.5 ${isSelected ? 'text-slate-300' : 'text-slate-500'}`}>
-                  {d.dayName} • {d.items.length} cues
+                {/* Active indicator top bar */}
+                {isSelected && (
+                  <div className="absolute -top-px left-3 right-3 h-[3px] bg-gradient-to-r from-[#B89230] via-[#D4AF37] to-[#B89230] rounded-full shadow-xs" />
+                )}
+
+                {/* Day Badge & Date */}
+                <div>
+                  <div className="flex items-center justify-between gap-1 mb-1.5">
+                    <span className={`text-[10px] font-mono font-bold tracking-wider uppercase px-2 py-0.5 rounded ${
+                      isSelected
+                        ? 'bg-white/20 text-white'
+                        : 'bg-slate-200/70 text-slate-700 group-hover:bg-slate-200'
+                    }`}>
+                      Day 0{details.dayNumber}
+                    </span>
+
+                    <span className={`text-[10px] font-mono font-bold uppercase tracking-wider ${
+                      isSelected ? 'text-[#D4AF37]' : 'text-slate-400'
+                    }`}>
+                      {details.shortWeekday}
+                    </span>
+                  </div>
+
+                  <div className="flex items-baseline gap-1">
+                    <span className={`text-base sm:text-lg font-bold font-serif leading-none ${
+                      isSelected ? 'text-white' : 'text-slate-800'
+                    }`}>
+                      {details.dayNum}
+                    </span>
+                    <span className={`text-[10px] font-mono uppercase ${isSelected ? 'text-slate-300' : 'text-slate-500'}`}>
+                      {details.month}
+                    </span>
+                  </div>
+
+                  {/* Ceremony Title (Readable Title-Case Serif) */}
+                  <div className="mt-2 min-h-[42px] flex items-start">
+                    <h4 className={`text-xs font-serif leading-snug line-clamp-2 transition-colors ${
+                      isSelected ? 'text-white font-bold' : 'text-slate-700 font-semibold group-hover:text-slate-900'
+                    }`}>
+                      {d.title}
+                    </h4>
+                  </div>
+                </div>
+
+                {/* Footer: Cues Count + Side Dots */}
+                <div className={`flex items-center justify-between pt-2 border-t mt-2 ${
+                  isSelected ? 'border-white/20' : 'border-slate-200/60'
+                }`}>
+                  <span className={`text-[10px] font-mono font-semibold ${
+                    isSelected ? 'text-amber-300' : 'text-slate-400 group-hover:text-slate-600'
+                  }`}>
+                    {d.items.length} {d.items.length === 1 ? 'cue' : 'cues'}
+                  </span>
+
+                  <div className="flex items-center gap-1">
+                    {details.boyCount > 0 && (
+                      <span className="w-1.5 h-1.5 rounded-full bg-blue-500" title={`${details.boyCount} Groom cues`} />
+                    )}
+                    {details.girlCount > 0 && (
+                      <span className="w-1.5 h-1.5 rounded-full bg-rose-500" title={`${details.girlCount} Bride cues`} />
+                    )}
+                    {details.jointCount > 0 && (
+                      <span className="w-1.5 h-1.5 rounded-full bg-amber-500" title={`${details.jointCount} Joint cues`} />
+                    )}
+                  </div>
                 </div>
               </button>
             );
           })}
         </div>
-
-        <div className="flex items-center space-x-2">
-          <button
-            onClick={() => setIsAddModalOpen(true)}
-            className="inline-flex items-center px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white rounded-xl text-xs font-semibold shadow-sm transition-colors"
-          >
-            <Plus className="w-3.5 h-3.5 mr-1" />
-            Add Event Cue
-          </button>
-        </div>
       </div>
 
-      {/* Critical Reminders Strip tailored to exact user notes */}
-      {selectedDayId === 'jan-20' && (
-        <div className="p-4 rounded-2xl bg-amber-50/90 border border-amber-200/80 text-xs text-amber-900 flex items-start sm:items-center space-x-2.5 shadow-sm">
-          <Clock className="w-4 h-4 text-amber-600 shrink-0 mt-0.5 sm:mt-0" />
-          <span className="leading-relaxed">
-            <strong className="text-amber-950 font-bold">POLICE STATION VISIT (20 Jan):</strong> Visit local police station in Surat to submit venue booking and obtain official sound permission/permit for low-decibel DJ music during the Feb 20 Raas Garba celebration.
-          </span>
-        </div>
-      )}
-
-      {selectedDayId === 'feb-15' && (
-        <div className="p-4 rounded-2xl bg-blue-50/90 border border-blue-200/80 text-xs text-blue-900 flex items-start sm:items-center space-x-2.5 shadow-sm">
-          <Clock className="w-4 h-4 text-blue-600 shrink-0 mt-0.5 sm:mt-0" />
-          <span className="leading-relaxed">
-            <strong className="text-blue-950 font-bold">FINALIZED HOME RITUALS (15 Feb):</strong> 8:00 AM Randel sthapana at Groom home • 10–11 AM Lagan Lakhan at Bride home • 11 AM Bride brothers bring Lagan to Groom home (~100 present, give shagun covers) • 12–1 PM Boy Lunch Jamanvar • 4 PM Boy Haldi Rasam • 6–7 PM Evening Jamanvar (Bride side has more guests).
-          </span>
-        </div>
-      )}
-
-      {selectedDayId === 'feb-16' && (
-        <div className="p-4 rounded-2xl bg-rose-50/90 border border-rose-200/80 text-xs text-rose-900 flex items-start sm:items-center space-x-2.5 shadow-sm">
-          <Clock className="w-4 h-4 text-rose-600 shrink-0 mt-0.5 sm:mt-0" />
-          <span className="leading-relaxed">
-            <strong className="text-rose-950 font-bold">RANDAL TEDVA AT GIRL'S HOUSE (16 Feb):</strong> 8:00 AM – 9:00 AM auspicious Randal Tedva sthapana & puja at Bride's house with girl side family and relatives.
-          </span>
-        </div>
-      )}
-
-      {selectedDayId === 'feb-17' && (
-        <div className="p-4 rounded-2xl bg-amber-50/90 border border-amber-200/80 text-xs text-amber-900 flex items-start sm:items-center space-x-2.5 shadow-sm">
-          <Clock className="w-4 h-4 text-amber-600 shrink-0 mt-0.5 sm:mt-0" />
-          <span className="leading-relaxed">
-            <strong className="text-amber-950 font-bold">VANA RASAM & COUPLE PHOTOSESSION (17 Feb):</strong> Sacred Vana Rasam celebrated at Girl's house • Groom is called upon to participate together in the rasam followed by dedicated couple photoshoot session!
-          </span>
-        </div>
-      )}
-
-      {selectedDayId === 'feb-18' && (
-        <div className="p-4 rounded-2xl bg-emerald-50/90 border border-emerald-200/80 text-xs text-emerald-900 flex items-start sm:items-center space-x-2.5 shadow-sm">
-          <Clock className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5 sm:mt-0" />
-          <span className="leading-relaxed">
-            <strong className="text-emerald-950 font-bold">MEHNDI RASAM & COUPLE PHOTOSHOOT (18 Feb):</strong> Festive Mehndi at Girl's house • Groom is invited with 1-2 close friends for couple photosession with the Bride in her mehndi attire!
-          </span>
-        </div>
-      )}
-
-      {selectedDayId === 'feb-19' && (
-        <div className="p-4 rounded-2xl bg-indigo-50/90 border border-indigo-200/80 text-xs text-indigo-900 flex items-start sm:items-center space-x-2.5 shadow-sm">
-          <Clock className="w-4 h-4 text-indigo-600 shrink-0 mt-0.5 sm:mt-0" />
-          <span className="leading-relaxed">
-            <strong className="text-indigo-950 font-bold">MAMERU, CHAB GIVING & SANJI NA GEET (19 Feb):</strong> 11:00 AM Mameru ceremony (Girl side only with maternal uncle Mama & family) • 4:30 PM Chab Giving by Boy's side (Boy side presents decorated Chab gift items to Girl side) • 9:00 PM Sanji Na Geet wedding song night at Girl's house (Girl side guests only).
-          </span>
-        </div>
-      )}
-
+      {/* Operational Special Protocol Reminders (Feb 20 Raas Garba sound regulation) */}
       {selectedDayId === 'feb-20' && (
-        <div className="p-4 rounded-2xl bg-amber-50/90 border border-amber-200/80 text-xs text-amber-900 flex items-start sm:items-center space-x-2.5 shadow-sm">
+        <div className="flex items-start sm:items-center gap-2.5 p-3 rounded-xl bg-amber-50/90 border border-amber-200 text-xs text-amber-900">
           <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5 sm:mt-0" />
           <span className="leading-relaxed">
-            <strong className="text-amber-950 font-bold">MANDVO & GARBA PROTOCOL (20 Feb):</strong> <strong>09:00–11:00 AM Groom Makeup/Prep</strong> • 11 AM–12 PM Bride Parlour • 2 PM Mandvo (Boy side) with reciprocal mandva & Chandlo • <strong>6:00–6:30 PM JOINT JAMANVAR (both sides dine together)</strong> • 8 PM Raas Garba (Stop at 10 PM if police arrives, else rock till 12:00 AM!).
+            <strong>Raas Garba Sound Regulation:</strong> DJ sound volume strictly monitored by city guidelines. If local police officers visit at 10:00 PM, respectfully reduce volume or conclude DJ sound per regulations; otherwise continue till 12:00 AM.
           </span>
         </div>
       )}
 
-      {selectedDayId === 'feb-21' && (
-        <div className="p-4 rounded-2xl bg-purple-50/90 border border-purple-200/80 text-xs text-purple-900 flex items-start sm:items-center space-x-2.5 shadow-sm">
-          <Clock className="w-4 h-4 text-purple-600 shrink-0 mt-0.5 sm:mt-0" />
-          <span className="leading-relaxed">
-            <strong className="text-purple-950 font-bold">WEDDING DAY RUNSHEET (21 Feb):</strong> 8–10 AM Parlour • 10 AM–12 PM Photography • 1–2 PM Lunch • 2:30 PM Boy Touch-up • 3–4 PM Girl Touch-up • 3 PM Boy Home Vidhi • <strong>4:00 PM Girl Departs to Farm</strong> • <strong>4:00 PM Jaan Kadhvani (Reach Farm by 5:30 PM)</strong> • 5:30 PM Welcoming Rituals • 6:30 PM Varmala • 6:30–9:30 PM Guest Jamanvar • <strong>7:30–9:30 PM Lagan (Hastamelap, Kanyadaan, Phera)</strong> • 9:30 PM Couple Dinner • 10 PM Girl Vidhi • <strong>10:30 PM Viday</strong> • <strong>11:00 PM Mandir Darshan</strong> • 11:30 PM Marriage Couple Gruh Pravesh Vidhi.
+      {/* Perspective filter indicator if activeSide filters out items */}
+      {activeSide !== 'ALL' && displayedItems.length !== activeDay.items.length && (
+        <div className="flex items-center justify-between text-xs px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-600">
+          <span>
+            Showing {displayedItems.length} of {activeDay.items.length} cues for{' '}
+            <strong>{activeSide === 'BOY' ? "Boy's Side" : activeSide === 'GIRL' ? "Girl's Side" : activeSide === 'FAMILY' ? "Family's Side" : "Both Sides"}</strong>.
           </span>
+          <span className="text-slate-400 font-medium">Switch to "Both Sides" above to view all cues.</span>
         </div>
       )}
 
-      {/* Schedule Items Table / Cards with Inline Hover-to-Edit Text */}
-      <div className="space-y-3">
-        {displayedItems.length === 0 ? (
-          <div className="bg-white rounded-2xl p-10 text-center border border-dashed border-slate-200 text-xs text-slate-400">
-            No cues match the selected perspective ({activeSide === 'BOY' ? "Boy's Side" : "Girl's Side"}). Switch to "Both Sides" to see all events.
-          </div>
-        ) : (
-          displayedItems.map(({ item, originalIndex }, displayIndex) => (
-            <div
-              key={item.id}
-              draggable
-              onDragStart={() => handleDragStart(originalIndex)}
-              onDragOver={(e) => handleDragOver(e, displayIndex)}
-              onDrop={(e) => handleDrop(e, originalIndex)}
-              onDragEnd={handleDragEnd}
-              className={`bg-white rounded-2xl p-4 sm:p-5 border transition-all space-y-3 ${
-                dragOverIndex === displayIndex
-                  ? 'border-indigo-400 shadow-md ring-2 ring-indigo-200 scale-[1.01]'
-                  : 'border-slate-200 hover:border-slate-300 hover:shadow-sm'
-              }`}
-            >
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <div className="flex flex-wrap items-center gap-2">
-                  {/* Drag Handle */}
-                  <span
-                    className="cursor-grab active:cursor-grabbing text-slate-300 hover:text-slate-500 transition-colors shrink-0"
-                    title="Drag to reorder"
-                  >
-                    <GripVertical className="w-4 h-4" />
-                  </span>
-
-                  <span className="px-2.5 py-1 rounded-xl bg-slate-100 text-slate-900 border border-slate-200 text-xs font-bold font-mono">
-                    <EditableText
-                      value={item.time}
-                      onSave={(val) => onEditScheduleItem(selectedDayId, item.id, { time: val })}
-                      className="font-bold text-slate-900"
-                    />
-                  </span>
-
-                  <EditableText
-                    value={item.title}
-                    onSave={(val) => onEditScheduleItem(selectedDayId, item.id, { title: val })}
-                    className="text-sm sm:text-base font-bold text-slate-900"
-                  />
-
-                  {/* Side Tag Badge */}
-                  {renderSideBadge(item.side)}
-
-                  <span className="text-xs text-slate-400 font-medium hidden sm:inline">
-                    (
-                    <EditableText
-                      value={item.gujaratiTitle || ''}
-                      placeholder="ગુજરાતી શીર્ષક..."
-                      onSave={(val) => onEditScheduleItem(selectedDayId, item.id, { gujaratiTitle: val })}
-                      className="text-slate-600"
-                    />
-                    )
-                  </span>
-                </div>
-
-                <div className="flex items-center space-x-2 text-xs">
-                  <div className="text-slate-400 flex items-center mr-2">
-                    <MapPin className="w-3.5 h-3.5 mr-1 text-slate-400" />
-                    <EditableText
-                      value={item.location}
-                      onSave={(val) => onEditScheduleItem(selectedDayId, item.id, { location: val })}
-                      className="text-slate-600 font-medium"
-                    />
-                  </div>
-
-                  {/* Up / Down reorder buttons */}
-                  <div className="flex flex-col border border-slate-200 rounded-lg overflow-hidden shrink-0">
-                    <button
-                      onClick={() => handleMoveUp(originalIndex)}
-                      disabled={originalIndex === 0}
-                      title="Move up"
-                      className="px-1.5 py-0.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 disabled:opacity-25 disabled:cursor-not-allowed transition-colors border-b border-slate-200"
-                    >
-                      <ChevronUp className="w-3 h-3" />
-                    </button>
-                    <button
-                      onClick={() => handleMoveDown(originalIndex)}
-                      disabled={originalIndex === activeDay.items.length - 1}
-                      title="Move down"
-                      className="px-1.5 py-0.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 disabled:opacity-25 disabled:cursor-not-allowed transition-colors"
-                    >
-                      <ChevronDown className="w-3 h-3" />
-                    </button>
-                  </div>
-
-                  <button
-                    onClick={() => setEditingItem({ dayId: selectedDayId, item })}
-                    title="Edit full event"
-                    className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
-                  >
-                    <Edit3 className="w-3.5 h-3.5" />
-                  </button>
-
-                  <button
-                    onClick={() => onDeleteScheduleItem(selectedDayId, item.id)}
-                    title="Delete event"
-                    className="p-1.5 text-slate-300 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              </div>
-
-              {/* Action Note with Inline Editing */}
-              <div className="text-xs text-slate-700 bg-slate-50/80 p-3 rounded-xl border border-slate-200/80 leading-relaxed">
-                <strong className="text-slate-900 mr-1.5 font-semibold">Key Action:</strong>
-                <EditableText
-                  value={item.actionNotes}
-                  multiline
-                  onSave={(val) => onEditScheduleItem(selectedDayId, item.id, { actionNotes: val })}
-                  className="text-slate-800"
-                />
-              </div>
-
-              {/* Badges row with Inline Editing */}
-              <div className="flex flex-wrap items-center gap-2 pt-0.5 text-xs">
-                {item.soundRig && (
-                  <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-purple-50 text-purple-800 border border-purple-200/80 text-[11px] font-medium">
-                    <Volume2 className="w-3 h-3 mr-1 text-purple-600" />
-                    <EditableText
-                      value={item.soundRig}
-                      onSave={(val) => onEditScheduleItem(selectedDayId, item.id, { soundRig: val })}
-                      className="text-purple-800"
-                    />
-                  </span>
-                )}
-
-                {item.outfitGroom && (
-                  <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-blue-50 text-blue-800 border border-blue-200/80 text-[11px] font-medium">
-                    <Shirt className="w-3 h-3 mr-1 text-blue-600" />
-                    <span className="mr-1">Groom:</span>
-                    <EditableText
-                      value={item.outfitGroom}
-                      onSave={(val) => onEditScheduleItem(selectedDayId, item.id, { outfitGroom: val })}
-                      className="text-blue-800"
-                    />
-                  </span>
-                )}
-
-                {item.outfitBride && (
-                  <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-rose-50 text-rose-800 border border-rose-200/80 text-[11px] font-medium">
-                    <Shirt className="w-3 h-3 mr-1 text-rose-600" />
-                    <span className="mr-1">Bride:</span>
-                    <EditableText
-                      value={item.outfitBride}
-                      onSave={(val) => onEditScheduleItem(selectedDayId, item.id, { outfitBride: val })}
-                      className="text-rose-800"
-                    />
-                  </span>
-                )}
-
-                {item.urgentRule && (
-                  <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-rose-50 text-rose-800 border border-rose-200/80 text-[11px] font-semibold">
-                    ⚠️
-                    <EditableText
-                      value={item.urgentRule}
-                      onSave={(val) => onEditScheduleItem(selectedDayId, item.id, { urgentRule: val })}
-                      className="text-rose-800 ml-1"
-                    />
-                  </span>
-                )}
-              </div>
-            </div>
-          ))
-        )}
+      {/* Cues Table */}
+      <div className="bg-white rounded-2xl border border-slate-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)] overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs">
+            <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 font-semibold uppercase tracking-wider text-[10px]">
+              <tr>
+                <th className="py-3 px-2 w-10 text-center">#</th>
+                <th className="py-3 px-3 w-28">Time</th>
+                <th className="py-3 px-3 w-48">Ritual / Event</th>
+                <th className="py-3 px-3 w-28">Side</th>
+                <th className="py-3 px-3 w-36">Location</th>
+                <th className="py-3 px-3 min-w-[280px]">Key Instruction</th>
+                <th className="py-3 px-3 w-48">Outfits / Sound</th>
+                <th className="py-3 px-3 w-24 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {displayedItems.length === 0 ? (
+                <tr>
+                  <td colSpan={8} className="py-12 text-center text-slate-400">
+                    <Users className="w-7 h-7 mx-auto mb-2 text-slate-300" />
+                    <div className="text-xs font-semibold text-slate-600">No event cues match the current filter</div>
+                    <div className="text-[11px] text-slate-400 mt-0.5">Switch perspective above or add a new cue for this day.</div>
+                  </td>
+                </tr>
+              ) : (
+                displayedItems.map(({ item, originalIndex }, index) => (
+                  <tr key={item.id} className="hover:bg-slate-50/70 transition-colors">
+                    <td className="py-3.5 px-2 text-center font-mono text-slate-400 font-bold align-top pt-5">{index + 1}</td>
+                    <td className="py-3.5 px-3 font-mono font-bold text-slate-900 whitespace-nowrap align-top pt-5">
+                      <span className="px-2 py-1 rounded-lg bg-slate-100 text-slate-900 font-mono text-[11px] font-semibold border border-slate-200/80 inline-block">
+                        <EditableText
+                          value={item.time}
+                          onSave={(val) => onEditScheduleItem(selectedDayId, item.id, { time: val })}
+                        />
+                      </span>
+                    </td>
+                    <td className="py-3.5 px-3 align-top pt-4">
+                      <div className="font-serif font-bold text-slate-900 text-sm">
+                        <EditableText
+                          value={item.title}
+                          onSave={(val) => onEditScheduleItem(selectedDayId, item.id, { title: val })}
+                        />
+                      </div>
+                      {item.gujaratiTitle && (
+                        <div className="text-[11px] text-slate-500 mt-1 font-sans">
+                          <EditableText
+                            value={item.gujaratiTitle}
+                            onSave={(val) => onEditScheduleItem(selectedDayId, item.id, { gujaratiTitle: val })}
+                          />
+                        </div>
+                      )}
+                    </td>
+                    <td className="py-3.5 px-3 whitespace-nowrap align-top pt-4">{renderSideBadge(item.side)}</td>
+                    <td className="py-3.5 px-3 text-slate-600 align-top pt-4">
+                      <div className="flex items-center gap-1 font-medium text-xs text-slate-700">
+                        <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                        <EditableText
+                          value={item.location}
+                          onSave={(val) => onEditScheduleItem(selectedDayId, item.id, { location: val })}
+                        />
+                      </div>
+                    </td>
+                    <td className="py-3.5 px-3 min-w-[280px] align-top">
+                      <div className="bg-slate-50 p-3 rounded-xl border border-slate-200/80 text-slate-900 shadow-2xs hover:border-[#D4AF37]/70 transition-all">
+                        <div className="flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-wider font-bold text-[#8B6E1F] mb-1">
+                          <Sparkles className="w-3 h-3 text-[#B89230]" />
+                          <span>Ceremonial Instruction</span>
+                        </div>
+                        <EditableText
+                          value={item.actionNotes}
+                          multiline
+                          onSave={(val) => onEditScheduleItem(selectedDayId, item.id, { actionNotes: val })}
+                          className="text-slate-900 font-medium text-xs sm:text-[13px] leading-relaxed block"
+                        />
+                      </div>
+                    </td>
+                    <td className="py-3.5 px-3 space-y-1.5 align-top pt-4 w-48">
+                      {item.outfitGroom && (
+                        <div className="text-[11px] text-blue-800 font-medium flex items-center gap-1">
+                          <span>🤵</span>
+                          <span className="font-semibold text-blue-900">Groom:</span>
+                          <EditableText
+                            value={item.outfitGroom}
+                            onSave={(val) => onEditScheduleItem(selectedDayId, item.id, { outfitGroom: val })}
+                          />
+                        </div>
+                      )}
+                      {item.outfitBride && (
+                        <div className="text-[11px] text-rose-800 font-medium flex items-center gap-1">
+                          <span>👰</span>
+                          <span className="font-semibold text-rose-900">Bride:</span>
+                          <EditableText
+                            value={item.outfitBride}
+                            onSave={(val) => onEditScheduleItem(selectedDayId, item.id, { outfitBride: val })}
+                          />
+                        </div>
+                      )}
+                      {item.soundRig && (
+                        <div className="text-[11px] text-purple-800 font-medium flex items-center gap-1">
+                          <span>🔊</span>
+                          <EditableText
+                            value={item.soundRig}
+                            onSave={(val) => onEditScheduleItem(selectedDayId, item.id, { soundRig: val })}
+                          />
+                        </div>
+                      )}
+                      {item.urgentRule && (
+                        <div className="text-[11px] text-amber-800 font-medium flex items-center gap-1">
+                          <AlertTriangle className="w-3 h-3 shrink-0 text-amber-600" />
+                          <EditableText
+                            value={item.urgentRule}
+                            onSave={(val) => onEditScheduleItem(selectedDayId, item.id, { urgentRule: val })}
+                          />
+                        </div>
+                      )}
+                    </td>
+                    <td className="py-3.5 px-3 text-right whitespace-nowrap align-top pt-4 w-24">
+                      <div className="flex items-center justify-end space-x-1">
+                        <div className="flex border border-stone-200 rounded-lg overflow-hidden shrink-0 bg-stone-50 mr-1">
+                          <button
+                            onClick={() => handleMoveUp(originalIndex)}
+                            disabled={originalIndex === 0}
+                            title="Move earlier"
+                            className="px-1.5 py-1 text-stone-400 hover:text-stone-700 hover:bg-stone-200 disabled:opacity-25 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                          >
+                            <ChevronUp className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            onClick={() => handleMoveDown(originalIndex)}
+                            disabled={originalIndex === activeDay.items.length - 1}
+                            title="Move later"
+                            className="px-1.5 py-1 text-stone-400 hover:text-stone-700 hover:bg-stone-200 disabled:opacity-25 disabled:cursor-not-allowed transition-colors border-l border-stone-200 cursor-pointer"
+                          >
+                            <ChevronDown className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                        <button
+                          onClick={() => setEditingItem({ dayId: selectedDayId, item })}
+                          title="Edit"
+                          className="p-1.5 text-stone-400 hover:text-stone-900 hover:bg-stone-100 rounded-lg transition-colors cursor-pointer"
+                        >
+                          <Edit3 className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          onClick={() => onDeleteScheduleItem(selectedDayId, item.id)}
+                          title="Delete"
+                          className="p-1.5 text-stone-300 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* Add Modal */}
       {isAddModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100">
+          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <h3 className="text-sm font-bold text-slate-900">Add Cue to {activeDay.title}</h3>
-              <button onClick={() => setIsAddModalOpen(false)} className="text-slate-400 hover:text-slate-700 text-lg leading-none">&times;</button>
+              <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                <Clock className="w-4 h-4 text-indigo-600" />
+                Add Cue to {activeDay.title}
+              </h3>
+              <button 
+                onClick={() => setIsAddModalOpen(false)} 
+                className="text-slate-400 hover:text-slate-700 text-lg leading-none"
+              >
+                &times;
+              </button>
             </div>
 
             <form onSubmit={handleCreateItem} className="mt-4 space-y-3.5 text-xs">
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block font-semibold text-slate-700 mb-1">Time *</label>
                   <input
@@ -550,7 +629,30 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-semibold text-slate-700 mb-1">Groom Outfit Tag</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Haldi Kurta Pajama"
+                    value={newOutfitGroom}
+                    onChange={(e) => setNewOutfitGroom(e.target.value)}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
+                </div>
+                <div>
+                  <label className="block font-semibold text-slate-700 mb-1">Bride Outfit Tag</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Yellow Silk Saree / Lehenga"
+                    value={newOutfitBride}
+                    onChange={(e) => setNewOutfitBride(e.target.value)}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block font-semibold text-slate-700 mb-1">Sound Rig Tag</label>
                   <input
@@ -562,26 +664,15 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
                   />
                 </div>
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">Groom Outfit Tag</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Urgent Alert / Rule</label>
                   <input
                     type="text"
-                    placeholder="e.g. Haldi Kurta Pajama"
-                    value={newOutfitGroom}
-                    onChange={(e) => setNewOutfitGroom(e.target.value)}
+                    placeholder="e.g. Keep low volume / strictly 10 PM"
+                    value={newUrgentRule}
+                    onChange={(e) => setNewUrgentRule(e.target.value)}
                     className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
-              </div>
-
-              <div>
-                <label className="block font-semibold text-slate-700 mb-1">Urgent Alert / Rule</label>
-                <input
-                  type="text"
-                  placeholder="e.g. Groom takes 1-2 friends for photo at girl venue"
-                  value={newUrgentRule}
-                  onChange={(e) => setNewUrgentRule(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
               </div>
 
               <div className="pt-3 flex justify-end space-x-2 border-t border-slate-100">
@@ -607,14 +698,22 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
       {/* Edit Modal */}
       {editingItem && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100">
+          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <h3 className="text-sm font-bold text-slate-900">Edit Schedule Cue</h3>
-              <button onClick={() => setEditingItem(null)} className="text-slate-400 hover:text-slate-700 text-lg leading-none">&times;</button>
+              <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                <Edit3 className="w-4 h-4 text-indigo-600" />
+                Edit Schedule Cue
+              </h3>
+              <button 
+                onClick={() => setEditingItem(null)} 
+                className="text-slate-400 hover:text-slate-700 text-lg leading-none"
+              >
+                &times;
+              </button>
             </div>
 
             <form onSubmit={handleSaveEdit} className="mt-4 space-y-3.5 text-xs">
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block font-semibold text-slate-700 mb-1">Time *</label>
                   <input
@@ -698,7 +797,34 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-semibold text-slate-700 mb-1">Groom Outfit Tag</label>
+                  <input
+                    type="text"
+                    value={editingItem.item.outfitGroom || ''}
+                    onChange={(e) => setEditingItem({
+                      ...editingItem,
+                      item: { ...editingItem.item, outfitGroom: e.target.value }
+                    })}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
+                </div>
+                <div>
+                  <label className="block font-semibold text-slate-700 mb-1">Bride Outfit Tag</label>
+                  <input
+                    type="text"
+                    value={editingItem.item.outfitBride || ''}
+                    onChange={(e) => setEditingItem({
+                      ...editingItem,
+                      item: { ...editingItem.item, outfitBride: e.target.value }
+                    })}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block font-semibold text-slate-700 mb-1">Sound Rig Tag</label>
                   <input
@@ -712,30 +838,17 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
                   />
                 </div>
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">Groom Outfit Tag</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Urgent Rule / Alert</label>
                   <input
                     type="text"
-                    value={editingItem.item.outfitGroom || ''}
+                    value={editingItem.item.urgentRule || ''}
                     onChange={(e) => setEditingItem({
                       ...editingItem,
-                      item: { ...editingItem.item, outfitGroom: e.target.value }
+                      item: { ...editingItem.item, urgentRule: e.target.value }
                     })}
                     className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
-              </div>
-
-              <div>
-                <label className="block font-semibold text-slate-700 mb-1">Urgent Rule / Alert</label>
-                <input
-                  type="text"
-                  value={editingItem.item.urgentRule || ''}
-                  onChange={(e) => setEditingItem({
-                    ...editingItem,
-                    item: { ...editingItem.item, urgentRule: e.target.value }
-                  })}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
               </div>
 
               <div className="pt-3 flex justify-end space-x-2 border-t border-slate-100">

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Header } from './components/Header';
-import { Navigation, TabType } from './components/Navigation';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { GlobalHeader } from './components/GlobalHeader';
+import { TabType } from './components/Navigation';
 import { MonthTracker } from './components/MonthTracker';
 import { PreWeddingPlanner } from './components/PreWeddingPlanner';
 import { RentalsTracker } from './components/RentalsTracker';
@@ -11,6 +11,17 @@ import { PlanningNotes } from './components/PlanningNotes';
 import { CommandPalette } from './components/CommandPalette';
 import { ToastContainer, ToastMessage } from './components/Toast';
 import { ConfirmationModal } from './components/ConfirmationModal';
+import { 
+  SyncStatus, 
+  WeddingDataset, 
+  initWeddingSync, 
+  saveWeddingDataToFirestore,
+  scheduleCloudSave,
+  cancelScheduledCloudSave,
+  resetCloudData,
+  loadCachedWeddingData,
+  saveCachedWeddingData
+} from './services/weddingSync';
 
 import { 
   INITIAL_MILESTONES, 
@@ -21,11 +32,10 @@ import {
   INITIAL_DECISION_POINTS,
   INITIAL_NOTES,
   INITIAL_PREWEDDING_PLAN,
-  NATIONAL_PREWEDDING_PRESET,
-  INTERNATIONAL_PREWEDDING_PRESET,
-  REGIONAL_PREWEDDING_PRESET
+  SURAT_REGIONAL_PRESET,
+  HERITAGE_CIRCUIT_PRESET,
+  ANAND_VILLA_PRESET
 } from './data/weddingData';
-import { loadFromStorage, saveToStorage } from './utils/storage';
 import { 
   Task, 
   RentalItem, 
@@ -36,141 +46,81 @@ import {
   PlanningNote,
   WeddingSide,
   PreWeddingTripPlan,
-  PreWeddingTripType
+  PreWeddingTripType,
+  TaskSubView
 } from './types/wedding';
 
 export const App: React.FC = () => {
   // Global Side Switcher state ('ALL' | 'BOY' | 'GIRL')
-  const [activeSide, setActiveSide] = useState<WeddingSide>(() => 
-    loadFromStorage<WeddingSide>('vivah_side_v5', 'ALL')
-  );
-
-  // Load state from localStorage with smart migration preserving completed checkmarks
-  const [tasks, setTasks] = useState<Task[]>(() => {
-    const v6 = loadFromStorage<Task[] | null>('vivah_tasks_v6', null);
-    if (v6 && v6.length > 0) {
-      let updatedTasks = v6;
-      if (!updatedTasks.some(t => t.id === 't-day-7-boy')) {
-        const initTask = INITIAL_TASKS.find(t => t.id === 't-day-7-boy');
-        if (initTask) updatedTasks = [...updatedTasks, initTask];
+  const [activeSide, setActiveSide] = useState<WeddingSide>(() => {
+    try {
+      const stored = localStorage.getItem('wedding_preferred_side');
+      if (stored === 'BOY' || stored === 'GIRL' || stored === 'ALL' || stored === 'FAMILY') {
+        return stored as WeddingSide;
       }
-      if (!updatedTasks.some(t => t.id === 't-jan-5')) {
-        const initTask = INITIAL_TASKS.find(t => t.id === 't-jan-5');
-        if (initTask) updatedTasks = [...updatedTasks, initTask];
-      }
-      return updatedTasks;
-    }
-
-    // Migrate from v5/v4 preserving completed checkmarks
-    const v5 = loadFromStorage<Task[] | null>('vivah_tasks_v5', null);
-    const stored = (v5 && v5.length > 0) ? v5 : loadFromStorage<Task[]>('vivah_tasks_v4', []);
-    if (!stored || stored.length === 0) return INITIAL_TASKS;
-
-    const completedIds = new Set(stored.filter(t => t.completed).map(t => t.id));
-    const completedTitles = new Set(stored.filter(t => t.completed).map(t => t.title.toLowerCase().trim()));
-
-    // Custom user-added tasks that aren't in INITIAL_TASKS
-    const initialIds = new Set(INITIAL_TASKS.map(t => t.id));
-    const customTasks = stored.filter(t => !initialIds.has(t.id));
-
-    const merged = INITIAL_TASKS.map(task => ({
-      ...task,
-      completed: completedIds.has(task.id) || completedTitles.has(task.title.toLowerCase().trim()) || task.completed
-    }));
-
-    return [...merged, ...customTasks];
+    } catch {}
+    return 'ALL';
   });
 
-  const [rentals, setRentals] = useState<RentalItem[]>(() => {
-    const v6 = loadFromStorage<RentalItem[] | null>('vivah_rentals_v6', null);
-    if (v6 && v6.length > 0) return v6;
-    const v5 = loadFromStorage<RentalItem[] | null>('vivah_rentals_v5', null);
-    if (v5 && v5.length > 0) return v5;
-    const v4 = loadFromStorage<RentalItem[] | null>('vivah_rentals_v4', null);
-    return v4 && v4.length > 0 ? v4 : INITIAL_RENTALS;
-  });
+  // Load cached dataset synchronously for zero-flicker startup
+  const initialCache = useMemo(() => loadCachedWeddingData(), []);
 
-  const [dresses, setDresses] = useState<DressItem[]>(() => {
-    const v6 = loadFromStorage<DressItem[] | null>('vivah_dresses_v6', null);
-    if (v6 && v6.length > 0) return v6;
-    const v5 = loadFromStorage<DressItem[] | null>('vivah_dresses_v5', null);
-    if (v5 && v5.length > 0) {
-      const v5Ids = new Set(v5.map(d => d.id));
-      const newDresses = INITIAL_DRESSES.filter(d => !v5Ids.has(d.id));
-      const updatedV5 = v5.map(d => {
-        const fresh = INITIAL_DRESSES.find(init => init.id === d.id);
-        if (fresh && d.date.includes('Feb 18') && fresh.date.includes('Feb 15')) {
-          return { ...d, date: fresh.date, event: fresh.event, notes: fresh.notes };
-        }
-        return d;
-      });
-      return [...updatedV5, ...newDresses];
-    }
-    return INITIAL_DRESSES;
-  });
+  // Core Wedding Planning State (Authoritative source: Prod Firebase Firestore)
+  const [tasks, setTasks] = useState<Task[]>(() => initialCache?.tasks || INITIAL_TASKS);
+  const [rentals, setRentals] = useState<RentalItem[]>(() => initialCache?.rentals || INITIAL_RENTALS);
+  const [dresses, setDresses] = useState<DressItem[]>(() => initialCache?.dresses || INITIAL_DRESSES);
+  const [days, setDays] = useState<EventDaySchedule[]>(() => initialCache?.days || INITIAL_DAY_SCHEDULES);
+  const [decisions, setDecisions] = useState<DecisionPoint[]>(() => initialCache?.decisions || INITIAL_DECISION_POINTS);
+  const [notes, setNotes] = useState<PlanningNote[]>(() => initialCache?.notes || INITIAL_NOTES);
+  const [weddingYear, setWeddingYear] = useState<number>(() => initialCache?.weddingYear || 2027);
+  const [preWeddingPlan, setPreWeddingPlan] = useState<PreWeddingTripPlan>(() => initialCache?.preWeddingPlan || INITIAL_PREWEDDING_PLAN);
+  const [isCloudLoading, setIsCloudLoading] = useState<boolean>(() => !initialCache);
 
-  const [days, setDays] = useState<EventDaySchedule[]>(() => {
-    const v6 = loadFromStorage<EventDaySchedule[] | null>('vivah_days_v6', null);
-    if (v6 && v6.length >= 7) {
-      let updated = v6;
-
-      // Check if jan-20 schedule day is present
-      if (!updated.some(d => d.id === 'jan-20')) {
-        const jan20 = INITIAL_DAY_SCHEDULES.find(d => d.id === 'jan-20');
-        if (jan20) {
-          updated = [jan20, ...updated];
-        }
-      }
-
-      // Check if s-20-0 is present in feb-20
-      const feb20 = updated.find(d => d.id === 'feb-20');
-      if (feb20 && !feb20.items.some(item => item.id === 's-20-0')) {
-        const initFeb20 = INITIAL_DAY_SCHEDULES.find(d => d.id === 'feb-20');
-        const s20_0 = initFeb20?.items.find(i => i.id === 's-20-0');
-        if (s20_0) {
-          updated = updated.map(d => d.id === 'feb-20' ? { ...d, items: [s20_0, ...d.items] } : d);
-        }
-      }
-
-      // Check if feb-21 has the updated detailed wedding schedule including girl touchup & departure
-      const feb21 = updated.find(d => d.id === 'feb-21');
-      const initFeb21 = INITIAL_DAY_SCHEDULES.find(d => d.id === 'feb-21');
-      if (feb21 && initFeb21 && !feb21.items.some(item => item.id === 's-21-girl-touchup')) {
-        updated = updated.map(d => d.id === 'feb-21' ? initFeb21 : d);
-      }
-
-      return updated;
-    }
-    return INITIAL_DAY_SCHEDULES;
-  });
-
-  const [decisions, setDecisions] = useState<DecisionPoint[]>(() => {
-    const v6 = loadFromStorage<DecisionPoint[] | null>('vivah_decisions_v6', null);
-    if (v6 && v6.length > 0) return v6;
-    return INITIAL_DECISION_POINTS;
-  });
-
-  const [notes, setNotes] = useState<PlanningNote[]>(() => {
-    const v6 = loadFromStorage<PlanningNote[] | null>('vivah_notes_v6', null);
-    if (v6 && v6.length > 0) {
-      const freshNote3 = INITIAL_NOTES.find(n => n.id === 'note-3');
-      if (freshNote3) {
-        return v6.map(n => n.id === 'note-3' ? freshNote3 : n);
-      }
-      return v6;
-    }
-    return INITIAL_NOTES;
-  });
-
-  const [weddingYear, setWeddingYear] = useState<number>(() => 
-    loadFromStorage('vivah_year_v5', 2027)
-  );
-
-  const [preWeddingPlan, setPreWeddingPlan] = useState<PreWeddingTripPlan>(() => 
-    loadFromStorage<PreWeddingTripPlan>('vivah_prewedding_v5', INITIAL_PREWEDDING_PLAN)
-  );
+  // Clear legacy pre-Firebase localStorage keys safely without touching modern cache or auth
+  useEffect(() => {
+    try {
+      const legacyKeys = [
+        'vivah_tasks_v6', 'vivah_tasks_v5', 'vivah_tasks_v4',
+        'vivah_rentals_v6', 'vivah_dresses_v6', 'vivah_side_v5'
+      ];
+      legacyKeys.forEach(k => localStorage.removeItem(k));
+    } catch {}
+  }, []);
 
   const [activeTab, setActiveTab] = useState<TabType>('month-tracker');
+  const [taskSubView, setTaskSubView] = useState<TaskSubView>('checklist');
+  const [tasksResetSignal, setTasksResetSignal] = useState<number>(0);
+  const [itineraryResetSignal, setItineraryResetSignal] = useState<number>(0);
+
+  const handleNavigateTaskSubView = (subView: TaskSubView) => {
+    setActiveTab('month-tracker');
+    setTaskSubView(subView);
+    if (subView === 'checklist') {
+      setTasksResetSignal(prev => prev + 1);
+    }
+  };
+
+  const handleTabChange = (tab: TabType) => {
+    if (tab === 'month-tracker') {
+      setActiveTab('month-tracker');
+      setTaskSubView('checklist');
+      setTasksResetSignal(prev => prev + 1);
+    } else if (tab === 'itinerary') {
+      setActiveTab('itinerary');
+      setItineraryResetSignal(prev => prev + 1);
+    } else if (tab === 'dresses') {
+      setActiveTab('month-tracker');
+      setTaskSubView('outfits');
+    } else if (tab === 'rentals') {
+      setActiveTab('month-tracker');
+      setTaskSubView('rentals');
+    } else if (tab === 'pre-wedding') {
+      setActiveTab('month-tracker');
+      setTaskSubView('pre-wedding');
+    } else {
+      setActiveTab(tab);
+    }
+  };
 
   // UI States (Command Palette, Toasts, Confirmation Dialog)
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
@@ -199,146 +149,293 @@ export const App: React.FC = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // LocalStorage Persistence
-  useEffect(() => { 
-    saveToStorage('vivah_tasks_v6', tasks); 
-    saveToStorage('vivah_tasks_v5', tasks); 
-    saveToStorage('vivah_tasks_v4', tasks); 
-  }, [tasks]);
-  useEffect(() => { 
-    saveToStorage('vivah_prewedding_v6', preWeddingPlan); 
-    saveToStorage('vivah_prewedding_v5', preWeddingPlan); 
-  }, [preWeddingPlan]);
-  useEffect(() => { 
-    saveToStorage('vivah_rentals_v6', rentals); 
-    saveToStorage('vivah_rentals_v5', rentals); 
-  }, [rentals]);
-  useEffect(() => { 
-    saveToStorage('vivah_dresses_v6', dresses); 
-    saveToStorage('vivah_dresses_v5', dresses); 
-  }, [dresses]);
-  useEffect(() => { 
-    saveToStorage('vivah_days_v6', days); 
-    saveToStorage('vivah_days_v5', days); 
-  }, [days]);
-  useEffect(() => { 
-    saveToStorage('vivah_decisions_v6', decisions); 
-    saveToStorage('vivah_decisions_v5', decisions); 
-  }, [decisions]);
-  useEffect(() => { 
-    saveToStorage('vivah_notes_v6', notes); 
-    saveToStorage('vivah_notes_v5', notes); 
-  }, [notes]);
-  useEffect(() => { saveToStorage('vivah_year_v5', weddingYear); }, [weddingYear]);
-  useEffect(() => { saveToStorage('vivah_side_v5', activeSide); }, [activeSide]);
+  // Firebase Cloud Sync State
+  const [syncStatus, setSyncStatus] = useState<SyncStatus>('connecting');
+
+  // Ref to always hold the freshest dataset across renders & async closures
+  const latestDatasetRef = useRef<WeddingDataset>({
+    tasks,
+    rentals,
+    dresses,
+    days,
+    decisions,
+    notes,
+    preWeddingPlan,
+    activeSide,
+    weddingYear
+  });
+
+  // Keep latestDatasetRef synchronized with current render state
+  latestDatasetRef.current = {
+    tasks,
+    rentals,
+    dresses,
+    days,
+    decisions,
+    notes,
+    preWeddingPlan,
+    activeSide,
+    weddingYear
+  };
+
+  /**
+   * Helper to persist user modifications immediately or debounced to Prod Firebase & local cache.
+   * This is ONLY triggered by explicit user actions, preventing accidental overwrites on reload.
+   */
+  const syncToCloud = useCallback((updates: Partial<WeddingDataset>, immediate = false) => {
+    const fullDataset: WeddingDataset = {
+      ...latestDatasetRef.current,
+      ...updates
+    };
+    latestDatasetRef.current = fullDataset;
+
+    // Immediately persist to local cache
+    saveCachedWeddingData(fullDataset);
+
+    // Save directly to Prod Firebase
+    if (immediate) {
+      cancelScheduledCloudSave();
+      saveWeddingDataToFirestore(fullDataset, setSyncStatus);
+    } else {
+      scheduleCloudSave(fullDataset, setSyncStatus, 400);
+    }
+  }, []);
+
+  // Apply verified remote data from Prod Firebase to local state
+  const handleApplyCloudData = useCallback((remote: WeddingDataset) => {
+    cancelScheduledCloudSave();
+
+    if (remote.tasks && Array.isArray(remote.tasks)) setTasks(remote.tasks);
+    if (remote.rentals && Array.isArray(remote.rentals)) setRentals(remote.rentals);
+    if (remote.dresses && Array.isArray(remote.dresses)) setDresses(remote.dresses);
+    if (remote.days && Array.isArray(remote.days)) setDays(remote.days);
+    if (remote.decisions && Array.isArray(remote.decisions)) setDecisions(remote.decisions);
+    if (remote.notes && Array.isArray(remote.notes)) setNotes(remote.notes);
+    if (remote.preWeddingPlan) setPreWeddingPlan(remote.preWeddingPlan);
+    if (remote.weddingYear) setWeddingYear(remote.weddingYear);
+
+    // Update ref and cache with fresh server state
+    latestDatasetRef.current = {
+      tasks: remote.tasks || latestDatasetRef.current.tasks,
+      rentals: remote.rentals || latestDatasetRef.current.rentals,
+      dresses: remote.dresses || latestDatasetRef.current.dresses,
+      days: remote.days || latestDatasetRef.current.days,
+      decisions: remote.decisions || latestDatasetRef.current.decisions,
+      notes: remote.notes || latestDatasetRef.current.notes,
+      preWeddingPlan: remote.preWeddingPlan || latestDatasetRef.current.preWeddingPlan,
+      activeSide: latestDatasetRef.current.activeSide,
+      weddingYear: remote.weddingYear || latestDatasetRef.current.weddingYear
+    };
+    saveCachedWeddingData(latestDatasetRef.current);
+  }, []);
+
+  // Initialize Firebase sync on mount and listen to Prod Firestore in real time
+  useEffect(() => {
+    const unsub = initWeddingSync({
+      initialFallbackData: latestDatasetRef.current,
+      onRemoteUpdate: (remote) => {
+        handleApplyCloudData(remote);
+      },
+      onStatusChange: (status) => {
+        setSyncStatus(status);
+      },
+      onInitialLoaded: () => {
+        setIsCloudLoading(false);
+      }
+    });
+
+    return () => {
+      unsub();
+    };
+  }, [handleApplyCloudData]);
 
   // Pre-Wedding Handlers
   const handleUpdatePreWeddingPlan = (updates: Partial<PreWeddingTripPlan>) => {
-    setPreWeddingPlan(prev => ({ ...prev, ...updates }));
+    const nextPlan = { ...preWeddingPlan, ...updates };
+    setPreWeddingPlan(nextPlan);
+    syncToCloud({ preWeddingPlan: nextPlan }, false);
     showToast('Pre-wedding shoot plan updated', 'success');
   };
 
   const handleResetPreWeddingPreset = (presetType: PreWeddingTripType) => {
-    if (presetType === 'NATIONAL') {
-      setPreWeddingPlan(NATIONAL_PREWEDDING_PRESET);
-      showToast('Loaded National Trip preset (Udaipur / Goa, 2–3 Days)', 'info');
-    } else if (presetType === 'INTERNATIONAL') {
-      setPreWeddingPlan(INTERNATIONAL_PREWEDDING_PRESET);
-      showToast('Loaded International Trip preset (Dubai / Bali, 1 Week)', 'info');
-    } else if (presetType === 'REGIONAL') {
-      setPreWeddingPlan(REGIONAL_PREWEDDING_PRESET);
-      showToast('Loaded Regional Gujarat preset (Vadodara / Dumas / Sets)', 'info');
+    let nextPlan = SURAT_REGIONAL_PRESET;
+    let label = 'Surat & Daman Road Trip plan';
+    if (presetType === 'HERITAGE_CIRCUIT') {
+      nextPlan = HERITAGE_CIRCUIT_PRESET;
+      label = 'Vadodara & Champaner Heritage plan';
+    } else if (presetType === 'ANAND_VILLA') {
+      nextPlan = ANAND_VILLA_PRESET;
+      label = 'The Rustic Villa (Anand) plan';
     }
+    setPreWeddingPlan(nextPlan);
+    syncToCloud({ preWeddingPlan: nextPlan }, true);
+    showToast(`Loaded ${label}`, 'info');
   };
 
-  // Task Handlers (Interactive, Editable, Deletable with Undo)
+  // Task Handlers (Interactive, Editable, Deletable with Undo - synced to Prod Firebase)
   const handleToggleTask = (taskId: string) => {
     let nextStatus = false;
-    setTasks(prev => prev.map(t => {
+    const nextTasks: Task[] = tasks.map(t => {
       if (t.id === taskId) {
         nextStatus = !t.completed;
-        return { ...t, completed: nextStatus };
+        return { 
+          ...t, 
+          completed: nextStatus, 
+          status: (nextStatus ? 'completed' : 'todo') as Task['status']
+        };
       }
       return t;
-    }));
+    });
+    setTasks(nextTasks);
+    syncToCloud({ tasks: nextTasks }, true);
     showToast(nextStatus ? 'Task completed! 🎉' : 'Task marked pending', 'success');
   };
 
   const handleAddTask = (newTask: Omit<Task, 'id'>) => {
-    const created: Task = { ...newTask, id: `t-${Date.now()}` };
-    setTasks(prev => [created, ...prev]);
+    const status = newTask.status || (newTask.completed ? 'completed' : 'todo');
+    const description = newTask.description ?? newTask.notes ?? '';
+    const created: Task = { 
+      ...newTask, 
+      id: `t-${Date.now()}`,
+      status,
+      completed: status === 'completed',
+      description,
+      notes: description,
+      subtasks: newTask.subtasks || [],
+      comments: newTask.comments || []
+    };
+    const nextTasks = [created, ...tasks];
+    setTasks(nextTasks);
+    syncToCloud({ tasks: nextTasks }, true);
     showToast(`Task "${created.title.slice(0, 28)}..." added`, 'success');
   };
 
   const handleEditTask = (id: string, updates: Partial<Task>) => {
-    setTasks(prev => prev.map(t => t.id === id ? { ...t, ...updates } : t));
+    const nextTasks: Task[] = tasks.map(t => {
+      if (t.id === id) {
+        const desc = updates.description !== undefined 
+          ? updates.description 
+          : (updates.notes !== undefined ? updates.notes : (t.description ?? t.notes ?? ''));
+
+        let derivedStatus: Task['status'] = updates.status !== undefined ? updates.status : t.status;
+        let derivedCompleted: boolean = updates.completed !== undefined ? updates.completed : t.completed;
+
+        if (updates.status !== undefined) {
+          derivedCompleted = updates.status === 'completed';
+        } else if (updates.completed !== undefined) {
+          derivedStatus = updates.completed ? 'completed' : (t.status === 'completed' ? 'todo' : (t.status || 'todo'));
+        }
+
+        const merged: Task = { 
+          ...t, 
+          ...updates,
+          status: derivedStatus,
+          completed: derivedCompleted,
+          description: desc,
+          notes: desc,
+          comments: updates.comments !== undefined ? updates.comments : (t.comments || [])
+        };
+        return merged;
+      }
+      return t;
+    });
+    setTasks(nextTasks);
+    syncToCloud({ tasks: nextTasks }, false);
   };
 
   const handleDeleteTask = (taskId: string) => {
     const taskToDelete = tasks.find(t => t.id === taskId);
     if (!taskToDelete) return;
-    setTasks(prev => prev.filter(t => t.id !== taskId));
+    const nextTasks = tasks.filter(t => t.id !== taskId);
+    setTasks(nextTasks);
+    syncToCloud({ tasks: nextTasks }, true);
     showToast(`Task "${taskToDelete.title.slice(0, 28)}..." deleted`, 'undo', () => {
-      setTasks(prev => [taskToDelete, ...prev]);
+      setTasks(prev => {
+        const restored = [taskToDelete, ...prev];
+        syncToCloud({ tasks: restored }, true);
+        return restored;
+      });
       showToast('Task restored!', 'success');
     });
   };
 
-  // Rental Handlers (Interactive, Editable, Deletable with Undo)
+  // Rental Handlers (Synced immediately to Prod Firebase)
   const handleUpdateRental = (id: string, updates: Partial<RentalItem>) => {
-    setRentals(prev => prev.map(r => r.id === id ? { ...r, ...updates } : r));
+    const nextRentals = rentals.map(r => r.id === id ? { ...r, ...updates } : r);
+    setRentals(nextRentals);
+    syncToCloud({ rentals: nextRentals }, false);
   };
 
   const handleAddRental = (newRental: Omit<RentalItem, 'id'>) => {
     const created: RentalItem = { ...newRental, id: `rent-${Date.now()}` };
-    setRentals(prev => [...prev, created]);
+    const nextRentals = [...rentals, created];
+    setRentals(nextRentals);
+    syncToCloud({ rentals: nextRentals }, true);
     showToast(`Rental item added`, 'success');
   };
 
   const handleDeleteRental = (id: string) => {
     const item = rentals.find(r => r.id === id);
     if (!item) return;
-    setRentals(prev => prev.filter(r => r.id !== id));
+    const nextRentals = rentals.filter(r => r.id !== id);
+    setRentals(nextRentals);
+    syncToCloud({ rentals: nextRentals }, true);
     showToast(`Rental "${item.item.slice(0, 24)}..." deleted`, 'undo', () => {
-      setRentals(prev => [...prev, item]);
+      setRentals(prev => {
+        const restored = [...prev, item];
+        syncToCloud({ rentals: restored }, true);
+        return restored;
+      });
       showToast('Rental item restored!', 'success');
     });
   };
 
-  // Dress Handlers (Interactive, Editable, Deletable with Undo)
+  // Dress Handlers (Synced immediately to Prod Firebase)
   const handleUpdateDress = (id: string, updates: Partial<DressItem>) => {
-    setDresses(prev => prev.map(d => d.id === id ? { ...d, ...updates } : d));
+    const nextDresses = dresses.map(d => d.id === id ? { ...d, ...updates } : d);
+    setDresses(nextDresses);
+    syncToCloud({ dresses: nextDresses }, false);
   };
 
   const handleAddDress = (newDress: Omit<DressItem, 'id'>) => {
     const created: DressItem = { ...newDress, id: `dr-${Date.now()}` };
-    setDresses(prev => [...prev, created]);
+    const nextDresses = [...dresses, created];
+    setDresses(nextDresses);
+    syncToCloud({ dresses: nextDresses }, true);
     showToast(`Outfit "${created.garmentName}" added`, 'success');
   };
 
   const handleDeleteDress = (id: string) => {
     const item = dresses.find(d => d.id === id);
     if (!item) return;
-    setDresses(prev => prev.filter(d => d.id !== id));
+    const nextDresses = dresses.filter(d => d.id !== id);
+    setDresses(nextDresses);
+    syncToCloud({ dresses: nextDresses }, true);
     showToast(`Outfit "${item.garmentName}" deleted`, 'undo', () => {
-      setDresses(prev => [...prev, item]);
+      setDresses(prev => {
+        const restored = [...prev, item];
+        syncToCloud({ dresses: restored }, true);
+        return restored;
+      });
       showToast('Outfit restored!', 'success');
     });
   };
 
-  // Schedule Handlers (Interactive, Editable, Deletable with Undo)
+  // Schedule Handlers (Synced immediately to Prod Firebase)
   const handleAddScheduleItem = (dayId: string, item: ScheduleEvent) => {
-    setDays(prev => prev.map(day => {
+    const nextDays = days.map(day => {
       if (day.id === dayId) {
         return { ...day, items: [...day.items, item] };
       }
       return day;
-    }));
+    });
+    setDays(nextDays);
+    syncToCloud({ days: nextDays }, true);
     showToast(`Event cue "${item.title.slice(0, 24)}..." added`, 'success');
   };
 
   const handleEditScheduleItem = (dayId: string, itemId: string, updates: Partial<ScheduleEvent>) => {
-    setDays(prev => prev.map(day => {
+    const nextDays = days.map(day => {
       if (day.id === dayId) {
         return {
           ...day,
@@ -346,102 +443,146 @@ export const App: React.FC = () => {
         };
       }
       return day;
-    }));
+    });
+    setDays(nextDays);
+    syncToCloud({ days: nextDays }, false);
   };
 
   const handleReorderScheduleItems = (dayId: string, fromIndex: number, toIndex: number) => {
-    setDays(prev => prev.map(day => {
+    const nextDays = days.map(day => {
       if (day.id !== dayId) return day;
       const items = [...day.items];
       const [moved] = items.splice(fromIndex, 1);
       items.splice(toIndex, 0, moved);
       return { ...day, items };
-    }));
+    });
+    setDays(nextDays);
+    syncToCloud({ days: nextDays }, true);
   };
 
   const handleDeleteScheduleItem = (dayId: string, itemId: string) => {
     const day = days.find(d => d.id === dayId);
     const item = day?.items.find(i => i.id === itemId);
     if (!item) return;
-    setDays(prev => prev.map(d => d.id === dayId ? { ...d, items: d.items.filter(i => i.id !== itemId) } : d));
+    const nextDays = days.map(d => d.id === dayId ? { ...d, items: d.items.filter(i => i.id !== itemId) } : d);
+    setDays(nextDays);
+    syncToCloud({ days: nextDays }, true);
     showToast(`Event cue "${item.title.slice(0, 24)}..." deleted`, 'undo', () => {
-      setDays(prev => prev.map(d => d.id === dayId ? { ...d, items: [...d.items, item] } : d));
+      setDays(prev => {
+        const restored = prev.map(d => d.id === dayId ? { ...d, items: [...d.items, item] } : d);
+        syncToCloud({ days: restored }, true);
+        return restored;
+      });
       showToast('Event cue restored!', 'success');
     });
   };
 
-  // Decision Handlers (Interactive, Editable, Deletable with Undo)
+  // Decision Handlers (Synced immediately to Prod Firebase)
   const handleUpdateDecision = (id: string, updates: Partial<DecisionPoint>) => {
-    setDecisions(prev => prev.map(d => d.id === id ? { ...d, ...updates } : d));
+    const nextDecisions = decisions.map(d => d.id === id ? { ...d, ...updates } : d);
+    setDecisions(nextDecisions);
+    syncToCloud({ decisions: nextDecisions }, false);
     showToast('Decision recorded', 'success');
   };
 
   const handleAddDecision = (newDec: Omit<DecisionPoint, 'id'>) => {
     const created: DecisionPoint = { ...newDec, id: `dec-${Date.now()}` };
-    setDecisions(prev => [...prev, created]);
+    const nextDecisions = [...decisions, created];
+    setDecisions(nextDecisions);
+    syncToCloud({ decisions: nextDecisions }, true);
     showToast('New decision topic added', 'success');
   };
 
   const handleDeleteDecision = (id: string) => {
     const item = decisions.find(d => d.id === id);
     if (!item) return;
-    setDecisions(prev => prev.filter(d => d.id !== id));
+    const nextDecisions = decisions.filter(d => d.id !== id);
+    setDecisions(nextDecisions);
+    syncToCloud({ decisions: nextDecisions }, true);
     showToast(`Decision topic deleted`, 'undo', () => {
-      setDecisions(prev => [...prev, item]);
+      setDecisions(prev => {
+        const restored = [...prev, item];
+        syncToCloud({ decisions: restored }, true);
+        return restored;
+      });
       showToast('Decision restored!', 'success');
     });
   };
 
-  // Planning Notes Handlers (Interactive, Editable, Deletable with Undo)
+  // Planning Notes Handlers (Synced immediately to Prod Firebase)
   const handleAddNote = (newNote: Omit<PlanningNote, 'id' | 'updatedAt'>) => {
     const created: PlanningNote = {
       ...newNote,
       id: `note-${Date.now()}`,
-      updatedAt: '2026-10-22'
+      updatedAt: new Date().toISOString().split('T')[0]
     };
-    setNotes(prev => [created, ...prev]);
+    const nextNotes = [created, ...notes];
+    setNotes(nextNotes);
+    syncToCloud({ notes: nextNotes }, true);
     showToast(`Note "${created.title}" added`, 'success');
   };
 
   const handleUpdateNote = (id: string, updates: Partial<PlanningNote>) => {
-    setNotes(prev => prev.map(n => n.id === id ? { ...n, ...updates, updatedAt: '2026-10-22' } : n));
+    const nextNotes = notes.map(n => n.id === id ? { ...n, ...updates, updatedAt: new Date().toISOString().split('T')[0] } : n);
+    setNotes(nextNotes);
+    syncToCloud({ notes: nextNotes }, false);
   };
 
   const handleDeleteNote = (id: string) => {
     const item = notes.find(n => n.id === id);
     if (!item) return;
-    setNotes(prev => prev.filter(n => n.id !== id));
+    const nextNotes = notes.filter(n => n.id !== id);
+    setNotes(nextNotes);
+    syncToCloud({ notes: nextNotes }, true);
     showToast(`Note "${item.title}" deleted`, 'undo', () => {
-      setNotes(prev => [item, ...prev]);
+      setNotes(prev => {
+        const restored = [item, ...prev];
+        syncToCloud({ notes: restored }, true);
+        return restored;
+      });
       showToast('Note restored!', 'success');
     });
   };
 
-  // Global Reset with Confirmation Modal
-  const handleConfirmReset = () => {
-    setTasks(INITIAL_TASKS);
-    setPreWeddingPlan(INITIAL_PREWEDDING_PLAN);
-    setRentals(INITIAL_RENTALS);
-    setDresses(INITIAL_DRESSES);
-    setDays(INITIAL_DAY_SCHEDULES);
-    setDecisions(INITIAL_DECISION_POINTS);
-    setNotes(INITIAL_NOTES);
-    setActiveSide('ALL');
-    setWeddingYear(2027);
-    localStorage.clear();
+  // Global Reset with Confirmation Modal (Resets directly in Firebase Firestore)
+  const handleConfirmReset = async () => {
+    const cleanTasks = INITIAL_TASKS.map(t => ({
+      ...t,
+      description: t.notes || '',
+      notes: t.notes || '',
+      comments: []
+    }));
+    const cleanDataset: WeddingDataset = {
+      tasks: cleanTasks,
+      preWeddingPlan: INITIAL_PREWEDDING_PLAN,
+      rentals: INITIAL_RENTALS,
+      dresses: INITIAL_DRESSES,
+      days: INITIAL_DAY_SCHEDULES,
+      decisions: INITIAL_DECISION_POINTS,
+      notes: INITIAL_NOTES,
+      activeSide: 'ALL',
+      weddingYear: 2027
+    };
+    handleApplyCloudData(cleanDataset);
+    await resetCloudData(cleanDataset);
     setIsResetModalOpen(false);
-    showToast('Dashboard reset to clean default state', 'info');
+    showToast('Dashboard reset to clean default state in Firebase', 'info');
   };
 
   // Perspective switcher with feedback toast
   const handleSideChange = (side: WeddingSide) => {
     setActiveSide(side);
+    try {
+      localStorage.setItem('wedding_preferred_side', side);
+    } catch {}
     showToast(
       side === 'ALL'
         ? 'Showing Unified Joint View (Both Sides)'
         : side === 'BOY'
         ? "Switched to Boy's Side Focus (Groom)"
-        : "Switched to Girl's Side Focus (Bride)",
+        : side === 'GIRL'
+        ? "Switched to Girl's Side Focus (Bride)"
+        : "Switched to Family Side Focus (Family & Elders)",
       'info'
     );
   };
@@ -451,6 +592,7 @@ export const App: React.FC = () => {
     if (activeSide === 'ALL') return true;
     if (activeSide === 'BOY') return t.side === 'Boy' || t.side === 'Both' || !t.side || t.assignedTo === 'Groom' || t.assignedTo === 'Both';
     if (activeSide === 'GIRL') return t.side === 'Girl' || t.side === 'Both' || !t.side || t.assignedTo === 'Bride' || t.assignedTo === 'Both';
+    if (activeSide === 'FAMILY') return t.assignedTo === 'Family';
     return true;
   });
 
@@ -458,6 +600,7 @@ export const App: React.FC = () => {
     if (activeSide === 'ALL') return true;
     if (activeSide === 'BOY') return r.side === 'Boy' || r.side === 'Both' || !r.side;
     if (activeSide === 'GIRL') return r.side === 'Girl' || r.side === 'Both' || !r.side;
+    if (activeSide === 'FAMILY') return r.side === 'Both' || !r.side;
     return true;
   });
 
@@ -468,11 +611,20 @@ export const App: React.FC = () => {
     return true;
   });
 
+  const filteredDecisions = decisions.filter(d => {
+    if (activeSide === 'ALL') return true;
+    if (activeSide === 'BOY') return d.side === 'Boy' || d.side === 'Both' || !d.side;
+    if (activeSide === 'GIRL') return d.side === 'Girl' || d.side === 'Both' || !d.side;
+    if (activeSide === 'FAMILY') return d.side === 'Both' || !d.side;
+    return true;
+  });
+
   const filteredScheduleCount = days.reduce((acc, d) => {
     const items = d.items.filter(it => {
       if (activeSide === 'ALL') return true;
       if (activeSide === 'BOY') return it.side === 'Boy' || it.side === 'Both' || !it.side;
       if (activeSide === 'GIRL') return it.side === 'Girl' || it.side === 'Both' || !it.side;
+      if (activeSide === 'FAMILY') return it.side === 'Both' || !it.side;
       return true;
     });
     return acc + items.length;
@@ -483,32 +635,25 @@ export const App: React.FC = () => {
   const preWeddingRemainingCount = preWeddingPlan.checklist.filter(c => !c.completed).length;
   const rentalsPendingCount = filteredRentals.filter(r => r.status === 'To Book' || r.status === 'Reserved').length;
   const dressesToBuyCount = filteredDresses.filter(d => d.status !== 'Ready').length;
-  const decisionsPendingCount = decisions.filter(d => d.status === 'Pending').length;
+  const decisionsPendingCount = filteredDecisions.filter(d => d.status === 'Pending').length;
   const scheduleItemsCount = filteredScheduleCount;
   const notesCount = notes.length;
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 font-sans pb-24 sm:pb-8">
-      {/* Dynamic Header with Live Counters & Perspective */}
-      <Header
+    <div className="min-h-screen flex flex-col bg-[#f8fafc] text-slate-900 font-sans pb-24 sm:pb-8">
+      {/* Precision Global Command Shell */}
+      <GlobalHeader
+        activeTab={activeTab}
+        onTabChange={handleTabChange}
+        activeSide={activeSide}
+        onSideChange={handleSideChange}
         tasks={tasks}
         rentals={rentals}
         dresses={dresses}
         decisions={decisions}
         notes={notes}
         preWeddingPlan={preWeddingPlan}
-        activeSide={activeSide}
         weddingYear={weddingYear}
-        onResetData={() => setIsResetModalOpen(true)}
-        onOpenSearch={() => setIsCommandPaletteOpen(true)}
-      />
-
-      {/* Main Tab Navigation with Perspective Switcher & Remaining Count Badges */}
-      <Navigation
-        activeTab={activeTab}
-        onTabChange={setActiveTab}
-        activeSide={activeSide}
-        onSideChange={handleSideChange}
         tasksRemainingCount={tasksRemainingCount}
         preWeddingRemainingCount={preWeddingRemainingCount}
         rentalsPendingCount={rentalsPendingCount}
@@ -516,12 +661,15 @@ export const App: React.FC = () => {
         decisionsPendingCount={decisionsPendingCount}
         scheduleItemsCount={scheduleItemsCount}
         notesCount={notesCount}
+        syncStatus={syncStatus}
+        onResetData={() => setIsResetModalOpen(true)}
         onOpenSearch={() => setIsCommandPaletteOpen(true)}
+        onNavigateToTaskSubView={handleNavigateTaskSubView}
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5">
-        {activeTab === 'month-tracker' && (
+      <main className="flex-1 w-full px-4 sm:px-6 lg:px-8 xl:px-10 py-6 sm:py-8">
+        {(activeTab === 'month-tracker' || activeTab === 'dresses' || activeTab === 'rentals' || activeTab === 'pre-wedding') && (
           <MonthTracker
             milestones={INITIAL_MILESTONES}
             tasks={tasks}
@@ -530,34 +678,20 @@ export const App: React.FC = () => {
             onAddTask={handleAddTask}
             onEditTask={handleEditTask}
             onDeleteTask={handleDeleteTask}
-          />
-        )}
-
-        {activeTab === 'pre-wedding' && (
-          <PreWeddingPlanner
-            plan={preWeddingPlan}
-            activeSide={activeSide}
-            onUpdatePlan={handleUpdatePreWeddingPlan}
-            onResetPlanToPreset={handleResetPreWeddingPreset}
-          />
-        )}
-
-        {activeTab === 'rentals' && (
-          <RentalsTracker
-            rentals={rentals}
+            rentals={filteredRentals}
             onUpdateRental={handleUpdateRental}
             onAddRental={handleAddRental}
             onDeleteRental={handleDeleteRental}
-          />
-        )}
-
-        {activeTab === 'dresses' && (
-          <DressesTracker
-            dresses={dresses}
-            activeSide={activeSide}
+            dresses={filteredDresses}
             onUpdateDress={handleUpdateDress}
             onAddDress={handleAddDress}
             onDeleteDress={handleDeleteDress}
+            preWeddingPlan={preWeddingPlan}
+            onUpdatePreWeddingPlan={handleUpdatePreWeddingPlan}
+            onResetPlanToPreset={handleResetPreWeddingPreset}
+            activeTaskSubView={taskSubView}
+            onTaskSubViewChange={setTaskSubView}
+            resetFilterSignal={tasksResetSignal}
           />
         )}
 
@@ -569,12 +703,13 @@ export const App: React.FC = () => {
             onEditScheduleItem={handleEditScheduleItem}
             onDeleteScheduleItem={handleDeleteScheduleItem}
             onReorderScheduleItems={handleReorderScheduleItems}
+            resetEventSignal={itineraryResetSignal}
           />
         )}
 
         {activeTab === 'decisions' && (
           <DecisionsTracker
-            decisions={decisions}
+            decisions={filteredDecisions}
             onUpdateDecision={handleUpdateDecision}
             onAddDecision={handleAddDecision}
             onDeleteDecision={handleDeleteDecision}
@@ -591,14 +726,19 @@ export const App: React.FC = () => {
         )}
       </main>
 
-      {/* Minimal Footer */}
-      <footer className="bg-white text-slate-500 border-t border-slate-200 py-3.5 text-center text-xs no-print mt-8">
-        <div className="flex flex-wrap items-center justify-center gap-2">
-          <span className="font-semibold text-slate-700">Wedding Operational Dashboard</span>
-          <span>•</span>
-          <span>Surat & Bhavnagar (Feb 15–21, 2027)</span>
-          <span>•</span>
-          <span>Auto-saved locally • Press ⌘K for command search</span>
+      {/* Editorial Luxury Footer */}
+      <footer className="bg-white text-slate-500 border-t border-slate-200/80 py-8 text-center text-xs no-print mt-20">
+        <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-10 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-400 font-sans">
+          <div className="flex items-center gap-2.5">
+            <span className="font-cormorant font-normal text-slate-900 tracking-wide text-sm">
+              Parth <span className="font-serif italic text-[#B89230]">&</span> Nisha
+            </span>
+            <span className="text-slate-300">·</span>
+            <span className="font-mono text-[11px] text-[#8B6E1F]">Feb 15–21, 2027</span>
+          </div>
+          <div className="text-[11px] text-slate-400 font-sans tracking-wide">
+            <span>Ceremonial Planning Suite · Live Cloud Sync · Press <kbd className="px-1.5 py-0.5 bg-slate-50 border border-slate-200 rounded text-[10px] font-mono text-slate-500">⌘K</kbd> for Command Search</span>
+          </div>
         </div>
       </footer>
 
@@ -615,7 +755,8 @@ export const App: React.FC = () => {
         activeSide={activeSide}
         onSideChange={handleSideChange}
         activeTab={activeTab}
-        onTabChange={setActiveTab}
+        onTabChange={handleTabChange}
+        onNavigateTaskSubView={handleNavigateTaskSubView}
         onOpenAddTask={() => {
           // Triggers modal in MonthTracker if active
         }}

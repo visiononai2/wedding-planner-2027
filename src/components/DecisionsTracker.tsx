@@ -80,37 +80,37 @@ export const DecisionsTracker: React.FC<DecisionsTrackerProps> = ({
   const decidedCount = decisions.filter(d => d.status === 'Decided').length;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6 sm:space-y-7">
       {/* Ground Rules & Operational Constraints Card */}
-      <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm">
-        <div className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2.5 flex items-center">
-          <ShieldAlert className="w-4 h-4 mr-1.5 text-indigo-600" />
-          Critical Operational Rules & Constraints
+      <div className="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
+        <div className="text-xs font-semibold text-slate-900 uppercase tracking-wider mb-4 flex items-center">
+          <ShieldAlert className="w-4 h-4 mr-2 text-[#B89230] stroke-[1.5]" />
+          Critical Operational Protocols & Constraints
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-slate-600">
-          <div className="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/70 leading-relaxed">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 text-xs text-slate-600 font-sans">
+          <div className="p-4 bg-slate-50/80 rounded-xl border border-slate-200/70 leading-relaxed">
             <strong className="text-slate-900 block font-semibold mb-1">1. Surat Police 10 PM Limit:</strong>
-            Turn off high DJ sound strictly at 10:00 PM at Silver Farm. Bride entry & couple raas must happen before 10 PM.
+            Turn off high DJ sound strictly at 10:00 PM at Silver Farm. Bride (Nisha) entry & couple raas must happen before 10 PM.
           </div>
-          <div className="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/70 leading-relaxed">
+          <div className="p-4 bg-slate-50/80 rounded-xl border border-slate-200/70 leading-relaxed">
             <strong className="text-slate-900 block font-semibold mb-1">2. 05:00 AM Jaan Departure:</strong>
-            Groom side departs at 5 AM sharp. ICER truck mounted with 4 Base 4 Top & flowers ready at 4:30 AM.
+            Groom (Parth) side departs at 5 AM sharp. ICER truck mounted with 4 Base 4 Top & flowers ready at 4:30 AM.
           </div>
-          <div className="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/70 leading-relaxed">
+          <div className="p-4 bg-slate-50/80 rounded-xl border border-slate-200/70 leading-relaxed">
             <strong className="text-slate-900 block font-semibold mb-1">3. Bride Makeup Slot:</strong>
-            Start 2–3 PM, finish by 5:00–5:30 PM strictly to allow sunset portraits before dinner & Garba.
+            Nisha's parlour slot starts 2–3 PM, finish by 5:00–5:30 PM strictly to allow sunset portraits before dinner & Garba.
           </div>
         </div>
       </div>
 
       {/* Questions Tracker List */}
-      <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm space-y-3.5">
-        <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-100">
+      <div className="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-5">
+        <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-100">
           <div>
-            <h3 className="text-sm sm:text-base font-bold text-slate-900">Family Decisions & Ritual Inquiries</h3>
-            <div className="text-xs text-slate-500 mt-0.5">
+            <h3 className="font-serif text-base sm:text-lg font-medium text-slate-900">Family Decisions & Ritual Inquiries</h3>
+            <div className="text-xs text-slate-500 font-sans mt-0.5">
               {pendingCount > 0 ? (
-                <span className="text-amber-700 font-semibold">{pendingCount} pending decisions</span>
+                <span className="text-amber-800 font-semibold">{pendingCount} pending decisions</span>
               ) : (
                 <span className="text-emerald-700 font-semibold">✓ All questions resolved</span>
               )} • {decidedCount} decided
@@ -119,30 +119,30 @@ export const DecisionsTracker: React.FC<DecisionsTrackerProps> = ({
 
           <button
             onClick={() => setIsAddModalOpen(true)}
-            className="inline-flex items-center px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white text-xs font-semibold rounded-xl shadow-sm transition-colors"
+            className="inline-flex items-center px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-xl shadow-xs hover:-translate-y-0.5 transition-all cursor-pointer"
           >
-            <Plus className="w-3.5 h-3.5 mr-1" />
+            <Plus className="w-3.5 h-3.5 mr-1.5 stroke-[1.5]" />
             Add Decision
           </button>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-3.5">
           {decisions.map((dec) => (
             <div 
               key={dec.id}
-              className="p-4 rounded-xl border border-slate-200 hover:border-slate-300 hover:shadow-sm transition-all bg-white text-xs space-y-3"
+              className="p-5 rounded-2xl border border-slate-200/80 hover:border-slate-300 hover:shadow-md transition-all bg-white text-xs space-y-4"
             >
               <div className="flex flex-wrap items-center justify-between gap-2">
                 {/* Inline Editable Question */}
                 <EditableText
                   value={dec.question}
                   onSave={(val) => onUpdateDecision(dec.id, { question: val })}
-                  className="font-bold text-sm text-slate-900"
+                  className="font-medium text-sm text-slate-900 font-serif"
                 />
 
                 <div className="flex items-center space-x-2">
-                  <span className={`px-2.5 py-0.5 rounded-full font-semibold text-[10px] ${
-                    dec.status === 'Decided' ? 'bg-emerald-100 text-emerald-800 border border-emerald-200/80' : 'bg-amber-100 text-amber-800 border border-amber-200/80'
+                  <span className={`px-2.5 py-1 rounded-full font-sans font-medium text-[11px] border ${
+                    dec.status === 'Decided' ? 'bg-emerald-50 text-emerald-800 border-emerald-200/70' : 'bg-amber-50 text-amber-800 border-amber-200/70'
                   }`}>
                     {dec.status === 'Decided' ? '✓ Decided' : 'Pending'}
                   </span>
@@ -153,33 +153,33 @@ export const DecisionsTracker: React.FC<DecisionsTrackerProps> = ({
                       setEditOptionsStr(dec.options.join(', '));
                     }}
                     title="Edit question parameters"
-                    className="p-1.5 text-slate-400 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
+                    className="p-1.5 text-slate-400 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
                   >
-                    <Edit3 className="w-3.5 h-3.5" />
+                    <Edit3 className="w-3.5 h-3.5 stroke-[1.5]" />
                   </button>
 
                   <button
                     onClick={() => onDeleteDecision(dec.id)}
                     title="Delete question"
-                    className="p-1.5 text-slate-300 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                    className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
                   >
-                    <Trash2 className="w-3.5 h-3.5" />
+                    <Trash2 className="w-3.5 h-3.5 stroke-[1.5]" />
                   </button>
                 </div>
               </div>
 
               {/* Options */}
-              <div className="flex flex-wrap gap-1.5">
+              <div className="flex flex-wrap gap-2">
                 {dec.options.map((opt, idx) => {
                   const isSelected = dec.decision?.toLowerCase().includes(opt.toLowerCase());
                   return (
                     <button
                       key={idx}
                       onClick={() => onUpdateDecision(dec.id, { decision: opt, status: 'Decided' })}
-                      className={`px-3 py-1 rounded-lg text-[11px] border transition-all ${
+                      className={`px-3 py-1.5 rounded-xl text-xs font-sans border transition-all cursor-pointer ${
                         isSelected
                           ? 'bg-slate-900 text-white border-slate-900 font-semibold shadow-xs'
-                          : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                          : 'bg-slate-50 text-slate-700 border-slate-200/80 hover:bg-slate-100 hover:border-slate-300'
                       }`}
                     >
                       {opt}
@@ -189,21 +189,21 @@ export const DecisionsTracker: React.FC<DecisionsTrackerProps> = ({
               </div>
 
               {/* Selected Answer with Inline Editing */}
-              <div className="pt-2.5 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
+              <div className="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center">
-                  <span className="text-slate-500 mr-2 font-medium">Selected Answer: </span>
+                  <span className="text-slate-400 mr-2 font-sans font-normal">Selected Answer: </span>
                   <EditableText
                     value={dec.decision || ''}
                     placeholder="Click to type decision..."
                     onSave={(val) => onUpdateDecision(dec.id, { decision: val, status: val.trim() ? 'Decided' : 'Pending' })}
-                    className="font-bold text-slate-900"
+                    className="font-medium text-slate-900 font-serif"
                   />
                 </div>
 
                 <select
                   value={dec.status}
                   onChange={(e) => onUpdateDecision(dec.id, { status: e.target.value as any })}
-                  className="bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1 text-xs text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="bg-slate-50 border border-slate-200/80 rounded-xl px-3 py-1 text-xs text-slate-800 font-sans font-medium focus:outline-none focus:ring-1 focus:ring-[#D4AF37] cursor-pointer"
                 >
                   <option value="Pending">Pending</option>
                   <option value="Decided">Decided</option>
@@ -216,48 +216,48 @@ export const DecisionsTracker: React.FC<DecisionsTrackerProps> = ({
 
       {/* Add Modal */}
       {isAddModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 text-xs">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <h3 className="font-bold text-slate-900 text-sm">Add Family Decision Point</h3>
-              <button onClick={() => setIsAddModalOpen(false)} className="text-slate-400 hover:text-slate-700 text-lg leading-none">&times;</button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-150">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-[0_24px_70px_rgba(15,23,42,0.18)] border border-slate-200/90 text-xs">
+            <div className="flex items-center justify-between pb-3.5 border-b border-slate-100">
+              <h3 className="font-serif font-medium text-slate-900 text-base">Add Family Decision Point</h3>
+              <button onClick={() => setIsAddModalOpen(false)} className="text-slate-400 hover:text-slate-700 p-1 rounded-full transition-colors cursor-pointer text-lg leading-none">&times;</button>
             </div>
 
-            <form onSubmit={handleCreateDecision} className="mt-4 space-y-3.5">
+            <form onSubmit={handleCreateDecision} className="mt-5 space-y-4 font-sans">
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Question / Decision *</label>
+                <label className="block font-medium text-slate-700 mb-1.5">Question / Decision *</label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Bus transport for Bhavnagar relatives"
+                  placeholder="e.g. Bus transport for outstation guests"
                   value={newQuestion}
                   onChange={(e) => setNewQuestion(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-3.5 py-2.5 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-[#D4AF37] focus:bg-white focus:border-[#D4AF37] transition-all"
                 />
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Options (Comma separated)</label>
+                <label className="block font-medium text-slate-700 mb-1.5">Options (Comma separated)</label>
                 <input
                   type="text"
                   placeholder="e.g. AC Bus, Mini Travelers, Private Cars"
                   value={newOptionsStr}
                   onChange={(e) => setNewOptionsStr(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-3.5 py-2.5 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-[#D4AF37] focus:bg-white focus:border-[#D4AF37] transition-all"
                 />
               </div>
 
-              <div className="pt-3 flex justify-end space-x-2 border-t border-slate-100">
+              <div className="pt-4 flex justify-end space-x-2.5 border-t border-slate-100">
                 <button 
                   type="button" 
                   onClick={() => setIsAddModalOpen(false)} 
-                  className="px-4 py-2 text-slate-500 hover:text-slate-700 text-xs font-semibold rounded-xl hover:bg-slate-100 transition-colors"
+                  className="px-4 py-2 text-slate-500 hover:text-slate-800 text-xs font-medium rounded-xl hover:bg-slate-100 transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button 
                   type="submit" 
-                  className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-semibold text-xs shadow-sm transition-colors"
+                  className="px-5 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-medium text-xs shadow-xs hover:-translate-y-0.5 transition-all cursor-pointer"
                 >
                   Save
                 </button>
@@ -269,68 +269,68 @@ export const DecisionsTracker: React.FC<DecisionsTrackerProps> = ({
 
       {/* Edit Modal */}
       {editingDecision && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 text-xs">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <h3 className="font-bold text-slate-900 text-sm">Edit Decision Parameters</h3>
-              <button onClick={() => setEditingDecision(null)} className="text-slate-400 hover:text-slate-700 text-lg leading-none">&times;</button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-150">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-[0_24px_70px_rgba(15,23,42,0.18)] border border-slate-200/90 text-xs">
+            <div className="flex items-center justify-between pb-3.5 border-b border-slate-100">
+              <h3 className="font-serif font-medium text-slate-900 text-base">Edit Decision Parameters</h3>
+              <button onClick={() => setEditingDecision(null)} className="text-slate-400 hover:text-slate-700 p-1 rounded-full transition-colors cursor-pointer text-lg leading-none">&times;</button>
             </div>
 
-            <form onSubmit={handleSaveEdit} className="mt-4 space-y-3.5">
+            <form onSubmit={handleSaveEdit} className="mt-5 space-y-4 font-sans">
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Question *</label>
+                <label className="block font-medium text-slate-700 mb-1.5">Question *</label>
                 <input
                   type="text"
                   required
                   value={editingDecision.question}
                   onChange={(e) => setEditingDecision({ ...editingDecision, question: e.target.value })}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37] focus:bg-white focus:border-[#D4AF37] transition-all"
                 />
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Options (Comma separated)</label>
+                <label className="block font-medium text-slate-700 mb-1.5">Options (Comma separated)</label>
                 <input
                   type="text"
                   value={editOptionsStr}
                   onChange={(e) => setEditOptionsStr(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37] focus:bg-white focus:border-[#D4AF37] transition-all"
                 />
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Chosen Resolution / Decision</label>
+                <label className="block font-medium text-slate-700 mb-1.5">Chosen Resolution / Decision</label>
                 <input
                   type="text"
                   value={editingDecision.decision || ''}
                   onChange={(e) => setEditingDecision({ ...editingDecision, decision: e.target.value })}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37] focus:bg-white focus:border-[#D4AF37] transition-all"
                 />
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Status</label>
+                <label className="block font-medium text-slate-700 mb-1.5">Status</label>
                 <select
                   value={editingDecision.status}
                   onChange={(e) => setEditingDecision({ ...editingDecision, status: e.target.value as any })}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium"
+                  className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37] focus:bg-white focus:border-[#D4AF37] transition-all font-medium cursor-pointer"
                 >
                   <option value="Pending">Pending</option>
                   <option value="Decided">Decided</option>
                 </select>
               </div>
 
-              <div className="pt-3 flex justify-end space-x-2 border-t border-slate-100">
+              <div className="pt-4 flex justify-end space-x-2.5 border-t border-slate-100">
                 <button 
                   type="button" 
                   onClick={() => setEditingDecision(null)} 
-                  className="px-4 py-2 text-slate-500 hover:text-slate-700 text-xs font-semibold rounded-xl hover:bg-slate-100 transition-colors"
+                  className="px-4 py-2 text-slate-500 hover:text-slate-800 text-xs font-medium rounded-xl hover:bg-slate-100 transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button 
                   type="submit" 
-                  className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-semibold text-xs shadow-sm transition-colors"
+                  className="px-5 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-medium text-xs shadow-xs hover:-translate-y-0.5 transition-all cursor-pointer"
                 >
                   Update
                 </button>

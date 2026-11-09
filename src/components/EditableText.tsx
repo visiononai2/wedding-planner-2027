@@ -81,7 +81,7 @@ export const EditableText: React.FC<EditableTextProps> = ({
             onKeyDown={handleKeyDown}
             onBlur={handleSave}
             rows={2}
-            className={`px-2 py-1 bg-white border border-indigo-600 rounded-lg text-xs text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full min-w-[200px] ${inputClassName}`}
+            className={`px-2.5 py-1.5 bg-white border border-stone-300 rounded-xl text-xs text-stone-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 focus:border-[#D4AF37] w-full min-w-[200px] ${inputClassName}`}
           />
         ) : (
           <input
@@ -91,14 +91,14 @@ export const EditableText: React.FC<EditableTextProps> = ({
             onChange={(e) => setCurrentVal(e.target.value)}
             onKeyDown={handleKeyDown}
             onBlur={handleSave}
-            className={`px-2 py-0.5 bg-white border border-indigo-600 rounded-lg text-xs text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 min-w-[120px] ${inputClassName}`}
+            className={`px-2.5 py-1 bg-white border border-stone-300 rounded-lg text-xs text-stone-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 focus:border-[#D4AF37] min-w-[120px] ${inputClassName}`}
           />
         )}
         <button
           type="button"
           onClick={handleSave}
           title="Save (Enter)"
-          className="p-1 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white transition-colors shrink-0"
+          className="p-1 rounded-lg bg-stone-900 hover:bg-stone-800 text-stone-50 transition-colors shrink-0"
         >
           <Check className="w-3 h-3" />
         </button>
@@ -106,7 +106,7 @@ export const EditableText: React.FC<EditableTextProps> = ({
           type="button"
           onClick={handleCancel}
           title="Cancel (Esc)"
-          className="p-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors shrink-0"
+          className="p-1 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-600 transition-colors shrink-0"
         >
           <X className="w-3 h-3" />
         </button>
@@ -120,7 +120,7 @@ export const EditableText: React.FC<EditableTextProps> = ({
         e.stopPropagation();
         setIsEditing(true);
       }}
-      className={`group relative inline-flex items-center gap-1 cursor-pointer rounded px-1 -mx-1 hover:bg-gray-100 transition-colors ${className}`}
+      className={`group relative inline-flex items-center gap-1 cursor-pointer rounded-md px-1 -mx-1 hover:bg-stone-200/50 transition-colors ${className}`}
       title="Click or hover to edit"
     >
       <span>
@@ -128,13 +128,13 @@ export const EditableText: React.FC<EditableTextProps> = ({
         {value !== undefined && value !== null && String(value).trim() !== '' ? (
           String(value)
         ) : (
-          <span className="italic text-gray-400">{placeholder}</span>
+          <span className="italic text-stone-400">{placeholder}</span>
         )}
         {suffix}
       </span>
       {/* 50% visible edit icon on hover as explicitly requested */}
       <span 
-        className="opacity-0 group-hover:opacity-50 hover:!opacity-100 transition-opacity text-gray-500 hover:text-gray-900 shrink-0"
+        className="opacity-0 group-hover:opacity-50 hover:!opacity-100 transition-opacity text-stone-400 hover:text-stone-900 shrink-0"
         aria-hidden="true"
       >
         <Pencil className="w-3 h-3 ml-0.5" />
