@@ -182,8 +182,8 @@ export const DressesTracker: React.FC<DressesTrackerProps> = ({
         );
       case 'Fabric Bought':
         return (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-stone-100 text-stone-700 border border-stone-200/80">
-            <span className="w-1.5 h-1.5 rounded-full bg-stone-400" />
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-slate-100 text-slate-700 border border-slate-200/80">
+            <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
             <span>Fabric Bought</span>
           </span>
         );
@@ -368,7 +368,7 @@ export const DressesTracker: React.FC<DressesTrackerProps> = ({
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {filteredDresses.length === 0 ? (
-          <div className="md:col-span-2 bg-white/70 rounded-2xl p-10 text-center border border-dashed border-stone-200/80 text-xs text-stone-400">
+          <div className="md:col-span-2 bg-white/70 rounded-2xl p-10 text-center border border-dashed border-slate-200/80 text-xs text-slate-400">
             No outfits match your filter.
           </div>
         ) : (
@@ -378,10 +378,10 @@ export const DressesTracker: React.FC<DressesTrackerProps> = ({
             return (
               <div 
                 key={dress.id}
-                className="bg-white/90 backdrop-blur-xs rounded-2xl p-5 border border-stone-200/70 hover:border-[#D4AF37]/50 shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(212,175,55,0.08)] hover:-translate-y-0.5 transition-all duration-300 space-y-3.5"
+                className="bg-white/90 backdrop-blur-xs rounded-2xl p-5 border border-slate-200/70 hover:border-[#D4AF37]/50 shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(212,175,55,0.08)] hover:-translate-y-0.5 transition-all duration-300 space-y-3.5"
               >
                 {/* Header */}
-                <div className="flex items-center justify-between pb-2.5 border-b border-stone-200/60 text-xs">
+                <div className="flex items-center justify-between pb-2.5 border-b border-slate-200/60 text-xs">
                   <div className="flex items-center space-x-2">
                     <span className={`font-medium px-2.5 py-0.5 rounded-full text-[10px] ${
                       isGroom ? 'bg-[#3B6281]/10 text-[#3B6281] border border-[#3B6281]/20' : 'bg-[#A84A5B]/10 text-[#A84A5B] border border-[#A84A5B]/20'
@@ -391,13 +391,13 @@ export const DressesTracker: React.FC<DressesTrackerProps> = ({
                     <EditableText
                       value={dress.event}
                       onSave={(val) => onUpdateDress(dress.id, { event: val })}
-                      className="font-medium text-stone-900"
+                      className="font-medium text-slate-900"
                     />
                   </div>
                   <EditableText
                     value={dress.date}
                     onSave={(val) => onUpdateDress(dress.id, { date: val })}
-                    className="text-[11px] text-stone-400 font-mono"
+                    className="text-[11px] text-slate-400 font-mono"
                   />
                 </div>
 
@@ -406,14 +406,14 @@ export const DressesTracker: React.FC<DressesTrackerProps> = ({
                   <EditableText
                     value={dress.garmentName}
                     onSave={(val) => onUpdateDress(dress.id, { garmentName: val })}
-                    className="text-base sm:text-lg font-cormorant font-medium text-stone-900 block"
+                    className="text-base sm:text-lg font-cormorant font-medium text-slate-900 block"
                   />
-                  <div className="text-xs text-stone-600 font-medium flex items-center mt-1">
+                  <div className="text-xs text-slate-600 font-medium flex items-center mt-1">
                     <Tag className="w-3 h-3 mr-1 text-[#B89230]" />
                     <EditableText
                       value={dress.colorTheme}
                       onSave={(val) => onUpdateDress(dress.id, { colorTheme: val })}
-                      className="text-stone-700 font-medium"
+                      className="text-slate-700 font-medium"
                     />
                   </div>
                 </div>
@@ -527,30 +527,30 @@ export const DressesTracker: React.FC<DressesTrackerProps> = ({
       {isAddModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-200">
           <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-[0_24px_70px_rgba(15,23,42,0.18)] border border-slate-200/90">
-            <div className="flex items-center justify-between pb-3.5 border-b border-stone-200/70">
-              <h3 className="font-cormorant text-xl font-normal text-stone-900">Add Outfit to Wardrobe</h3>
-              <button onClick={() => setIsAddModalOpen(false)} className="text-stone-400 hover:text-stone-800 text-lg leading-none cursor-pointer">&times;</button>
+            <div className="flex items-center justify-between pb-3.5 border-b border-slate-200/70">
+              <h3 className="font-cormorant text-xl font-normal text-slate-900">Add Outfit to Wardrobe</h3>
+              <button onClick={() => setIsAddModalOpen(false)} className="text-slate-400 hover:text-slate-800 text-lg leading-none cursor-pointer">&times;</button>
             </div>
 
             <form onSubmit={handleCreateDress} className="mt-5 space-y-4 text-xs">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-medium text-stone-700 mb-1 text-[11px]">For Whom *</label>
+                  <label className="block font-medium text-slate-700 mb-1 text-[11px]">For Whom *</label>
                   <select
                     value={newPerson}
                     onChange={(e) => setNewPerson(e.target.value as any)}
-                    className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-xs font-medium focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                    className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-xs font-medium focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                   >
                     <option value="Groom">Groom (Parth)</option>
                     <option value="Bride">Bride (Nisha)</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block font-medium text-stone-700 mb-1 text-[11px]">Action Type</label>
+                  <label className="block font-medium text-slate-700 mb-1 text-[11px]">Action Type</label>
                   <select
                     value={newAction}
                     onChange={(e) => setNewAction(e.target.value as any)}
-                    className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-xs font-medium focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                    className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-xs font-medium focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                   >
                     <option value="Buy">Buy Ready-made</option>
                     <option value="Tailor / Stitch">Custom Tailor / Stitch</option>
@@ -561,116 +561,116 @@ export const DressesTracker: React.FC<DressesTrackerProps> = ({
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-medium text-stone-700 mb-1 text-[11px]">Function / Event</label>
+                  <label className="block font-medium text-slate-700 mb-1 text-[11px]">Function / Event</label>
                   <input
                     type="text"
                     required
                     placeholder="e.g. Haldi / Garba / Lagan"
                     value={newEvent}
                     onChange={(e) => setNewEvent(e.target.value)}
-                    className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-stone-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                    className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                   />
                 </div>
                 <div>
-                  <label className="block font-medium text-stone-700 mb-1 text-[11px]">Date & Time</label>
+                  <label className="block font-medium text-slate-700 mb-1 text-[11px]">Date & Time</label>
                   <input
                     type="text"
                     placeholder="e.g. Feb 20, 2027 09:30 AM"
                     value={newDate}
                     onChange={(e) => setNewDate(e.target.value)}
-                    className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-stone-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                    className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-slate-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block font-medium text-stone-700 mb-1 text-[11px]">Garment Name *</label>
+                <label className="block font-medium text-slate-700 mb-1 text-[11px]">Garment Name *</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Kurta Pajama / Royal Jodhpuri Suit / Lagan Suit / Panetar"
                   value={newGarment}
                   onChange={(e) => setNewGarment(e.target.value)}
-                  className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-stone-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                  className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                 />
               </div>
 
               <div>
-                <label className="block font-medium text-stone-700 mb-1 text-[11px]">Color / Theme Palette</label>
+                <label className="block font-medium text-slate-700 mb-1 text-[11px]">Color / Theme Palette</label>
                 <input
                   type="text"
                   placeholder="e.g. Blue, White, Lavender theme"
                   value={newTheme}
                   onChange={(e) => setNewTheme(e.target.value)}
-                  className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-stone-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                  className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-medium text-stone-700 mb-1 text-[11px]">Estimated Cost (₹)</label>
+                  <label className="block font-medium text-slate-700 mb-1 text-[11px]">Estimated Cost (₹)</label>
                   <input
                     type="number"
                     value={newCost || ''}
                     onChange={(e) => setNewCost(Number(e.target.value))}
-                    className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-stone-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                    className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-slate-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                   />
                 </div>
                 <div>
-                  <label className="block font-medium text-stone-700 mb-1 text-[11px]">Advance Paid (₹)</label>
+                  <label className="block font-medium text-slate-700 mb-1 text-[11px]">Advance Paid (₹)</label>
                   <input
                     type="number"
                     value={newAdvance || ''}
                     onChange={(e) => setNewAdvance(Number(e.target.value))}
-                    className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-stone-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                    className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-slate-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-medium text-stone-700 mb-1 text-[11px]">Store / Tailor</label>
+                  <label className="block font-medium text-slate-700 mb-1 text-[11px]">Store / Tailor</label>
                   <input
                     type="text"
                     placeholder="Store name / address"
                     value={newStore}
                     onChange={(e) => setNewStore(e.target.value)}
-                    className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-stone-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                    className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                   />
                 </div>
                 <div>
-                  <label className="block font-medium text-stone-700 mb-1 text-[11px]">Trial Date</label>
+                  <label className="block font-medium text-slate-700 mb-1 text-[11px]">Trial Date</label>
                   <input
                     type="date"
                     value={newTrialDate}
                     onChange={(e) => setNewTrialDate(e.target.value)}
-                    className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-stone-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                    className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-slate-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block font-medium text-stone-700 mb-1 text-[11px]">Notes</label>
+                <label className="block font-medium text-slate-700 mb-1 text-[11px]">Notes</label>
                 <input
                   type="text"
                   placeholder="e.g. Fabric bought, lining pending"
                   value={newNotes}
                   onChange={(e) => setNewNotes(e.target.value)}
-                  className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-stone-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                  className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                 />
               </div>
 
-              <div className="pt-4 flex justify-end space-x-2.5 border-t border-stone-200/70">
+              <div className="pt-4 flex justify-end space-x-2.5 border-t border-slate-200/70">
                 <button 
                   type="button" 
                   onClick={() => setIsAddModalOpen(false)} 
-                  className="px-4 py-2 text-stone-600 hover:text-stone-900 text-xs font-medium rounded-xl hover:bg-stone-200/60 transition-colors cursor-pointer"
+                  className="px-4 py-2 text-slate-600 hover:text-slate-900 text-xs font-medium rounded-xl hover:bg-slate-200/60 transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button 
                   type="submit" 
-                  className="px-5 py-2 bg-stone-900 hover:bg-stone-800 text-stone-50 rounded-xl font-medium text-xs shadow-sm transition-all hover:-translate-y-0.5 cursor-pointer"
+                  className="px-5 py-2 bg-slate-900 hover:bg-slate-800 text-slate-50 rounded-xl font-medium text-xs shadow-sm transition-all hover:-translate-y-0.5 cursor-pointer"
                 >
                   Save Dress
                 </button>
@@ -684,30 +684,30 @@ export const DressesTracker: React.FC<DressesTrackerProps> = ({
       {editingDress && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-200">
           <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-[0_24px_70px_rgba(15,23,42,0.18)] border border-slate-200/90">
-            <div className="flex items-center justify-between pb-3.5 border-b border-stone-200/70">
-              <h3 className="font-cormorant text-xl font-normal text-stone-900">Edit Outfit Parameters</h3>
-              <button onClick={() => setEditingDress(null)} className="text-stone-400 hover:text-stone-800 text-lg leading-none cursor-pointer">&times;</button>
+            <div className="flex items-center justify-between pb-3.5 border-b border-slate-200/70">
+              <h3 className="font-cormorant text-xl font-normal text-slate-900">Edit Outfit Parameters</h3>
+              <button onClick={() => setEditingDress(null)} className="text-slate-400 hover:text-slate-800 text-lg leading-none cursor-pointer">&times;</button>
             </div>
 
             <form onSubmit={handleSaveEdit} className="mt-5 space-y-4 text-xs">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-medium text-stone-700 mb-1 text-[11px]">For Whom *</label>
+                  <label className="block font-medium text-slate-700 mb-1 text-[11px]">For Whom *</label>
                   <select
                     value={editingDress.person}
                     onChange={(e) => setEditingDress({ ...editingDress, person: e.target.value as any })}
-                    className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-xs font-medium focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                    className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-xs font-medium focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                   >
                     <option value="Groom">Groom (Parth)</option>
                     <option value="Bride">Bride (Nisha)</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block font-medium text-stone-700 mb-1 text-[11px]">Action Type</label>
+                  <label className="block font-medium text-slate-700 mb-1 text-[11px]">Action Type</label>
                   <select
                     value={editingDress.action}
                     onChange={(e) => setEditingDress({ ...editingDress, action: e.target.value as any })}
-                    className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-xs font-medium focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                    className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-xs font-medium focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                   >
                     <option value="Buy">Buy Ready-made</option>
                     <option value="Tailor / Stitch">Custom Tailor / Stitch</option>
@@ -717,63 +717,63 @@ export const DressesTracker: React.FC<DressesTrackerProps> = ({
               </div>
 
               <div>
-                <label className="block font-medium text-stone-700 mb-1 text-[11px]">Garment Name *</label>
+                <label className="block font-medium text-slate-700 mb-1 text-[11px]">Garment Name *</label>
                 <input
                   type="text"
                   required
                   value={editingDress.garmentName}
                   onChange={(e) => setEditingDress({ ...editingDress, garmentName: e.target.value })}
-                  className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-stone-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                  className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-medium text-stone-700 mb-1 text-[11px]">Function / Event</label>
+                  <label className="block font-medium text-slate-700 mb-1 text-[11px]">Function / Event</label>
                   <input
                     type="text"
                     required
                     value={editingDress.event}
                     onChange={(e) => setEditingDress({ ...editingDress, event: e.target.value })}
-                    className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-stone-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                    className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                   />
                 </div>
                 <div>
-                  <label className="block font-medium text-stone-700 mb-1 text-[11px]">Color / Theme</label>
+                  <label className="block font-medium text-slate-700 mb-1 text-[11px]">Color / Theme</label>
                   <input
                     type="text"
                     value={editingDress.colorTheme}
                     onChange={(e) => setEditingDress({ ...editingDress, colorTheme: e.target.value })}
-                    className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-stone-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                    className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="block font-medium text-stone-700 mb-1 text-[11px]">Cost (₹)</label>
+                  <label className="block font-medium text-slate-700 mb-1 text-[11px]">Cost (₹)</label>
                   <input
                     type="number"
                     value={editingDress.costEstimated || ''}
                     onChange={(e) => setEditingDress({ ...editingDress, costEstimated: Number(e.target.value) })}
-                    className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-stone-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                    className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-slate-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                   />
                 </div>
                 <div>
-                  <label className="block font-medium text-stone-700 mb-1 text-[11px]">Paid (₹)</label>
+                  <label className="block font-medium text-slate-700 mb-1 text-[11px]">Paid (₹)</label>
                   <input
                     type="number"
                     value={editingDress.advancePaid || ''}
                     onChange={(e) => setEditingDress({ ...editingDress, advancePaid: Number(e.target.value) })}
-                    className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-stone-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                    className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-slate-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                   />
                 </div>
                 <div>
-                  <label className="block font-medium text-stone-700 mb-1 text-[11px]">Status</label>
+                  <label className="block font-medium text-slate-700 mb-1 text-[11px]">Status</label>
                   <select
                     value={editingDress.status}
                     onChange={(e) => setEditingDress({ ...editingDress, status: e.target.value as any })}
-                    className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-xs font-medium focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                    className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-xs font-medium focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                   >
                     <option value="To Buy">To Buy</option>
                     <option value="Fabric Bought">Fabric Bought</option>
@@ -786,46 +786,46 @@ export const DressesTracker: React.FC<DressesTrackerProps> = ({
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-medium text-stone-700 mb-1 text-[11px]">Store / Tailor</label>
+                  <label className="block font-medium text-slate-700 mb-1 text-[11px]">Store / Tailor</label>
                   <input
                     type="text"
                     value={editingDress.storeOrTailor || ''}
                     onChange={(e) => setEditingDress({ ...editingDress, storeOrTailor: e.target.value })}
-                    className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-stone-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                    className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                   />
                 </div>
                 <div>
-                  <label className="block font-medium text-stone-700 mb-1 text-[11px]">Trial Date</label>
+                  <label className="block font-medium text-slate-700 mb-1 text-[11px]">Trial Date</label>
                   <input
                     type="date"
                     value={editingDress.trialDate || ''}
                     onChange={(e) => setEditingDress({ ...editingDress, trialDate: e.target.value })}
-                    className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-stone-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                    className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-slate-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block font-medium text-stone-700 mb-1 text-[11px]">Notes</label>
+                <label className="block font-medium text-slate-700 mb-1 text-[11px]">Notes</label>
                 <input
                   type="text"
                   value={editingDress.notes || ''}
                   onChange={(e) => setEditingDress({ ...editingDress, notes: e.target.value })}
-                  className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-stone-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                  className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                 />
               </div>
 
-              <div className="pt-4 flex justify-end space-x-2.5 border-t border-stone-200/70">
+              <div className="pt-4 flex justify-end space-x-2.5 border-t border-slate-200/70">
                 <button 
                   type="button" 
                   onClick={() => setEditingDress(null)} 
-                  className="px-4 py-2 text-stone-600 hover:text-stone-900 text-xs font-medium rounded-xl hover:bg-stone-200/60 transition-colors cursor-pointer"
+                  className="px-4 py-2 text-slate-600 hover:text-slate-900 text-xs font-medium rounded-xl hover:bg-slate-200/60 transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button 
                   type="submit" 
-                  className="px-5 py-2 bg-stone-900 hover:bg-stone-800 text-stone-50 rounded-xl font-medium text-xs shadow-sm transition-all hover:-translate-y-0.5 cursor-pointer"
+                  className="px-5 py-2 bg-slate-900 hover:bg-slate-800 text-slate-50 rounded-xl font-medium text-xs shadow-sm transition-all hover:-translate-y-0.5 cursor-pointer"
                 >
                   Update Dress
                 </button>

@@ -146,7 +146,7 @@ export const PlanningNotes: React.FC<PlanningNotesProps> = ({
   return (
     <div className="space-y-6 sm:space-y-7">
       {/* Filter and Search Bar */}
-      <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)] flex flex-wrap items-center justify-between gap-3 text-xs">
+      <div className="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)] flex flex-wrap items-center justify-between gap-3 text-xs">
         <div className="flex flex-wrap items-center gap-2.5">
           {/* Search */}
           <div className="relative">

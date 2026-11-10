@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   X, 
   Trash2, 
@@ -91,8 +91,8 @@ const AUTHOR_ROLES: RoleConfig[] = [
     label: 'Wedding Planner', 
     shortLabel: 'Planner',
     emoji: '✨', 
-    badgeBg: 'bg-stone-100 border-stone-200/80 text-stone-700',
-    avatarBg: 'bg-stone-800 text-stone-100'
+    badgeBg: 'bg-slate-100 border-slate-200/80 text-slate-700',
+    avatarBg: 'bg-slate-800 text-slate-100'
   },
   { 
     role: 'Both', 
@@ -150,6 +150,7 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
   onDelete,
 }) => {
   const [title, setTitle] = useState(task.title);
+  const titleTextareaRef = useRef<HTMLTextAreaElement>(null);
   // Replace notes with task description, preserving legacy notes seamlessly
   const [description, setDescription] = useState(task.description ?? task.notes ?? '');
   const [subtasks, setSubtasks] = useState<Subtask[]>(task.subtasks || []);
@@ -179,6 +180,14 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
     setSubtasks(task.subtasks || []);
     setComments(task.comments || []);
   }, [task]);
+
+  // Auto-resize title textarea so the full title is always visible without truncation
+  useEffect(() => {
+    if (titleTextareaRef.current) {
+      titleTextareaRef.current.style.height = 'auto';
+      titleTextareaRef.current.style.height = `${titleTextareaRef.current.scrollHeight}px`;
+    }
+  }, [title]);
 
   // Escape key handler
   useEffect(() => {
@@ -329,7 +338,7 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-200">
       <div 
-        className="bg-white rounded-3xl w-full max-w-3xl max-h-[92vh] flex flex-col shadow-[0_24px_70px_rgba(15,23,42,0.18)] border border-slate-200/90 overflow-hidden text-slate-800"
+        className="bg-white rounded-3xl w-full max-w-4xl max-h-[92vh] flex flex-col shadow-[0_24px_70px_rgba(15,23,42,0.18)] border border-slate-200/90 overflow-hidden text-slate-800"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Top Header / Breadcrumb Bar */}
@@ -344,16 +353,15 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
               {currentMilestone?.monthLabel || 'All Months'}
             </span>
             <ChevronRight className="w-3 h-3 text-slate-300" />
-            <span className="text-slate-400 text-[10px] font-mono tracking-wider">
-              #{task.id}
+            <span className="text-slate-600 text-[11px] font-semibold font-sans uppercase tracking-wider bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200/60">
+              #{task.category}
             </span>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
-            <ClickUpStatusDropdown status={currentStatus} onChange={handleStatusChange} size="sm" />
+          <div className="flex items-center gap-1 shrink-0">
             <button
               onClick={onClose}
-              className="p-1.5 text-slate-400 hover:text-slate-800 hover:bg-slate-200/50 rounded-xl transition-all cursor-pointer ml-1"
+              className="p-1.5 text-slate-400 hover:text-slate-800 hover:bg-slate-200/60 rounded-xl transition-all cursor-pointer"
               title="Close modal (Esc)"
             >
               <X className="w-4 h-4" />
@@ -365,20 +373,26 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
         <div className="flex-1 overflow-y-auto p-5 sm:p-7 grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-7">
           {/* Main Left Content (2 Cols on lg) */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Task Title */}
+            {/* Task Title (Auto-resizing multiline so full title is always visible) */}
             <div>
-              <input
-                type="text"
+              <textarea
+                ref={titleTextareaRef}
                 value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                  e.target.style.height = 'auto';
+                  e.target.style.height = `${e.target.scrollHeight}px`;
+                }}
                 onBlur={handleTitleBlur}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
+                    e.preventDefault();
                     e.currentTarget.blur();
                   }
                 }}
+                rows={1}
                 placeholder="Task title..."
-                className="w-full text-xl sm:text-2xl font-bold font-cormorant text-slate-900 border-0 border-b border-transparent hover:border-slate-200 focus:border-[#D4AF37] focus:ring-0 bg-transparent px-1 py-1 transition-all outline-none"
+                className="w-full text-xl sm:text-2xl font-bold font-cormorant text-slate-900 border-0 border-b border-transparent hover:border-slate-200 focus:border-[#D4AF37] focus:ring-0 bg-transparent px-1 py-1 transition-all outline-none resize-none overflow-hidden leading-snug break-words"
               />
             </div>
 
@@ -408,11 +422,11 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <CheckSquare className="w-3.5 h-3.5 text-[#B89230]" />
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-stone-600">
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-slate-600">
                     Subtasks / Checklist
                   </span>
                   {subtasks.length > 0 && (
-                    <span className="text-[10px] font-medium text-stone-600 bg-stone-200/60 px-2 py-0.5 rounded-full">
+                    <span className="text-[10px] font-medium text-slate-600 bg-slate-200/60 px-2 py-0.5 rounded-full">
                       {completedSubtasksCount}/{subtasks.length}
                     </span>
                   )}
@@ -427,7 +441,7 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
 
               {/* Progress bar */}
               {subtasks.length > 0 && (
-                <div className="w-full bg-stone-200/70 h-1 rounded-full overflow-hidden">
+                <div className="w-full bg-slate-200/70 h-1 rounded-full overflow-hidden">
                   <div
                     className="bg-[#B89230] h-full rounded-full transition-all duration-300"
                     style={{ width: `${subtasksPercent}%` }}
@@ -440,23 +454,23 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
                 {subtasks.map((st) => (
                   <div
                     key={st.id}
-                    className="group flex items-center justify-between gap-2 p-2.5 rounded-xl border border-stone-200/60 bg-white/60 hover:border-stone-300 hover:bg-white transition-all text-xs"
+                    className="group flex items-center justify-between gap-2 p-2.5 rounded-xl border border-slate-200/60 bg-white/60 hover:border-slate-300 hover:bg-white transition-all text-xs"
                   >
                     <button
                       type="button"
                       onClick={() => handleToggleSubtask(st.id)}
-                      className="shrink-0 text-stone-400 hover:text-stone-800 cursor-pointer"
+                      className="shrink-0 text-slate-400 hover:text-slate-800 cursor-pointer"
                     >
                       {st.completed ? (
                         <CheckCircle2 className="w-4 h-4 text-emerald-600 fill-emerald-50" />
                       ) : (
-                        <Circle className="w-4 h-4 text-stone-300 group-hover:text-stone-500" />
+                        <Circle className="w-4 h-4 text-slate-300 group-hover:text-slate-500" />
                       )}
                     </button>
 
                     <span
                       className={`flex-1 truncate ${
-                        st.completed ? 'line-through text-stone-400' : 'text-stone-800 font-medium'
+                        st.completed ? 'line-through text-slate-400' : 'text-slate-800 font-medium'
                       }`}
                     >
                       {st.title}
@@ -465,7 +479,7 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
                     <button
                       type="button"
                       onClick={() => handleDeleteSubtask(st.id)}
-                      className="opacity-0 group-hover:opacity-100 p-1 text-stone-300 hover:text-rose-600 rounded-md transition-opacity cursor-pointer"
+                      className="opacity-0 group-hover:opacity-100 p-1 text-slate-300 hover:text-rose-600 rounded-md transition-opacity cursor-pointer"
                       title="Delete subtask"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
@@ -481,12 +495,12 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
                   placeholder="+ Add a subtask (press Enter)..."
                   value={newSubtaskTitle}
                   onChange={(e) => setNewSubtaskTitle(e.target.value)}
-                  className="flex-1 bg-white/60 border border-dashed border-stone-300 rounded-xl px-3 py-2 text-xs text-stone-900 placeholder-stone-400 focus:bg-white focus:outline-none focus:border-[#D4AF37] focus:border-solid transition-all"
+                  className="flex-1 bg-slate-50/70 border border-slate-200/80 rounded-xl px-3.5 py-2 text-xs text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#D4AF37] focus:border-[#D4AF37] transition-all"
                 />
                 <button
                   type="submit"
                   disabled={!newSubtaskTitle.trim()}
-                  className="px-3.5 py-2 bg-stone-900 hover:bg-stone-800 text-stone-50 disabled:opacity-30 rounded-xl text-xs font-medium transition-all flex items-center gap-1 cursor-pointer"
+                  className="px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-slate-50 disabled:opacity-30 rounded-xl text-xs font-semibold transition-all flex items-center gap-1 cursor-pointer"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>Add</span>
@@ -495,11 +509,11 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
             </div>
 
             {/* Comments & Activity Section */}
-            <div className="space-y-3 pt-4 border-t border-stone-200/70">
+            <div className="space-y-3 pt-4 border-t border-slate-200/70">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <MessageSquare className="w-3.5 h-3.5 text-[#B89230]" />
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-stone-600">
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-slate-600">
                     Comments & Discussion
                   </span>
                   {comments.length > 0 && (
@@ -513,12 +527,8 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
               {/* Comments List */}
               <div className="space-y-2.5">
                 {comments.length === 0 ? (
-                  <div className="p-6 rounded-2xl bg-white/50 border border-dashed border-stone-200/80 text-center">
-                    <MessageSquare className="w-4 h-4 text-stone-300 mx-auto mb-1.5" />
-                    <p className="text-xs font-medium text-stone-600">No comments yet</p>
-                    <p className="text-[11px] text-stone-400 mt-0.5">
-                      Leave questions, decisions, quotes, or updates for this task.
-                    </p>
+                  <div className="py-4 text-center text-slate-400 text-xs">
+                    <p className="font-serif italic text-slate-400">No comments yet · Leave notes, updates, or decisions below</p>
                   </div>
                 ) : (
                   comments.map((comment) => {
@@ -528,7 +538,7 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
                     return (
                       <div
                         key={comment.id}
-                        className="group p-3.5 rounded-2xl bg-white/80 border border-stone-200/70 hover:border-stone-300/80 transition-all text-xs"
+                        className="group p-3.5 rounded-2xl bg-white/80 border border-slate-200/70 hover:border-slate-300/80 transition-all text-xs"
                       >
                         {/* Comment Header */}
                         <div className="flex items-center justify-between gap-2 mb-1.5">
@@ -536,17 +546,17 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
                             <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-medium ${config.avatarBg} shrink-0`}>
                               {config.emoji}
                             </span>
-                            <span className="font-medium text-stone-800 truncate">
+                            <span className="font-medium text-slate-800 truncate">
                               {comment.author}
                             </span>
                             <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-medium border ${config.badgeBg}`}>
                               {config.shortLabel}
                             </span>
-                            <span className="text-[10px] text-stone-400 shrink-0 font-mono">
+                            <span className="text-[10px] text-slate-400 shrink-0 font-mono">
                               {formatCommentTime(comment.createdAt)}
                             </span>
                             {comment.updatedAt && (
-                              <span className="text-[10px] text-stone-400 italic">
+                              <span className="text-[10px] text-slate-400 italic">
                                 (edited)
                               </span>
                             )}
@@ -558,7 +568,7 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
                               <button
                                 type="button"
                                 onClick={() => handleStartEditComment(comment)}
-                                className="p-1 text-stone-400 hover:text-stone-700 hover:bg-stone-200/50 rounded-lg transition-colors cursor-pointer"
+                                className="p-1 text-slate-400 hover:text-slate-700 hover:bg-slate-200/50 rounded-lg transition-colors cursor-pointer"
                                 title="Edit comment"
                               >
                                 <Edit3 className="w-3 h-3" />
@@ -566,7 +576,7 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
                               <button
                                 type="button"
                                 onClick={() => handleDeleteComment(comment.id)}
-                                className="p-1 text-stone-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
+                                className="p-1 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
                                 title="Delete comment"
                               >
                                 <Trash2 className="w-3 h-3" />
@@ -582,21 +592,21 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
                               value={editingCommentText}
                               onChange={(e) => setEditingCommentText(e.target.value)}
                               rows={2}
-                              className="w-full bg-white border border-stone-300 rounded-xl p-2.5 text-xs text-stone-800 focus:outline-none focus:ring-1 focus:ring-[#D4AF37] focus:border-[#D4AF37]"
+                              className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-1 focus:ring-[#D4AF37] focus:border-[#D4AF37]"
                               autoFocus
                             />
                             <div className="flex items-center justify-end gap-1.5">
                               <button
                                 type="button"
                                 onClick={handleCancelEditComment}
-                                className="px-2.5 py-1 text-[11px] font-medium text-stone-600 hover:bg-stone-200/60 rounded-lg transition-colors cursor-pointer"
+                                className="px-2.5 py-1 text-[11px] font-medium text-slate-600 hover:bg-slate-200/60 rounded-lg transition-colors cursor-pointer"
                               >
                                 Cancel
                               </button>
                               <button
                                 type="button"
                                 onClick={() => handleSaveEditComment(comment.id)}
-                                className="px-2.5 py-1 text-[11px] font-medium text-white bg-stone-900 hover:bg-stone-800 rounded-lg transition-colors shadow-2xs flex items-center gap-1 cursor-pointer"
+                                className="px-2.5 py-1 text-[11px] font-medium text-white bg-slate-900 hover:bg-slate-800 rounded-lg transition-colors shadow-2xs flex items-center gap-1 cursor-pointer"
                               >
                                 <Check className="w-3 h-3" />
                                 <span>Save</span>
@@ -604,7 +614,7 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
                             </div>
                           </div>
                         ) : (
-                          <p className="text-stone-700 whitespace-pre-wrap leading-relaxed break-words pl-7">
+                          <p className="text-slate-700 whitespace-pre-wrap leading-relaxed break-words pl-7">
                             {comment.content}
                           </p>
                         )}
@@ -616,15 +626,15 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
 
               {/* New Comment Composer */}
               <form onSubmit={handleAddComment} className="pt-1">
-                <div className="rounded-2xl border border-stone-200/80 bg-white shadow-[0_2px_12px_rgba(0,0,0,0.02)] overflow-hidden focus-within:ring-2 focus-within:ring-[#D4AF37]/20 focus-within:border-[#D4AF37] transition-all">
+                <div className="rounded-2xl border border-slate-200/80 bg-white shadow-[0_2px_12px_rgba(0,0,0,0.02)] overflow-hidden focus-within:ring-2 focus-within:ring-[#D4AF37]/20 focus-within:border-[#D4AF37] transition-all">
                   {/* Author selector strip */}
-                  <div className="px-3.5 py-2 bg-stone-50/80 border-b border-stone-100 flex items-center justify-between text-xs">
+                  <div className="px-3.5 py-2 bg-slate-50/80 border-b border-slate-100 flex items-center justify-between text-xs">
                     <div className="flex items-center gap-1.5">
-                      <span className="text-[10px] uppercase font-mono tracking-wider text-stone-400">Commenting as:</span>
+                      <span className="text-[10px] uppercase font-mono tracking-wider text-slate-400">Commenting as:</span>
                       <select
                         value={commentAuthorRole}
                         onChange={(e) => handleAuthorRoleChange(e.target.value as CommentAuthorRole)}
-                        className="bg-white border border-stone-200 rounded-lg px-2 py-0.5 text-[11px] font-medium text-stone-700 focus:outline-none focus:ring-1 focus:ring-[#D4AF37] cursor-pointer"
+                        className="bg-white border border-slate-200 rounded-lg px-2 py-0.5 text-[11px] font-medium text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#D4AF37] cursor-pointer"
                       >
                         {AUTHOR_ROLES.map((r) => (
                           <option key={r.role} value={r.role}>
@@ -633,7 +643,7 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
                         ))}
                       </select>
                     </div>
-                    <span className="text-[10px] text-stone-400 hidden sm:inline font-mono">
+                    <span className="text-[10px] text-slate-400 hidden sm:inline font-mono">
                       Enter ↵ to send • Shift+Enter for new line
                     </span>
                   </div>
@@ -651,7 +661,7 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
                       }}
                       placeholder="Write a comment, question, or update..."
                       rows={2}
-                      className="w-full text-xs text-stone-800 placeholder-stone-400 bg-transparent resize-none focus:outline-none leading-relaxed"
+                      className="w-full text-xs text-slate-800 placeholder-slate-400 bg-transparent resize-none focus:outline-none leading-relaxed"
                     />
 
                     <div className="flex items-center justify-between pt-1.5">
@@ -665,7 +675,7 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
                             className={`text-xs px-2 py-0.5 rounded-lg transition-all cursor-pointer ${
                               commentAuthorRole === r.role
                                 ? `${r.badgeBg} font-medium shadow-2xs`
-                                : 'text-stone-400 hover:text-stone-700 hover:bg-stone-100'
+                                : 'text-slate-400 hover:text-slate-700 hover:bg-slate-100'
                             }`}
                           >
                             {r.emoji}
@@ -676,7 +686,7 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
                       <button
                         type="submit"
                         disabled={!newCommentText.trim()}
-                        className="px-3.5 py-1.5 bg-stone-900 hover:bg-stone-800 disabled:bg-stone-200 disabled:text-stone-400 text-stone-50 rounded-xl text-xs font-medium flex items-center gap-1.5 transition-all shadow-2xs cursor-pointer"
+                        className="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 disabled:bg-slate-200 disabled:text-slate-400 text-slate-50 rounded-xl text-xs font-medium flex items-center gap-1.5 transition-all shadow-2xs cursor-pointer"
                       >
                         <Send className="w-3 h-3" />
                         <span>Comment</span>
@@ -700,7 +710,7 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
                 <Clock className="w-3.5 h-3.5 text-slate-400" />
                 Status
               </span>
-              <ClickUpStatusDropdown status={currentStatus} onChange={handleStatusChange} size="sm" />
+              <ClickUpStatusDropdown status={currentStatus} onChange={handleStatusChange} size="sm" align="right" />
             </div>
 
             {/* Assignee */}
@@ -709,7 +719,7 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
                 <User className="w-3.5 h-3.5 text-slate-400" />
                 Assignee
               </span>
-              <ClickUpAssigneeDropdown assignedTo={task.assignedTo} onChange={handleAssigneeChange} size="sm" />
+              <ClickUpAssigneeDropdown assignedTo={task.assignedTo} onChange={handleAssigneeChange} size="sm" align="right" />
             </div>
 
             {/* Priority */}
@@ -718,7 +728,7 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
                 <Tag className="w-3.5 h-3.5 text-slate-400" />
                 Priority
               </span>
-              <ClickUpPriorityDropdown priority={task.priority} onChange={handlePriorityChange} size="sm" />
+              <ClickUpPriorityDropdown priority={task.priority} onChange={handlePriorityChange} size="sm" align="right" />
             </div>
 
             {/* Month Phase */}
@@ -734,7 +744,7 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
               >
                 {milestones.map((m) => (
                   <option key={m.id} value={m.id}>
-                    {m.monthLabel} ({m.timeframe})
+                    {m.monthLabel}
                   </option>
                 ))}
               </select>
@@ -760,15 +770,15 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
             </div>
 
             {/* Perspective / Side */}
-            <div className="flex flex-col gap-1 pt-1.5 border-t border-stone-200/60">
-              <span className="text-stone-500 font-medium flex items-center gap-1.5">
-                <Heart className="w-3.5 h-3.5 text-stone-400" />
+            <div className="flex flex-col gap-1.5 pt-2 border-t border-slate-200/60">
+              <span className="text-slate-600 font-medium flex items-center gap-1.5">
+                <Heart className="w-3.5 h-3.5 text-slate-400" />
                 Perspective / Side
               </span>
               <select
                 value={task.side || 'Both'}
                 onChange={(e) => onUpdate(task.id, { side: e.target.value as EventSide })}
-                className="w-full bg-white border border-stone-200/80 rounded-xl px-2.5 py-1.5 text-xs text-stone-800 font-medium focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-xs text-slate-800 font-medium focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
               >
                 <option value="Both">🤝 Joint (Both)</option>
                 <option value="Boy">👦 Boy's Side</option>
@@ -777,18 +787,11 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
             </div>
 
             {/* Due Date */}
-            <div className="flex flex-col gap-1.5 pt-1.5 border-t border-stone-200/60">
-              <div className="flex items-center justify-between">
-                <span className="text-stone-500 font-medium flex items-center gap-1.5">
-                  <Calendar className="w-3.5 h-3.5 text-[#B89230]" />
-                  Exact Due Date
-                </span>
-                {task.dueDate && (
-                  <span className={`text-[10px] px-2 py-0.5 rounded-full border shadow-2xs font-mono ${getDateBadgeStyle(task.dueDate, false)}`}>
-                    {formatTaskDate(task.dueDate)}
-                  </span>
-                )}
-              </div>
+            <div className="flex flex-col gap-1.5 pt-2 border-t border-slate-200/60">
+              <span className="text-slate-600 font-medium flex items-center gap-1.5">
+                <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                Due Date
+              </span>
               <input
                 type="date"
                 value={task.dueDate || ''}
@@ -801,12 +804,12 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
                   }
                   onUpdate(task.id, updates);
                 }}
-                className="w-full bg-white border border-stone-200/80 rounded-xl px-2.5 py-1.5 text-xs text-stone-800 font-medium focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-xs text-slate-800 font-medium focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
               />
             </div>
 
             {/* Delete button */}
-            <div className="pt-3 border-t border-stone-200/70">
+            <div className="pt-3 border-t border-slate-200/70">
               {showDeleteConfirm ? (
                 <div className="bg-rose-50/70 border border-rose-200/80 rounded-2xl p-3 space-y-2">
                   <p className="text-[11px] font-medium text-rose-800">
@@ -826,7 +829,7 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
                     <button
                       type="button"
                       onClick={() => setShowDeleteConfirm(false)}
-                      className="px-3 py-1 bg-white hover:bg-stone-100 text-stone-700 border border-stone-200 rounded-xl text-xs font-medium transition-colors cursor-pointer"
+                      className="px-3 py-1 bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 rounded-xl text-xs font-medium transition-colors cursor-pointer"
                     >
                       Cancel
                     </button>
@@ -836,7 +839,7 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
                 <button
                   type="button"
                   onClick={() => setShowDeleteConfirm(true)}
-                  className="w-full flex items-center justify-center gap-1.5 py-2 text-rose-600 hover:text-rose-700 hover:bg-rose-50/60 rounded-xl border border-dashed border-rose-200/80 transition-colors font-medium cursor-pointer"
+                  className="w-full flex items-center justify-center gap-1.5 py-2 text-rose-600 hover:text-rose-700 hover:bg-rose-50/80 rounded-xl border border-rose-200/70 transition-all font-medium text-xs cursor-pointer"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                   <span>Delete Task</span>
@@ -847,12 +850,12 @@ export const TaskDetailModal: React.FC<TaskDetailModalProps> = ({
         </div>
 
         {/* Modal Footer */}
-        <div className="px-6 py-3.5 bg-white/70 border-t border-stone-200/70 flex items-center justify-between text-xs text-stone-500 shrink-0">
-          <span className="font-mono text-[11px] text-stone-400">Changes are saved automatically</span>
+        <div className="px-6 py-3.5 bg-white/70 border-t border-slate-200/70 flex items-center justify-between text-xs text-slate-500 shrink-0">
+          <span className="font-mono text-[11px] text-slate-400">Changes are saved automatically</span>
           <button
             type="button"
             onClick={onClose}
-            className="px-5 py-1.5 bg-stone-900 hover:bg-stone-800 text-stone-50 font-medium rounded-xl text-xs transition-colors shadow-xs cursor-pointer"
+            className="px-5 py-1.5 bg-slate-900 hover:bg-slate-800 text-slate-50 font-medium rounded-xl text-xs transition-colors shadow-xs cursor-pointer"
           >
             Done
           </button>

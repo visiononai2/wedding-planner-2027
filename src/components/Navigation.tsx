@@ -85,14 +85,14 @@ export const Navigation: React.FC<NavigationProps> = ({
       >
         <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-10">
           {/* Top Control Bar: Perspective Switcher & Search */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pt-2.5 pb-2 border-b border-stone-200/50">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pt-2.5 pb-2 border-b border-slate-200/50">
             {/* Perspective Switcher */}
             <div className="flex items-center space-x-2">
-              <span className="text-[10px] font-sans font-medium text-stone-400 uppercase tracking-[0.16em]">Perspective:</span>
+              <span className="text-[10px] font-sans font-medium text-slate-400 uppercase tracking-[0.16em]">Perspective:</span>
               <div 
                 role="radiogroup" 
                 aria-label="View perspective" 
-                className="inline-flex items-center bg-stone-100/80 p-1 rounded-full border border-stone-200/60 shadow-[inset_0_1px_2px_rgba(0,0,0,0.03)]"
+                className="inline-flex items-center bg-slate-100/80 p-1 rounded-full border border-slate-200/60 shadow-[inset_0_1px_2px_rgba(0,0,0,0.03)]"
               >
                 <button
                   role="radio"
@@ -100,11 +100,11 @@ export const Navigation: React.FC<NavigationProps> = ({
                   onClick={() => onSideChange('ALL')}
                   className={`px-3 py-1 rounded-full text-[11px] font-sans tracking-wider uppercase transition-all flex items-center gap-1.5 focus:outline-none ${
                     activeSide === 'ALL'
-                      ? 'bg-white text-stone-900 font-medium shadow-[0_1px_4px_rgba(0,0,0,0.06),0_1px_1px_rgba(0,0,0,0.04)] ring-1 ring-black/[0.04]'
-                      : 'text-stone-500 hover:text-stone-800 font-normal'
+                      ? 'bg-white text-slate-900 font-medium shadow-[0_1px_4px_rgba(0,0,0,0.06),0_1px_1px_rgba(0,0,0,0.04)] ring-1 ring-black/[0.04]'
+                      : 'text-slate-500 hover:text-slate-800 font-normal'
                   }`}
                 >
-                  <span className={`w-1.5 h-1.5 rounded-full transition-colors ${activeSide === 'ALL' ? 'bg-[#B89230]' : 'bg-stone-300'}`} />
+                  <span className={`w-1.5 h-1.5 rounded-full transition-colors ${activeSide === 'ALL' ? 'bg-[#B89230]' : 'bg-slate-300'}`} />
                   <span>Joint</span>
                 </button>
 
@@ -114,11 +114,11 @@ export const Navigation: React.FC<NavigationProps> = ({
                   onClick={() => onSideChange('BOY')}
                   className={`px-3 py-1 rounded-full text-[11px] font-sans tracking-wider uppercase transition-all flex items-center gap-1.5 focus:outline-none ${
                     activeSide === 'BOY'
-                      ? 'bg-white text-stone-900 font-medium shadow-[0_1px_4px_rgba(0,0,0,0.06),0_1px_1px_rgba(0,0,0,0.04)] ring-1 ring-black/[0.04]'
-                      : 'text-stone-500 hover:text-stone-800 font-normal'
+                      ? 'bg-white text-slate-900 font-medium shadow-[0_1px_4px_rgba(0,0,0,0.06),0_1px_1px_rgba(0,0,0,0.04)] ring-1 ring-black/[0.04]'
+                      : 'text-slate-500 hover:text-slate-800 font-normal'
                   }`}
                 >
-                  <span className={`w-1.5 h-1.5 rounded-full transition-colors ${activeSide === 'BOY' ? 'bg-[#3B6281]' : 'bg-stone-300'}`} />
+                  <span className={`w-1.5 h-1.5 rounded-full transition-colors ${activeSide === 'BOY' ? 'bg-[#3B6281]' : 'bg-slate-300'}`} />
                   <span>Groom</span>
                 </button>
 
@@ -128,11 +128,11 @@ export const Navigation: React.FC<NavigationProps> = ({
                   onClick={() => onSideChange('GIRL')}
                   className={`px-3 py-1 rounded-full text-[11px] font-sans tracking-wider uppercase transition-all flex items-center gap-1.5 focus:outline-none ${
                     activeSide === 'GIRL'
-                      ? 'bg-white text-stone-900 font-medium shadow-[0_1px_4px_rgba(0,0,0,0.06),0_1px_1px_rgba(0,0,0,0.04)] ring-1 ring-black/[0.04]'
-                      : 'text-stone-500 hover:text-stone-800 font-normal'
+                      ? 'bg-white text-slate-900 font-medium shadow-[0_1px_4px_rgba(0,0,0,0.06),0_1px_1px_rgba(0,0,0,0.04)] ring-1 ring-black/[0.04]'
+                      : 'text-slate-500 hover:text-slate-800 font-normal'
                   }`}
                 >
-                  <span className={`w-1.5 h-1.5 rounded-full transition-colors ${activeSide === 'GIRL' ? 'bg-[#A84A5B]' : 'bg-stone-300'}`} />
+                  <span className={`w-1.5 h-1.5 rounded-full transition-colors ${activeSide === 'GIRL' ? 'bg-[#A84A5B]' : 'bg-slate-300'}`} />
                   <span>Bride</span>
                 </button>
 
@@ -142,11 +142,11 @@ export const Navigation: React.FC<NavigationProps> = ({
                   onClick={() => onSideChange('FAMILY')}
                   className={`px-3 py-1 rounded-full text-[11px] font-sans tracking-wider uppercase transition-all flex items-center gap-1.5 focus:outline-none ${
                     activeSide === 'FAMILY'
-                      ? 'bg-white text-stone-900 font-medium shadow-[0_1px_4px_rgba(0,0,0,0.06),0_1px_1px_rgba(0,0,0,0.04)] ring-1 ring-black/[0.04]'
-                      : 'text-stone-500 hover:text-stone-800 font-normal'
+                      ? 'bg-white text-slate-900 font-medium shadow-[0_1px_4px_rgba(0,0,0,0.06),0_1px_1px_rgba(0,0,0,0.04)] ring-1 ring-black/[0.04]'
+                      : 'text-slate-500 hover:text-slate-800 font-normal'
                   }`}
                 >
-                  <span className={`w-1.5 h-1.5 rounded-full transition-colors ${activeSide === 'FAMILY' ? 'bg-[#A36A36]' : 'bg-stone-300'}`} />
+                  <span className={`w-1.5 h-1.5 rounded-full transition-colors ${activeSide === 'FAMILY' ? 'bg-[#A36A36]' : 'bg-slate-300'}`} />
                   <span>Family</span>
                 </button>
               </div>
@@ -154,22 +154,22 @@ export const Navigation: React.FC<NavigationProps> = ({
 
             {/* Quick Context & Search */}
             <div className="flex items-center space-x-2">
-              <div className="text-[11px] text-stone-400 font-sans hidden md:block">
+              <div className="text-[11px] text-slate-400 font-sans hidden md:block">
                 {activeSide === 'ALL' && <span>Showing unified celebration checklist</span>}
-                {activeSide === 'BOY' && <span className="text-stone-600 font-medium">Filtered for Groom & Jaan rituals</span>}
-                {activeSide === 'GIRL' && <span className="text-stone-600 font-medium">Filtered for Bride & Mandvo rituals</span>}
-                {activeSide === 'FAMILY' && <span className="text-stone-600 font-medium">Filtered for Family tasks & catering</span>}
+                {activeSide === 'BOY' && <span className="text-slate-600 font-medium">Filtered for Groom & Jaan rituals</span>}
+                {activeSide === 'GIRL' && <span className="text-slate-600 font-medium">Filtered for Bride & Mandvo rituals</span>}
+                {activeSide === 'FAMILY' && <span className="text-slate-600 font-medium">Filtered for Family tasks & catering</span>}
               </div>
 
               {onOpenSearch && (
                 <button
                   onClick={onOpenSearch}
-                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/90 hover:bg-white text-stone-600 hover:text-stone-900 border border-stone-200/70 text-xs font-normal transition-all shadow-2xs hover:-translate-y-0.5 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/90 hover:bg-white text-slate-600 hover:text-slate-900 border border-slate-200/70 text-xs font-normal transition-all shadow-2xs hover:-translate-y-0.5 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                   aria-label="Open search command palette"
                 >
-                  <Search className="w-3.5 h-3.5 text-stone-400 stroke-[1.5]" />
+                  <Search className="w-3.5 h-3.5 text-slate-400 stroke-[1.5]" />
                   <span className="hidden sm:inline font-sans text-xs">Search</span>
-                  <kbd className="hidden sm:inline-flex items-center text-[10px] font-mono text-stone-400 bg-stone-100 border border-stone-200/60 rounded px-1.5 py-0.5">
+                  <kbd className="hidden sm:inline-flex items-center text-[10px] font-mono text-slate-400 bg-slate-100 border border-slate-200/60 rounded px-1.5 py-0.5">
                     ⌘K
                   </kbd>
                 </button>
@@ -195,11 +195,11 @@ export const Navigation: React.FC<NavigationProps> = ({
                   onClick={() => onTabChange(tab.id)}
                   className={`flex items-center whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-sans tracking-wide uppercase transition-all shrink-0 focus:outline-none ${
                     isActive
-                      ? 'bg-stone-900 text-stone-50 font-medium shadow-xs'
-                      : 'text-stone-500 hover:text-stone-900 hover:bg-white/60'
+                      ? 'bg-slate-900 text-slate-50 font-medium shadow-xs'
+                      : 'text-slate-500 hover:text-slate-900 hover:bg-white/60'
                   }`}
                 >
-                  <Icon className={`w-3.5 h-3.5 mr-2 shrink-0 stroke-[1.5] ${isActive ? 'text-[#D4AF37]' : 'text-stone-400'}`} />
+                  <Icon className={`w-3.5 h-3.5 mr-2 shrink-0 stroke-[1.5] ${isActive ? 'text-[#D4AF37]' : 'text-slate-400'}`} />
                   <span>{tab.fullLabel}</span>
                   {tab.countBadge && (
                     <span
@@ -224,7 +224,7 @@ export const Navigation: React.FC<NavigationProps> = ({
         <button
           onClick={() => onTabChange('month-tracker')}
           className={`flex-1 py-1 flex flex-col items-center justify-center text-[10px] tracking-wider uppercase font-medium rounded-xl transition-colors ${
-            isTasksActive ? 'text-[#8B6E1F] font-semibold' : 'text-stone-400 hover:text-stone-800'
+            isTasksActive ? 'text-[#8B6E1F] font-semibold' : 'text-slate-400 hover:text-slate-800'
           }`}
           aria-label="General Tasks"
         >
@@ -235,7 +235,7 @@ export const Navigation: React.FC<NavigationProps> = ({
         <button
           onClick={() => onTabChange('itinerary')}
           className={`flex-1 py-1 flex flex-col items-center justify-center text-[10px] tracking-wider uppercase font-medium rounded-xl transition-colors ${
-            activeTab === 'itinerary' ? 'text-[#8B6E1F] font-semibold' : 'text-stone-400 hover:text-stone-800'
+            activeTab === 'itinerary' ? 'text-[#8B6E1F] font-semibold' : 'text-slate-400 hover:text-slate-800'
           }`}
           aria-label="Event Schedule"
         >
@@ -246,7 +246,7 @@ export const Navigation: React.FC<NavigationProps> = ({
         <button
           onClick={() => onTabChange('decisions')}
           className={`flex-1 py-1 flex flex-col items-center justify-center text-[10px] tracking-wider uppercase font-medium rounded-xl transition-colors ${
-            activeTab === 'decisions' ? 'text-[#8B6E1F] font-semibold' : 'text-stone-400 hover:text-stone-800'
+            activeTab === 'decisions' ? 'text-[#8B6E1F] font-semibold' : 'text-slate-400 hover:text-slate-800'
           }`}
           aria-label="Decisions Tracker"
         >
@@ -257,7 +257,7 @@ export const Navigation: React.FC<NavigationProps> = ({
         <button
           onClick={() => onTabChange('notes')}
           className={`flex-1 py-1 flex flex-col items-center justify-center text-[10px] tracking-wider uppercase font-medium rounded-xl transition-colors ${
-            activeTab === 'notes' ? 'text-[#8B6E1F] font-semibold' : 'text-stone-400 hover:text-stone-800'
+            activeTab === 'notes' ? 'text-[#8B6E1F] font-semibold' : 'text-slate-400 hover:text-slate-800'
           }`}
           aria-label="Planning Notes"
         >

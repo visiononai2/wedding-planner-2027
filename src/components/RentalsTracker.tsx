@@ -167,8 +167,8 @@ export const RentalsTracker: React.FC<RentalsTrackerProps> = ({
         );
       case 'Reserved':
         return (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-stone-100 text-stone-700 border border-stone-200/80">
-            <span className="w-1.5 h-1.5 rounded-full bg-stone-400" />
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-slate-100 text-slate-700 border border-slate-200/80">
+            <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
             <span>Reserved</span>
           </span>
         );
@@ -186,7 +186,7 @@ export const RentalsTracker: React.FC<RentalsTrackerProps> = ({
     <div className="space-y-5">
       {/* Financial & Status Summary Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        <div className="bg-white/90 backdrop-blur-xs p-4 sm:p-5 rounded-2xl border border-stone-200/70 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+        <div className="bg-white/90 backdrop-blur-xs p-4 sm:p-5 rounded-2xl border border-slate-200/70 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
           <div className="text-[10px] uppercase font-mono tracking-widest text-slate-400">Total Rental Cost</div>
           <div className="text-xl sm:text-2xl font-normal font-cormorant text-slate-900 mt-1">
             ₹{totalCost.toLocaleString('en-IN')}
@@ -330,7 +330,7 @@ export const RentalsTracker: React.FC<RentalsTrackerProps> = ({
       ) : (
         <div className="space-y-4">
         {filteredRentals.length === 0 ? (
-          <div className="bg-white/70 rounded-2xl p-10 text-center border border-dashed border-stone-200/80 text-xs text-stone-400">
+          <div className="bg-white/70 rounded-2xl p-10 text-center border border-dashed border-slate-200/80 text-xs text-slate-400">
             No rental items match your filter.
           </div>
         ) : (
@@ -412,48 +412,48 @@ export const RentalsTracker: React.FC<RentalsTrackerProps> = ({
                       <Clock className="w-3 h-3 mr-1.5 text-emerald-600" />
                       Pickup / Delivery to Farm:
                     </div>
-                    <div className="font-medium text-stone-900 mt-1 flex items-center gap-1.5 font-mono">
+                    <div className="font-medium text-slate-900 mt-1 flex items-center gap-1.5 font-mono">
                       <EditableText
                         value={item.pickupDate}
                         onSave={(val) => onUpdateRental(item.id, { pickupDate: val })}
-                        className="text-stone-900 font-medium"
+                        className="text-slate-900 font-medium"
                       />
-                      <span className="text-stone-300">•</span>
+                      <span className="text-slate-300">•</span>
                       <EditableText
                         value={item.pickupTime}
                         onSave={(val) => onUpdateRental(item.id, { pickupTime: val })}
                         className="text-emerald-700 font-medium"
                       />
                     </div>
-                    <div className="text-[11px] text-stone-500 flex items-center mt-1">
-                      <MapPin className="w-3 h-3 mr-1 text-stone-400" />
+                    <div className="text-[11px] text-slate-500 flex items-center mt-1">
+                      <MapPin className="w-3 h-3 mr-1 text-slate-400" />
                       <EditableText
                         value={item.pickupLocation}
                         onSave={(val) => onUpdateRental(item.id, { pickupLocation: val })}
-                        className="text-stone-600 font-medium"
+                        className="text-slate-600 font-medium"
                       />
                     </div>
                   </div>
 
-                  <div className="sm:border-l sm:border-stone-200/70 sm:pl-3">
+                  <div className="sm:border-l sm:border-slate-200/70 sm:pl-3">
                     <div className="flex items-center text-rose-800 font-medium uppercase tracking-wider text-[10px] font-mono">
                       <RotateCcw className="w-3 h-3 mr-1.5 text-rose-600" />
                       Drop / Return Back By:
                     </div>
-                    <div className="font-medium text-stone-900 mt-1 flex items-center gap-1.5 font-mono">
+                    <div className="font-medium text-slate-900 mt-1 flex items-center gap-1.5 font-mono">
                       <EditableText
                         value={item.dropDate}
                         onSave={(val) => onUpdateRental(item.id, { dropDate: val })}
-                        className="text-stone-900 font-medium"
+                        className="text-slate-900 font-medium"
                       />
-                      <span className="text-stone-300">•</span>
+                      <span className="text-slate-300">•</span>
                       <EditableText
                         value={item.dropTime}
                         onSave={(val) => onUpdateRental(item.id, { dropTime: val })}
                         className="text-rose-700 font-medium"
                       />
                     </div>
-                    <div className="text-[11px] text-stone-400 mt-1 font-mono">
+                    <div className="text-[11px] text-slate-400 mt-1 font-mono">
                       Confirm return & collect deposit
                     </div>
                   </div>
@@ -463,20 +463,20 @@ export const RentalsTracker: React.FC<RentalsTrackerProps> = ({
                 <div className="flex flex-wrap items-center justify-between gap-3 pt-1 text-xs">
                   <div className="flex flex-wrap items-center gap-4">
                     <div>
-                      <span className="text-stone-400 text-[10px] uppercase font-mono tracking-widest block">Total Rent</span>
-                      <span className="text-sm font-medium text-stone-900 flex items-center font-mono">
+                      <span className="text-slate-400 text-[10px] uppercase font-mono tracking-widest block">Total Rent</span>
+                      <span className="text-sm font-medium text-slate-900 flex items-center font-mono">
                         ₹
                         <EditableText
                           type="number"
                           value={item.totalCost}
                           onSave={(val) => onUpdateRental(item.id, { totalCost: Number(val) || 0 })}
-                          className="font-medium text-stone-900"
+                          className="font-medium text-slate-900"
                         />
                       </span>
                     </div>
 
                     <div>
-                      <span className="text-stone-400 text-[10px] uppercase font-mono tracking-widest block">Advance Paid</span>
+                      <span className="text-slate-400 text-[10px] uppercase font-mono tracking-widest block">Advance Paid</span>
                       <span className="text-sm font-medium text-emerald-700 flex items-center font-mono">
                         ₹
                         <EditableText
@@ -489,21 +489,21 @@ export const RentalsTracker: React.FC<RentalsTrackerProps> = ({
                     </div>
 
                     <div>
-                      <span className="text-stone-400 text-[10px] uppercase font-mono tracking-widest block">Remaining Due</span>
+                      <span className="text-slate-400 text-[10px] uppercase font-mono tracking-widest block">Remaining Due</span>
                       <strong className={`text-sm font-mono ${balance > 0 ? 'text-amber-700 font-medium' : 'text-emerald-700 font-medium'}`}>
                         ₹{balance.toLocaleString('en-IN')}
                       </strong>
                     </div>
 
                     <div>
-                      <span className="text-stone-400 text-[10px] uppercase font-mono tracking-widest block">Deposit</span>
-                      <span className="text-sm font-medium text-stone-800 flex items-center font-mono">
+                      <span className="text-slate-400 text-[10px] uppercase font-mono tracking-widest block">Deposit</span>
+                      <span className="text-sm font-medium text-slate-800 flex items-center font-mono">
                         ₹
                         <EditableText
                           type="number"
                           value={item.securityDeposit || 0}
                           onSave={(val) => onUpdateRental(item.id, { securityDeposit: Number(val) || 0 })}
-                          className="font-medium text-stone-800"
+                          className="font-medium text-slate-800"
                         />
                       </span>
                     </div>
@@ -531,43 +531,43 @@ export const RentalsTracker: React.FC<RentalsTrackerProps> = ({
       {isAddModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-200">
           <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-[0_24px_70px_rgba(15,23,42,0.18)] border border-slate-200/90">
-            <div className="flex items-center justify-between pb-3.5 border-b border-stone-200/70">
-              <h3 className="font-cormorant text-xl font-normal text-stone-900">Add Equipment / Item to Rent</h3>
-              <button onClick={() => setIsAddModalOpen(false)} className="text-stone-400 hover:text-stone-800 text-lg leading-none cursor-pointer">&times;</button>
+            <div className="flex items-center justify-between pb-3.5 border-b border-slate-200/70">
+              <h3 className="font-cormorant text-xl font-normal text-slate-900">Add Equipment / Item to Rent</h3>
+              <button onClick={() => setIsAddModalOpen(false)} className="text-slate-400 hover:text-slate-800 text-lg leading-none cursor-pointer">&times;</button>
             </div>
 
             <form onSubmit={handleCreateRental} className="mt-5 space-y-4 text-xs">
               <div>
-                <label className="block font-medium text-stone-700 mb-1 text-[11px]">Item Name *</label>
+                <label className="block font-medium text-slate-700 mb-1 text-[11px]">Item Name *</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. DJ Sound Rig / Generator / ICER Truck"
                   value={newItem}
                   onChange={(e) => setNewItem(e.target.value)}
-                  className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-stone-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                  className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-medium text-stone-700 mb-1 text-[11px]">Vendor / Firm</label>
+                  <label className="block font-medium text-slate-700 mb-1 text-[11px]">Vendor / Firm</label>
                   <input
                     type="text"
                     placeholder="e.g. Dhaval Jajenwala"
                     value={newVendor}
                     onChange={(e) => setNewVendor(e.target.value)}
-                    className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-stone-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                    className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                   />
                 </div>
                 <div>
-                  <label className="block font-medium text-stone-700 mb-1 text-[11px]">Contact Phone</label>
+                  <label className="block font-medium text-slate-700 mb-1 text-[11px]">Contact Phone</label>
                   <input
                     type="text"
                     placeholder="Phone number"
                     value={newPhone}
                     onChange={(e) => setNewPhone(e.target.value)}
-                    className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-stone-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                    className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-slate-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                   />
                 </div>
               </div>
@@ -580,14 +580,14 @@ export const RentalsTracker: React.FC<RentalsTrackerProps> = ({
                       type="date"
                       value={newPickupDate}
                       onChange={(e) => setNewPickupDate(e.target.value)}
-                      className="bg-white border border-stone-200/80 rounded-xl px-2 py-1.5 text-xs text-stone-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                      className="bg-white border border-slate-200/80 rounded-xl px-2 py-1.5 text-xs text-slate-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                     />
                     <input
                       type="text"
                       placeholder="08:00 AM"
                       value={newPickupTime}
                       onChange={(e) => setNewPickupTime(e.target.value)}
-                      className="bg-white border border-stone-200/80 rounded-xl px-2 py-1.5 text-xs text-stone-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                      className="bg-white border border-slate-200/80 rounded-xl px-2 py-1.5 text-xs text-slate-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                     />
                   </div>
                 </div>
@@ -598,14 +598,14 @@ export const RentalsTracker: React.FC<RentalsTrackerProps> = ({
                       type="date"
                       value={newDropDate}
                       onChange={(e) => setNewDropDate(e.target.value)}
-                      className="bg-white border border-stone-200/80 rounded-xl px-2 py-1.5 text-xs text-stone-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                      className="bg-white border border-slate-200/80 rounded-xl px-2 py-1.5 text-xs text-slate-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                     />
                     <input
                       type="text"
                       placeholder="05:00 PM"
                       value={newDropTime}
                       onChange={(e) => setNewDropTime(e.target.value)}
-                      className="bg-white border border-stone-200/80 rounded-xl px-2 py-1.5 text-xs text-stone-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                      className="bg-white border border-slate-200/80 rounded-xl px-2 py-1.5 text-xs text-slate-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                     />
                   </div>
                 </div>
@@ -613,67 +613,67 @@ export const RentalsTracker: React.FC<RentalsTrackerProps> = ({
 
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="block font-medium text-stone-700 mb-1 text-[11px]">Total Rent (₹)</label>
+                  <label className="block font-medium text-slate-700 mb-1 text-[11px]">Total Rent (₹)</label>
                   <input
                     type="number"
                     value={newCost || ''}
                     onChange={(e) => setNewCost(Number(e.target.value))}
-                    className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-stone-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                    className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-slate-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                   />
                 </div>
                 <div>
-                  <label className="block font-medium text-stone-700 mb-1 text-[11px]">Advance Paid (₹)</label>
+                  <label className="block font-medium text-slate-700 mb-1 text-[11px]">Advance Paid (₹)</label>
                   <input
                     type="number"
                     value={newAdvance || ''}
                     onChange={(e) => setNewAdvance(Number(e.target.value))}
-                    className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-stone-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                    className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-slate-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                   />
                 </div>
                 <div>
-                  <label className="block font-medium text-stone-700 mb-1 text-[11px]">Deposit (₹)</label>
+                  <label className="block font-medium text-slate-700 mb-1 text-[11px]">Deposit (₹)</label>
                   <input
                     type="number"
                     value={newDeposit || ''}
                     onChange={(e) => setNewDeposit(Number(e.target.value))}
-                    className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-stone-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                    className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-slate-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block font-medium text-stone-700 mb-1 text-[11px]">Pickup / Delivery Location</label>
+                <label className="block font-medium text-slate-700 mb-1 text-[11px]">Pickup / Delivery Location</label>
                 <input
                   type="text"
                   placeholder="e.g. Silver Farm / Groom House"
                   value={newLocation}
                   onChange={(e) => setNewLocation(e.target.value)}
-                  className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-stone-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                  className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                 />
               </div>
 
               <div>
-                <label className="block font-medium text-stone-700 mb-1 text-[11px]">Notes</label>
+                <label className="block font-medium text-slate-700 mb-1 text-[11px]">Notes</label>
                 <input
                   type="text"
                   placeholder="e.g. Operator included, check generator wiring"
                   value={newNotes}
                   onChange={(e) => setNewNotes(e.target.value)}
-                  className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-stone-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                  className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                 />
               </div>
 
-              <div className="pt-4 flex justify-end space-x-2.5 border-t border-stone-200/70">
+              <div className="pt-4 flex justify-end space-x-2.5 border-t border-slate-200/70">
                 <button 
                   type="button" 
                   onClick={() => setIsAddModalOpen(false)} 
-                  className="px-4 py-2 text-stone-600 hover:text-stone-900 text-xs font-medium rounded-xl hover:bg-stone-200/60 transition-colors cursor-pointer"
+                  className="px-4 py-2 text-slate-600 hover:text-slate-900 text-xs font-medium rounded-xl hover:bg-slate-200/60 transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button 
                   type="submit" 
-                  className="px-5 py-2 bg-stone-900 hover:bg-stone-800 text-stone-50 rounded-xl font-medium text-xs shadow-sm transition-all hover:-translate-y-0.5 cursor-pointer"
+                  className="px-5 py-2 bg-slate-900 hover:bg-slate-800 text-slate-50 rounded-xl font-medium text-xs shadow-sm transition-all hover:-translate-y-0.5 cursor-pointer"
                 >
                   Save Rental
                 </button>
@@ -687,40 +687,40 @@ export const RentalsTracker: React.FC<RentalsTrackerProps> = ({
       {editingRental && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-200">
           <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-[0_24px_70px_rgba(15,23,42,0.18)] border border-slate-200/90">
-            <div className="flex items-center justify-between pb-3.5 border-b border-stone-200/70">
-              <h3 className="font-cormorant text-xl font-normal text-stone-900">Edit Rental Parameters</h3>
-              <button onClick={() => setEditingRental(null)} className="text-stone-400 hover:text-stone-800 text-lg leading-none cursor-pointer">&times;</button>
+            <div className="flex items-center justify-between pb-3.5 border-b border-slate-200/70">
+              <h3 className="font-cormorant text-xl font-normal text-slate-900">Edit Rental Parameters</h3>
+              <button onClick={() => setEditingRental(null)} className="text-slate-400 hover:text-slate-800 text-lg leading-none cursor-pointer">&times;</button>
             </div>
 
             <form onSubmit={handleSaveEdit} className="mt-5 space-y-4 text-xs">
               <div>
-                <label className="block font-medium text-stone-700 mb-1 text-[11px]">Item Name *</label>
+                <label className="block font-medium text-slate-700 mb-1 text-[11px]">Item Name *</label>
                 <input
                   type="text"
                   required
                   value={editingRental.item}
                   onChange={(e) => setEditingRental({ ...editingRental, item: e.target.value })}
-                  className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-stone-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                  className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-medium text-stone-700 mb-1 text-[11px]">Vendor / Firm</label>
+                  <label className="block font-medium text-slate-700 mb-1 text-[11px]">Vendor / Firm</label>
                   <input
                     type="text"
                     value={editingRental.vendor}
                     onChange={(e) => setEditingRental({ ...editingRental, vendor: e.target.value })}
-                    className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-stone-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                    className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                   />
                 </div>
                 <div>
-                  <label className="block font-medium text-stone-700 mb-1 text-[11px]">Contact Phone</label>
+                  <label className="block font-medium text-slate-700 mb-1 text-[11px]">Contact Phone</label>
                   <input
                     type="text"
                     value={editingRental.phone || ''}
                     onChange={(e) => setEditingRental({ ...editingRental, phone: e.target.value })}
-                    className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-stone-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                    className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-slate-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                   />
                 </div>
               </div>
@@ -733,13 +733,13 @@ export const RentalsTracker: React.FC<RentalsTrackerProps> = ({
                       type="text"
                       value={editingRental.pickupDate}
                       onChange={(e) => setEditingRental({ ...editingRental, pickupDate: e.target.value })}
-                      className="bg-white border border-stone-200/80 rounded-xl px-2 py-1.5 text-xs text-stone-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                      className="bg-white border border-slate-200/80 rounded-xl px-2 py-1.5 text-xs text-slate-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                     />
                     <input
                       type="text"
                       value={editingRental.pickupTime}
                       onChange={(e) => setEditingRental({ ...editingRental, pickupTime: e.target.value })}
-                      className="bg-white border border-stone-200/80 rounded-xl px-2 py-1.5 text-xs text-stone-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                      className="bg-white border border-slate-200/80 rounded-xl px-2 py-1.5 text-xs text-slate-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                     />
                   </div>
                 </div>
@@ -750,13 +750,13 @@ export const RentalsTracker: React.FC<RentalsTrackerProps> = ({
                       type="text"
                       value={editingRental.dropDate}
                       onChange={(e) => setEditingRental({ ...editingRental, dropDate: e.target.value })}
-                      className="bg-white border border-stone-200/80 rounded-xl px-2 py-1.5 text-xs text-stone-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                      className="bg-white border border-slate-200/80 rounded-xl px-2 py-1.5 text-xs text-slate-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                     />
                     <input
                       type="text"
                       value={editingRental.dropTime}
                       onChange={(e) => setEditingRental({ ...editingRental, dropTime: e.target.value })}
-                      className="bg-white border border-stone-200/80 rounded-xl px-2 py-1.5 text-xs text-stone-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                      className="bg-white border border-slate-200/80 rounded-xl px-2 py-1.5 text-xs text-slate-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                     />
                   </div>
                 </div>
@@ -764,41 +764,41 @@ export const RentalsTracker: React.FC<RentalsTrackerProps> = ({
 
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="block font-medium text-stone-700 mb-1 text-[11px]">Total Rent (₹)</label>
+                  <label className="block font-medium text-slate-700 mb-1 text-[11px]">Total Rent (₹)</label>
                   <input
                     type="number"
                     value={editingRental.totalCost || ''}
                     onChange={(e) => setEditingRental({ ...editingRental, totalCost: Number(e.target.value) })}
-                    className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-stone-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                    className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-slate-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                   />
                 </div>
                 <div>
-                  <label className="block font-medium text-stone-700 mb-1 text-[11px]">Advance Paid (₹)</label>
+                  <label className="block font-medium text-slate-700 mb-1 text-[11px]">Advance Paid (₹)</label>
                   <input
                     type="number"
                     value={editingRental.advancePaid || ''}
                     onChange={(e) => setEditingRental({ ...editingRental, advancePaid: Number(e.target.value) })}
-                    className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-stone-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                    className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-slate-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                   />
                 </div>
                 <div>
-                  <label className="block font-medium text-stone-700 mb-1 text-[11px]">Deposit (₹)</label>
+                  <label className="block font-medium text-slate-700 mb-1 text-[11px]">Deposit (₹)</label>
                   <input
                     type="number"
                     value={editingRental.securityDeposit || ''}
                     onChange={(e) => setEditingRental({ ...editingRental, securityDeposit: Number(e.target.value) })}
-                    className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-stone-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                    className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-slate-900 font-mono focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-medium text-stone-700 mb-1 text-[11px]">Status</label>
+                  <label className="block font-medium text-slate-700 mb-1 text-[11px]">Status</label>
                   <select
                     value={editingRental.status}
                     onChange={(e) => setEditingRental({ ...editingRental, status: e.target.value as any })}
-                    className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-xs font-medium focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                    className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-xs font-medium focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                   >
                     <option value="To Book">To Book</option>
                     <option value="Reserved">Reserved</option>
@@ -808,37 +808,37 @@ export const RentalsTracker: React.FC<RentalsTrackerProps> = ({
                   </select>
                 </div>
                 <div>
-                  <label className="block font-medium text-stone-700 mb-1 text-[11px]">Location</label>
+                  <label className="block font-medium text-slate-700 mb-1 text-[11px]">Location</label>
                   <input
                     type="text"
                     value={editingRental.pickupLocation}
                     onChange={(e) => setEditingRental({ ...editingRental, pickupLocation: e.target.value })}
-                    className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-stone-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                    className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block font-medium text-stone-700 mb-1 text-[11px]">Notes</label>
+                <label className="block font-medium text-slate-700 mb-1 text-[11px]">Notes</label>
                 <input
                   type="text"
                   value={editingRental.notes || ''}
                   onChange={(e) => setEditingRental({ ...editingRental, notes: e.target.value })}
-                  className="w-full bg-white border border-stone-200/80 rounded-xl px-3 py-2 text-stone-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                  className="w-full bg-white border border-slate-200/80 rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
                 />
               </div>
 
-              <div className="pt-4 flex justify-end space-x-2.5 border-t border-stone-200/70">
+              <div className="pt-4 flex justify-end space-x-2.5 border-t border-slate-200/70">
                 <button 
                   type="button" 
                   onClick={() => setEditingRental(null)} 
-                  className="px-4 py-2 text-stone-600 hover:text-stone-900 text-xs font-medium rounded-xl hover:bg-stone-200/60 transition-colors cursor-pointer"
+                  className="px-4 py-2 text-slate-600 hover:text-slate-900 text-xs font-medium rounded-xl hover:bg-slate-200/60 transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button 
                   type="submit" 
-                  className="px-5 py-2 bg-stone-900 hover:bg-stone-800 text-stone-50 rounded-xl font-medium text-xs shadow-sm transition-all hover:-translate-y-0.5 cursor-pointer"
+                  className="px-5 py-2 bg-slate-900 hover:bg-slate-800 text-slate-50 rounded-xl font-medium text-xs shadow-sm transition-all hover:-translate-y-0.5 cursor-pointer"
                 >
                   Update Rental
                 </button>

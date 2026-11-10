@@ -15,7 +15,9 @@ import {
   CalendarRange,
   IndianRupee,
   MapPin,
-  X
+  X,
+  LayoutGrid,
+  List
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { 
@@ -40,6 +42,7 @@ import { TaskListView } from './clickup/TaskListView';
 import { TaskDetailModal } from './clickup/TaskDetailModal';
 import { RentalsTracker } from './RentalsTracker';
 import { DressesTracker } from './DressesTracker';
+import { PreWeddingPlanner } from './PreWeddingPlanner';
 import { 
   getTaskStatus, 
   CATEGORY_CONFIGS, 
@@ -123,6 +126,9 @@ export const MonthTracker: React.FC<MonthTrackerProps> = ({
     onTaskSubViewChange?.(view);
   };
 
+  // Pre-Wedding sub-view toggle: Tasks Kanban vs Creative Dossier
+  const [preWeddingSubMode, setPreWeddingSubMode] = useState<'tasks' | 'dossier'>('tasks');
+
   // Dedicated month selection per sub-view - by default all sub-views default to ALL
   const [selectedMonthByView, setSelectedMonthByView] = useState<Record<TaskSubView, MonthPeriod | 'ALL'>>({
     checklist: 'ALL',
@@ -188,7 +194,13 @@ export const MonthTracker: React.FC<MonthTrackerProps> = ({
   }, [resetFilterSignal]);
 
   // Selected task for ClickUp Detail Modal
-  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
+  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(() => {
+    try {
+      const p = new URLSearchParams(window.location.search);
+      return p.get('task');
+    } catch {}
+    return null;
+  });
 
   // Add Task Modal State
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -597,23 +609,26 @@ export const MonthTracker: React.FC<MonthTrackerProps> = ({
 
   return (
     <div className="space-y-6 sm:space-y-7">
-      {/* 1. Sub-navigation / Workspaces Selector inside Tasks */}
-      <div className="bg-white rounded-2xl p-2.5 border border-slate-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div className="flex items-center gap-2 overflow-x-auto scrollbar-none pb-1 sm:pb-0">
+      {/* Precision Task Command Hub */}
+      <div className="bg-white rounded-2xl border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.02)] p-4 sm:p-5 space-y-3.5">
+        
+        {/* Tier 1: Workspace Switcher & Primary Actions */}
+        <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+          {/* Segmented Workspace Pills */}
+          <div className="inline-flex p-1 bg-slate-100/90 rounded-xl border border-slate-200/60 gap-1 overflow-x-auto scrollbar-none w-full xl:w-auto">
             <button
               type="button"
               onClick={() => setTaskHubView('checklist')}
-              className={`flex items-center gap-2.5 px-4 py-2 rounded-xl text-xs font-sans tracking-wide uppercase transition-all whitespace-nowrap cursor-pointer focus:outline-none ${
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-sans tracking-wide uppercase transition-all whitespace-nowrap cursor-pointer focus:outline-none ${
                 taskHubView === 'checklist'
-                  ? 'bg-slate-900 text-white font-semibold shadow-xs'
-                  : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100/80 font-medium'
+                  ? 'bg-white text-slate-900 font-semibold shadow-xs'
+                  : 'text-slate-500 hover:text-slate-900 hover:bg-white/60 font-medium'
               }`}
             >
               <CalendarRange className={`w-3.5 h-3.5 stroke-[1.5] ${taskHubView === 'checklist' ? 'text-[#D4AF37]' : 'text-slate-400'}`} />
               <span>General Tasks</span>
-              <span className={`text-[10px] font-sans font-semibold px-2 py-0.5 rounded-full transition-colors ${
-                taskHubView === 'checklist' ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600 border border-slate-200/60'
+              <span className={`text-[10px] font-sans font-semibold px-2 py-0.5 rounded-full ${
+                taskHubView === 'checklist' ? 'bg-slate-100 text-slate-800' : 'bg-slate-200/70 text-slate-600'
               }`}>
                 {tasksRemainingCount} left
               </span>
@@ -622,16 +637,16 @@ export const MonthTracker: React.FC<MonthTrackerProps> = ({
             <button
               type="button"
               onClick={() => setTaskHubView('outfits')}
-              className={`flex items-center gap-2.5 px-4 py-2 rounded-xl text-xs font-sans tracking-wide uppercase transition-all whitespace-nowrap cursor-pointer focus:outline-none ${
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-sans tracking-wide uppercase transition-all whitespace-nowrap cursor-pointer focus:outline-none ${
                 taskHubView === 'outfits'
-                  ? 'bg-slate-900 text-white font-semibold shadow-xs'
-                  : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100/80 font-medium'
+                  ? 'bg-white text-slate-900 font-semibold shadow-xs'
+                  : 'text-slate-500 hover:text-slate-900 hover:bg-white/60 font-medium'
               }`}
             >
               <ShoppingBag className={`w-3.5 h-3.5 stroke-[1.5] ${taskHubView === 'outfits' ? 'text-[#D4AF37]' : 'text-slate-400'}`} />
               <span>Outfits & Tailoring</span>
-              <span className={`text-[10px] font-sans font-semibold px-2 py-0.5 rounded-full transition-colors ${
-                taskHubView === 'outfits' ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600 border border-slate-200/60'
+              <span className={`text-[10px] font-sans font-semibold px-2 py-0.5 rounded-full ${
+                taskHubView === 'outfits' ? 'bg-slate-100 text-slate-800' : 'bg-slate-200/70 text-slate-600'
               }`}>
                 {dressesToBuyCount} to buy
               </span>
@@ -640,16 +655,16 @@ export const MonthTracker: React.FC<MonthTrackerProps> = ({
             <button
               type="button"
               onClick={() => setTaskHubView('rentals')}
-              className={`flex items-center gap-2.5 px-4 py-2 rounded-xl text-xs font-sans tracking-wide uppercase transition-all whitespace-nowrap cursor-pointer focus:outline-none ${
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-sans tracking-wide uppercase transition-all whitespace-nowrap cursor-pointer focus:outline-none ${
                 taskHubView === 'rentals'
-                  ? 'bg-slate-900 text-white font-semibold shadow-xs'
-                  : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100/80 font-medium'
+                  ? 'bg-white text-slate-900 font-semibold shadow-xs'
+                  : 'text-slate-500 hover:text-slate-900 hover:bg-white/60 font-medium'
               }`}
             >
               <Truck className={`w-3.5 h-3.5 stroke-[1.5] ${taskHubView === 'rentals' ? 'text-[#D4AF37]' : 'text-slate-400'}`} />
-              <span>Rentals & DJ Sound Rigs</span>
-              <span className={`text-[10px] font-sans font-semibold px-2 py-0.5 rounded-full transition-colors ${
-                taskHubView === 'rentals' ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600 border border-slate-200/60'
+              <span>Rentals & DJ Sound</span>
+              <span className={`text-[10px] font-sans font-semibold px-2 py-0.5 rounded-full ${
+                taskHubView === 'rentals' ? 'bg-slate-100 text-slate-800' : 'bg-slate-200/70 text-slate-600'
               }`}>
                 {rentalsPendingCount} pending
               </span>
@@ -658,38 +673,96 @@ export const MonthTracker: React.FC<MonthTrackerProps> = ({
             <button
               type="button"
               onClick={() => setTaskHubView('pre-wedding')}
-              className={`flex items-center gap-2.5 px-4 py-2 rounded-xl text-xs font-sans tracking-wide uppercase transition-all whitespace-nowrap cursor-pointer focus:outline-none ${
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-sans tracking-wide uppercase transition-all whitespace-nowrap cursor-pointer focus:outline-none ${
                 taskHubView === 'pre-wedding'
-                  ? 'bg-slate-900 text-white font-semibold shadow-xs'
-                  : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100/80 font-medium'
+                  ? 'bg-white text-slate-900 font-semibold shadow-xs'
+                  : 'text-slate-500 hover:text-slate-900 hover:bg-white/60 font-medium'
               }`}
             >
               <Camera className={`w-3.5 h-3.5 stroke-[1.5] ${taskHubView === 'pre-wedding' ? 'text-[#D4AF37]' : 'text-slate-400'}`} />
-              <span>Pre-Wedding Shoot Planner</span>
-              <span className={`text-[10px] font-sans font-semibold px-2 py-0.5 rounded-full transition-colors ${
-                taskHubView === 'pre-wedding' ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600 border border-slate-200/60'
+              <span>Pre-Wedding Shoot</span>
+              <span className={`text-[10px] font-sans font-semibold px-2 py-0.5 rounded-full ${
+                taskHubView === 'pre-wedding' ? 'bg-slate-100 text-slate-800' : 'bg-slate-200/70 text-slate-600'
               }`}>
                 {preWeddingRemainingCount} tasks
               </span>
             </button>
           </div>
-        </div>
-      </div>
 
-      {/* 3. Monthly Milestones Overview (Exact Same Format for ALL 4 views) */}
-      <div className="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
-        <div className="pb-4 mb-4 border-b border-slate-200/60 flex flex-wrap items-center justify-between gap-3">
-          <span className="text-xs sm:text-sm font-serif font-bold text-slate-900 tracking-wide">
-            Monthly Milestones
-          </span>
-          <span className="text-[11px] font-sans font-semibold tracking-wider uppercase text-slate-600 bg-slate-100 px-3 py-1 rounded-full border border-slate-200/60">
-            {taskHubView === 'outfits' ? '18 Outfits' : taskHubView === 'rentals' ? '7 Equipment Rigs' : taskHubView === 'pre-wedding' ? '16 Shoot Tasks' : '50 Total Tasks'}
-          </span>
+          {/* Right: View Switcher (Board/List) & + Add Task Button */}
+          <div className="flex flex-wrap items-center gap-2.5 shrink-0 self-start sm:self-end xl:self-auto">
+            {/* Pre-Wedding Sub-Mode Toggle (Tasks vs Creative Dossier) */}
+            {taskHubView === 'pre-wedding' && (
+              <div className="inline-flex p-0.5 bg-slate-100 rounded-lg border border-slate-200/60 text-xs">
+                <button
+                  type="button"
+                  onClick={() => setPreWeddingSubMode('tasks')}
+                  className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${
+                    preWeddingSubMode === 'tasks' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-500 hover:text-slate-800'
+                  }`}
+                  title="Shoot Tasks Kanban"
+                >
+                  Shoot Tasks
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPreWeddingSubMode('dossier')}
+                  className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${
+                    preWeddingSubMode === 'dossier' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-500 hover:text-slate-800'
+                  }`}
+                  title="Looks & Trip Scope Dossier"
+                >
+                  Looks & Trip Dossier
+                </button>
+              </div>
+            )}
+
+            {/* Board / List Toggle (Shown when not in dossier mode) */}
+            {preWeddingSubMode === 'tasks' && (
+              <div className="inline-flex p-0.5 bg-slate-100 rounded-lg border border-slate-200/60 text-xs">
+                <button
+                  type="button"
+                  onClick={() => setViewMode('board')}
+                  className={`p-1.5 rounded-md transition-all cursor-pointer ${
+                    viewMode === 'board' ? 'bg-white text-slate-900 shadow-2xs font-semibold' : 'text-slate-400 hover:text-slate-700'
+                  }`}
+                  title="Board View"
+                >
+                  <LayoutGrid className="w-3.5 h-3.5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setViewMode('list')}
+                  className={`p-1.5 rounded-md transition-all cursor-pointer ${
+                    viewMode === 'list' ? 'bg-white text-slate-900 shadow-2xs font-semibold' : 'text-slate-400 hover:text-slate-700'
+                  }`}
+                  title="List View"
+                >
+                  <List className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            )}
+
+            {/* + Add Task Button */}
+            <button
+              type="button"
+              onClick={() => setIsAddModalOpen(true)}
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-semibold shadow-xs hover:-translate-y-0.5 transition-all cursor-pointer"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>Add Task</span>
+            </button>
+          </div>
         </div>
 
-        {/* Month Milestone Cards (with "All" first) */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 sm:gap-3.5">
-          {/* All Months Card */}
+        {/* Tier 2: Sleek Milestone Timeline Ribbon */}
+        <div className="flex items-center gap-2 overflow-x-auto scrollbar-none py-0.5">
+          <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 shrink-0 mr-1 flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#B89230]" />
+            Timeline:
+          </span>
+
+          {/* All Months Pill */}
           {(() => {
             const sideFilteredAll = activeDataset.filter(task => {
               if (activeSide === 'BOY') {
@@ -705,56 +778,29 @@ export const MonthTracker: React.FC<MonthTrackerProps> = ({
             });
             const allTotal = sideFilteredAll.length;
             const allCompleted = sideFilteredAll.filter(t => t.completed).length;
-            const allRemaining = allTotal - allCompleted;
-            const allPercent = allTotal > 0 ? Math.round((allCompleted / allTotal) * 100) : 0;
             const isSelected = selectedMonth === 'ALL';
 
             return (
               <button
                 type="button"
                 onClick={() => setSelectedMonth('ALL')}
-                className={`p-3.5 sm:p-4 rounded-xl text-left transition-all duration-200 border cursor-pointer ${
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs transition-all cursor-pointer shrink-0 border ${
                   isSelected
-                    ? 'bg-slate-900 text-white border-slate-900 shadow-md ring-2 ring-slate-900/10'
-                    : 'bg-slate-50/70 hover:bg-white text-slate-800 border-slate-200/80 hover:border-slate-300 hover:shadow-xs'
+                    ? 'bg-slate-900 text-white border-slate-900 font-semibold shadow-xs'
+                    : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200/70 hover:border-slate-300'
                 }`}
               >
-                <div className="flex items-center justify-between text-xs mb-1.5">
-                  <span className="font-serif font-bold tracking-wide">All</span>
-                  <span className={`text-[10px] font-sans font-semibold px-2 py-0.5 rounded-full ${
-                    isSelected
-                      ? 'bg-white/20 text-white'
-                      : allRemaining > 0
-                        ? 'bg-slate-100 text-slate-600 border border-slate-200/60'
-                        : 'bg-emerald-50 text-emerald-800 border border-emerald-200/60'
-                  }`}>
-                    {allRemaining > 0 
-                      ? taskHubView === 'outfits' 
-                        ? `${allRemaining} to buy`
-                        : taskHubView === 'rentals'
-                        ? `${allRemaining} pending`
-                        : `${allRemaining} left`
-                      : 'Done'}
-                  </span>
-                </div>
-
-                <div className={`text-xs truncate font-sans ${isSelected ? 'text-slate-300' : 'text-slate-500'}`}>
-                  {allCompleted}/{allTotal} done ({allPercent}%)
-                </div>
-
-                {/* Progress bar */}
-                <div className={`mt-3 w-full h-1.5 rounded-full overflow-hidden ${isSelected ? 'bg-white/20' : 'bg-slate-200/70'}`}>
-                  <div
-                    className={`h-full rounded-full transition-all duration-300 ${
-                      isSelected ? 'bg-[#D4AF37]' : 'bg-[#B89230]'
-                    }`}
-                    style={{ width: `${allPercent}%` }}
-                  />
-                </div>
+                <span>All Months</span>
+                <span className={`text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded-md ${
+                  isSelected ? 'bg-white/20 text-white' : 'bg-slate-200/70 text-slate-600'
+                }`}>
+                  {allCompleted}/{allTotal}
+                </span>
               </button>
             );
           })()}
 
+          {/* The 6 Milestone Month Pills */}
           {milestones.map((m) => {
             const stats = getMilestoneStats(m.id);
             const isSelected = selectedMonth === m.id;
@@ -763,66 +809,43 @@ export const MonthTracker: React.FC<MonthTrackerProps> = ({
                 key={m.id}
                 type="button"
                 onClick={() => setSelectedMonth(m.id)}
-                className={`p-3.5 sm:p-4 rounded-xl text-left transition-all duration-200 border cursor-pointer ${
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs transition-all cursor-pointer shrink-0 border ${
                   isSelected
-                    ? 'bg-slate-900 text-white border-slate-900 shadow-md ring-2 ring-slate-900/10'
-                    : 'bg-slate-50/70 hover:bg-white text-slate-800 border-slate-200/80 hover:border-slate-300 hover:shadow-xs'
+                    ? 'bg-slate-900 text-white border-slate-900 font-semibold shadow-xs'
+                    : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200/70 hover:border-slate-300'
                 }`}
               >
-                <div className="flex items-center justify-between text-xs mb-1.5">
-                  <span className="font-serif font-bold tracking-wide">{m.monthLabel}</span>
-                  <span className={`text-[10px] font-sans font-semibold px-2 py-0.5 rounded-full ${
-                    isSelected
-                      ? 'bg-white/20 text-white'
-                      : stats.remaining > 0
-                        ? 'bg-slate-100 text-slate-600 border border-slate-200/60'
-                        : 'bg-emerald-50 text-emerald-800 border border-emerald-200/60'
-                  }`}>
-                    {stats.remaining > 0 ? `${stats.remaining} left` : 'Done'}
-                  </span>
-                </div>
-
-                <div className={`text-xs truncate font-sans ${isSelected ? 'text-slate-300' : 'text-slate-500'}`}>
-                  {stats.completed}/{stats.total} done ({stats.percent}%)
-                </div>
-
-                {/* Progress bar */}
-                <div className={`mt-3 w-full h-1.5 rounded-full overflow-hidden ${isSelected ? 'bg-white/20' : 'bg-slate-200/70'}`}>
-                  <div
-                    className={`h-full rounded-full transition-all duration-300 ${
-                      isSelected ? 'bg-[#D4AF37]' : 'bg-[#B89230]'
-                    }`}
-                    style={{ width: `${stats.percent}%` }}
-                  />
-                </div>
+                <span>{m.monthLabel}</span>
+                <span className={`text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded-md ${
+                  isSelected ? 'bg-white/20 text-white' : 'bg-slate-200/70 text-slate-600'
+                }`}>
+                  {stats.completed}/{stats.total}
+                </span>
               </button>
             );
           })}
         </div>
-      </div>
 
-      {/* 4. Editorial Toolbar (Filters & Search) */}
-      <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
-        {/* Filter & Search Row */}
-        <div className="flex flex-wrap items-center justify-between gap-3 text-xs">
+        {/* Tier 3: Search & Filters Bar */}
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100">
           <div className="flex flex-wrap items-center gap-2.5">
-            {/* Search Input */}
-            <div className="relative">
-              <Search className="w-4 h-4 absolute left-3 top-3 text-slate-400 stroke-[1.5]" />
+            {/* Search Input - Clean layout with 40px left padding */}
+            <div className="relative flex items-center">
+              <Search className="w-3.5 h-3.5 absolute left-3.5 text-slate-400 stroke-[1.5] pointer-events-none" />
               <input
                 type="text"
                 placeholder={
                   taskHubView === 'outfits'
-                    ? 'Search outfits, events, fabrics...'
+                    ? 'Search outfits, events...'
                     : taskHubView === 'rentals'
-                    ? 'Search rentals, sound rigs, vendors...'
+                    ? 'Search gear, sound rigs...'
                     : taskHubView === 'pre-wedding'
-                    ? 'Search shoot tasks, reels, stages...'
+                    ? 'Search shoot tasks...'
                     : 'Search tasks...'
                 }
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-9 pr-3.5 py-2 bg-slate-50 hover:bg-slate-100/70 border border-slate-200/80 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 placeholder:font-light w-44 sm:w-64 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:bg-white focus:border-[#D4AF37] transition-all shadow-2xs"
+                className="pl-10 pr-3.5 py-1.5 bg-slate-50 hover:bg-white focus:bg-white border border-slate-200/80 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 w-48 sm:w-64 focus:outline-none focus:ring-1 focus:ring-[#D4AF37] focus:border-[#D4AF37] transition-all shadow-2xs"
               />
             </div>
 
@@ -831,7 +854,7 @@ export const MonthTracker: React.FC<MonthTrackerProps> = ({
               <select
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
-                className="bg-slate-50 hover:bg-slate-100/70 border border-slate-200/80 text-slate-700 rounded-xl px-3.5 py-2 text-xs hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-[#D4AF37] transition-all cursor-pointer font-sans shadow-2xs"
+                className="bg-slate-50 hover:bg-white border border-slate-200/80 text-slate-700 rounded-xl px-3 py-1.5 text-xs hover:border-slate-300 focus:outline-none focus:ring-1 focus:ring-[#D4AF37] focus:border-[#D4AF37] transition-all cursor-pointer font-sans shadow-2xs"
               >
                 <option value="ALL">All Categories</option>
                 {CATEGORY_LIST.map((c) => (
@@ -846,11 +869,11 @@ export const MonthTracker: React.FC<MonthTrackerProps> = ({
               <select
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
-                className="bg-slate-50 hover:bg-slate-100/70 border border-slate-200/80 text-slate-700 rounded-xl px-3.5 py-2 text-xs hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-[#D4AF37] transition-all cursor-pointer font-sans shadow-2xs"
+                className="bg-slate-50 hover:bg-white border border-slate-200/80 text-slate-700 rounded-xl px-3 py-1.5 text-xs hover:border-slate-300 focus:outline-none focus:ring-1 focus:ring-[#D4AF37] focus:border-[#D4AF37] transition-all cursor-pointer font-sans shadow-2xs"
               >
-                <option value="ALL">All Wardrobe (Groom & Bride)</option>
-                <option value="Groom">Groom's Outfits (9 items)</option>
-                <option value="Bride">Bride's Outfits (9 items)</option>
+                <option value="ALL">All Wardrobe</option>
+                <option value="Groom">Groom's Outfits</option>
+                <option value="Bride">Bride's Outfits</option>
               </select>
             )}
 
@@ -858,11 +881,11 @@ export const MonthTracker: React.FC<MonthTrackerProps> = ({
               <select
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
-                className="bg-slate-50 hover:bg-slate-100/70 border border-slate-200/80 text-slate-700 rounded-xl px-3.5 py-2 text-xs hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-[#D4AF37] transition-all cursor-pointer font-sans shadow-2xs"
+                className="bg-slate-50 hover:bg-white border border-slate-200/80 text-slate-700 rounded-xl px-3 py-1.5 text-xs hover:border-slate-300 focus:outline-none focus:ring-1 focus:ring-[#D4AF37] focus:border-[#D4AF37] transition-all cursor-pointer font-sans shadow-2xs"
               >
                 <option value="ALL">All Gear Bookings</option>
-                <option value="Boy">Boy's Side Gear (Generator, Haldi, Jaan)</option>
-                <option value="Both">Joint / Farm Bookings (Garba Sound, Dining)</option>
+                <option value="Boy">Boy's Side Gear</option>
+                <option value="Both">Joint / Farm Bookings</option>
                 <option value="Girl">Bride's Side Gear</option>
               </select>
             )}
@@ -871,7 +894,7 @@ export const MonthTracker: React.FC<MonthTrackerProps> = ({
               <select
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
-                className="bg-slate-50 hover:bg-slate-100/70 border border-slate-200/80 text-slate-700 rounded-xl px-3.5 py-2 text-xs hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-[#D4AF37] transition-all cursor-pointer font-sans shadow-2xs"
+                className="bg-slate-50 hover:bg-white border border-slate-200/80 text-slate-700 rounded-xl px-3 py-1.5 text-xs hover:border-slate-300 focus:outline-none focus:ring-1 focus:ring-[#D4AF37] focus:border-[#D4AF37] transition-all cursor-pointer font-sans shadow-2xs"
               >
                 <option value="ALL">All Shoot Stages</option>
                 {PREWEDDING_STAGES.map(stage => (
@@ -884,7 +907,7 @@ export const MonthTracker: React.FC<MonthTrackerProps> = ({
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value as any)}
-              className="bg-slate-50 hover:bg-slate-100/70 border border-slate-200/80 text-slate-700 rounded-xl px-3.5 py-2 text-xs hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-[#D4AF37] transition-all cursor-pointer font-sans shadow-2xs"
+              className="bg-slate-50 hover:bg-white border border-slate-200/80 text-slate-700 rounded-xl px-3 py-1.5 text-xs hover:border-slate-300 focus:outline-none focus:ring-1 focus:ring-[#D4AF37] focus:border-[#D4AF37] transition-all cursor-pointer font-sans shadow-2xs"
             >
               <option value="ALL">All Status</option>
               {STATUS_LIST.map((s) => (
@@ -898,7 +921,7 @@ export const MonthTracker: React.FC<MonthTrackerProps> = ({
             <select
               value={priorityFilter}
               onChange={(e) => setPriorityFilter(e.target.value as any)}
-              className="bg-slate-50 hover:bg-slate-100/70 border border-slate-200/80 text-slate-700 rounded-xl px-3.5 py-2 text-xs hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 focus:border-[#D4AF37] transition-all cursor-pointer font-sans shadow-2xs"
+              className="bg-slate-50 hover:bg-white border border-slate-200/80 text-slate-700 rounded-xl px-3 py-1.5 text-xs hover:border-slate-300 focus:outline-none focus:ring-1 focus:ring-[#D4AF37] focus:border-[#D4AF37] transition-all cursor-pointer font-sans shadow-2xs"
             >
               <option value="ALL">All Priorities</option>
               {PRIORITY_LIST.map((p) => (
@@ -910,9 +933,9 @@ export const MonthTracker: React.FC<MonthTrackerProps> = ({
           </div>
 
           {/* Showing Count */}
-          <div className="text-slate-400 font-sans text-xs flex items-center gap-2">
+          <div className="text-slate-400 font-sans text-xs flex items-center gap-1.5">
             <span>Showing</span>
-            <span className="font-mono font-semibold text-slate-800 bg-slate-100 px-2.5 py-0.5 rounded-full border border-slate-200/60">
+            <span className="font-mono font-semibold text-slate-800 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200/60">
               {displayedTasks.length}
             </span>
             <span>
@@ -927,8 +950,15 @@ export const MonthTracker: React.FC<MonthTrackerProps> = ({
         </div>
       </div>
 
-      {/* 5. Main Content: Kanban Board OR List View (Exact Same Format for ALL 4 views) */}
-      {viewMode === 'board' ? (
+      {/* 5. Main Content: Pre-Wedding Dossier OR Kanban Board OR List View */}
+      {taskHubView === 'pre-wedding' && preWeddingSubMode === 'dossier' ? (
+        <PreWeddingPlanner
+          plan={preWeddingPlan}
+          activeSide={activeSide}
+          onUpdatePlan={onUpdatePreWeddingPlan}
+          onResetPlanToPreset={onResetPlanToPreset}
+        />
+      ) : viewMode === 'board' ? (
         <TaskKanbanBoard
           tasks={displayedTasks}
           milestones={milestones}

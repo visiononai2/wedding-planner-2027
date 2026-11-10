@@ -4,7 +4,6 @@ import {
   CheckCircle2, 
   AlertCircle, 
   Plus, 
-  ShieldAlert,
   Trash2,
   Edit3
 } from 'lucide-react';
@@ -81,30 +80,9 @@ export const DecisionsTracker: React.FC<DecisionsTrackerProps> = ({
 
   return (
     <div className="space-y-6 sm:space-y-7">
-      {/* Ground Rules & Operational Constraints Card */}
-      <div className="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
-        <div className="text-xs font-semibold text-slate-900 uppercase tracking-wider mb-4 flex items-center">
-          <ShieldAlert className="w-4 h-4 mr-2 text-[#B89230] stroke-[1.5]" />
-          Critical Operational Protocols & Constraints
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 text-xs text-slate-600 font-sans">
-          <div className="p-4 bg-slate-50/80 rounded-xl border border-slate-200/70 leading-relaxed">
-            <strong className="text-slate-900 block font-semibold mb-1">1. Surat Police 10 PM Limit:</strong>
-            Turn off high DJ sound strictly at 10:00 PM at Silver Farm. Bride (Nisha) entry & couple raas must happen before 10 PM.
-          </div>
-          <div className="p-4 bg-slate-50/80 rounded-xl border border-slate-200/70 leading-relaxed">
-            <strong className="text-slate-900 block font-semibold mb-1">2. 05:00 AM Jaan Departure:</strong>
-            Groom (Parth) side departs at 5 AM sharp. ICER truck mounted with 4 Base 4 Top & flowers ready at 4:30 AM.
-          </div>
-          <div className="p-4 bg-slate-50/80 rounded-xl border border-slate-200/70 leading-relaxed">
-            <strong className="text-slate-900 block font-semibold mb-1">3. Bride Makeup Slot:</strong>
-            Nisha's parlour slot starts 2–3 PM, finish by 5:00–5:30 PM strictly to allow sunset portraits before dinner & Garba.
-          </div>
-        </div>
-      </div>
-
-      {/* Questions Tracker List */}
-      <div className="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-5">
+      {/* Unified Master Decisions & Operational Protocols Hub */}
+      <div className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-6">
+        {/* Header: Title & Stats & Add Action */}
         <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-100">
           <div>
             <h3 className="font-serif text-base sm:text-lg font-medium text-slate-900">Family Decisions & Ritual Inquiries</h3>
@@ -126,6 +104,7 @@ export const DecisionsTracker: React.FC<DecisionsTrackerProps> = ({
           </button>
         </div>
 
+        {/* Decision Cards List */}
         <div className="space-y-3.5">
           {decisions.map((dec) => (
             <div 

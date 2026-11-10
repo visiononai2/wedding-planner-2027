@@ -44,14 +44,14 @@ const STATUS_COLUMNS: ColumnDef[] = [
     label: 'TO DO / SOURCING',
     sublabel: 'Pending tasks before shoot trip',
     accentDot: 'bg-[#B89230]',
-    badgeClasses: 'bg-[#B89230]/10 text-stone-800 border border-[#B89230]/30',
+    badgeClasses: 'bg-[#B89230]/10 text-slate-800 border border-[#B89230]/30',
   },
   {
     id: 'completed',
     label: 'COMPLETED & LOCKED',
     sublabel: 'Executed, contract signed or delivered',
-    accentDot: 'bg-stone-700',
-    badgeClasses: 'bg-stone-100 text-stone-700 border border-stone-200/80',
+    accentDot: 'bg-slate-700',
+    badgeClasses: 'bg-slate-100 text-slate-700 border border-slate-200/80',
   },
 ];
 
@@ -69,7 +69,7 @@ const STAGE_CONFIGS: Record<string, { label: string; dot: string; badge: string;
   'Location & Scope Decision': {
     label: 'LOCATION & SCOPE',
     dot: 'bg-[#B89230]',
-    badge: 'bg-[#B89230]/10 text-stone-800 border border-[#B89230]/30',
+    badge: 'bg-[#B89230]/10 text-slate-800 border border-[#B89230]/30',
     icon: MapPin,
   },
   'Storyboards & 3 Reel Scripts': {
@@ -81,25 +81,25 @@ const STAGE_CONFIGS: Record<string, { label: string; dot: string; badge: string;
   'Wardrobe & Outfits': {
     label: 'WARDROBE & LOOKS',
     dot: 'bg-[#A84A5B]',
-    badge: 'bg-[#A84A5B]/10 text-stone-800 border border-[#A84A5B]/30',
+    badge: 'bg-[#A84A5B]/10 text-slate-800 border border-[#A84A5B]/30',
     icon: Shirt,
   },
   'Photography Crew & Contract': {
     label: 'PHOTO CREW & CONTRACT',
     dot: 'bg-[#3B6281]',
-    badge: 'bg-[#3B6281]/10 text-stone-800 border border-[#3B6281]/30',
+    badge: 'bg-[#3B6281]/10 text-slate-800 border border-[#3B6281]/30',
     icon: Users,
   },
   'Travel & Lodging': {
     label: 'TRAVEL & LOGISTICS',
-    dot: 'bg-stone-600',
-    badge: 'bg-stone-100 text-stone-800 border border-stone-200/80',
+    dot: 'bg-slate-600',
+    badge: 'bg-slate-100 text-slate-800 border border-slate-200/80',
     icon: Car,
   },
   'Shoot Day Execution': {
     label: 'SHOOT DAY EXECUTION',
-    dot: 'bg-stone-800',
-    badge: 'bg-stone-100 text-stone-900 border border-stone-200/80',
+    dot: 'bg-slate-800',
+    badge: 'bg-slate-100 text-slate-900 border border-slate-200/80',
     icon: Camera,
   },
   'Post-Production & Garba LED Delivery': {
@@ -268,10 +268,10 @@ export const PreWeddingKanbanBoard: React.FC<PreWeddingKanbanBoardProps> = ({
               }`}
             >
               {/* Column Header */}
-              <div className="p-3.5 border-b border-stone-200/60 flex items-center justify-between gap-2 shrink-0">
+              <div className="p-3.5 border-b border-slate-200/60 flex items-center justify-between gap-2 shrink-0">
                 <div className="flex items-center gap-2 truncate">
                   <span className={`w-2 h-2 rounded-full ${col.accentDot} shrink-0`} />
-                  <h3 className="font-mono text-[11px] font-medium tracking-wider uppercase text-stone-800 truncate">
+                  <h3 className="font-mono text-[11px] font-medium tracking-wider uppercase text-slate-800 truncate">
                     {col.label}
                   </h3>
                   <span className={`text-[10px] px-2 py-0.5 rounded-full font-mono font-medium ${col.badgeClasses}`}>
@@ -285,7 +285,7 @@ export const PreWeddingKanbanBoard: React.FC<PreWeddingKanbanBoardProps> = ({
                     setQuickAddColumnId(isQuickAdding ? null : col.id);
                     setQuickAddTitle('');
                   }}
-                  className="p-1 text-stone-400 hover:text-stone-900 hover:bg-stone-200/50 rounded-lg transition-colors cursor-pointer"
+                  className="p-1 text-slate-400 hover:text-slate-900 hover:bg-slate-200/50 rounded-lg transition-colors cursor-pointer"
                   title={`Add task to ${col.label}`}
                 >
                   <Plus className="w-3.5 h-3.5" />
@@ -310,15 +310,15 @@ export const PreWeddingKanbanBoard: React.FC<PreWeddingKanbanBoardProps> = ({
                           setQuickAddColumnId(null);
                         }
                       }}
-                      className="w-full text-xs px-3 py-2 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 focus:border-[#D4AF37] font-medium"
+                      className="w-full text-xs px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 focus:border-[#D4AF37] font-medium"
                     />
 
-                    <div className="flex items-center justify-between text-[10px] font-mono text-stone-400 pt-1">
+                    <div className="flex items-center justify-between text-[10px] font-mono text-slate-400 pt-1">
                       <span>Press Enter ↵ to save</span>
                       <button
                         type="button"
                         onClick={() => handleQuickAddSubmit(col.id)}
-                        className="px-3 py-1 bg-stone-900 text-stone-50 rounded-full text-[10px] font-mono tracking-widest uppercase hover:bg-stone-800 transition-colors"
+                        className="px-3 py-1 bg-slate-900 text-slate-50 rounded-full text-[10px] font-mono tracking-widest uppercase hover:bg-slate-800 transition-colors"
                       >
                         Add Task
                       </button>
@@ -328,7 +328,7 @@ export const PreWeddingKanbanBoard: React.FC<PreWeddingKanbanBoardProps> = ({
 
                 {/* Cards List */}
                 {colItems.length === 0 && !isQuickAdding ? (
-                  <div className="h-24 rounded-2xl border border-dashed border-stone-200/80 flex items-center justify-center text-[11px] font-mono uppercase tracking-wider text-stone-400">
+                  <div className="h-24 rounded-2xl border border-dashed border-slate-200/80 flex items-center justify-center text-[11px] font-mono uppercase tracking-wider text-slate-400">
                     Drop task here
                   </div>
                 ) : (
@@ -336,8 +336,8 @@ export const PreWeddingKanbanBoard: React.FC<PreWeddingKanbanBoardProps> = ({
                     const isEditing = editingItemId === item.id;
                     const stageConf = STAGE_CONFIGS[item.stage] || {
                       label: item.stage,
-                      dot: 'bg-stone-500',
-                      badge: 'bg-stone-100 text-stone-800 border-stone-200',
+                      dot: 'bg-slate-500',
+                      badge: 'bg-slate-100 text-slate-800 border-slate-200',
                       icon: Camera
                     };
                     const StageIcon = stageConf.icon;
@@ -347,9 +347,9 @@ export const PreWeddingKanbanBoard: React.FC<PreWeddingKanbanBoardProps> = ({
                         key={item.id}
                         draggable={!isEditing}
                         onDragStart={(e) => handleDragStart(e, item.id)}
-                        className={`bg-white/95 rounded-2xl p-3.5 border border-stone-200/70 hover:border-[#D4AF37]/50 shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.04)] transition-all cursor-grab active:cursor-grabbing group space-y-2.5 ${
+                        className={`bg-white/95 rounded-2xl p-3.5 border border-slate-200/70 hover:border-[#D4AF37]/50 shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.04)] transition-all cursor-grab active:cursor-grabbing group space-y-2.5 ${
                           draggedItemId === item.id ? 'opacity-40 scale-95' : ''
-                        } ${item.completed ? 'bg-stone-50/70 border-stone-200/50' : ''}`}
+                        } ${item.completed ? 'bg-slate-50/70 border-slate-200/50' : ''}`}
                       >
                         {isEditing ? (
                           <div className="space-y-2" onClick={(e) => e.stopPropagation()}>
@@ -357,28 +357,28 @@ export const PreWeddingKanbanBoard: React.FC<PreWeddingKanbanBoardProps> = ({
                               type="text"
                               value={editTitle}
                               onChange={(e) => setEditTitle(e.target.value)}
-                              className="w-full text-xs font-medium px-2.5 py-1.5 border border-stone-300 rounded-xl focus:outline-none focus:border-stone-900"
+                              className="w-full text-xs font-medium px-2.5 py-1.5 border border-slate-300 rounded-xl focus:outline-none focus:border-slate-900"
                               placeholder="Task title"
                               autoFocus
                             />
                             <textarea
                               value={editNotes}
                               onChange={(e) => setEditNotes(e.target.value)}
-                              className="w-full text-[11px] px-2.5 py-1.5 border border-stone-200 rounded-xl focus:outline-none resize-none h-16 leading-relaxed"
+                              className="w-full text-[11px] px-2.5 py-1.5 border border-slate-200 rounded-xl focus:outline-none resize-none h-16 leading-relaxed"
                               placeholder="Notes or instructions..."
                             />
                             <div className="flex items-center justify-end gap-1.5 pt-1">
                               <button
                                 type="button"
                                 onClick={() => setEditingItemId(null)}
-                                className="px-2.5 py-1 text-[11px] text-stone-500 hover:bg-stone-100 rounded-full transition-colors"
+                                className="px-2.5 py-1 text-[11px] text-slate-500 hover:bg-slate-100 rounded-full transition-colors"
                               >
                                 Cancel
                               </button>
                               <button
                                 type="button"
                                 onClick={() => saveEdit(item.id)}
-                                className="px-3 py-1 text-[10px] font-mono tracking-wider uppercase bg-stone-900 text-stone-50 rounded-full hover:bg-stone-800 transition-colors"
+                                className="px-3 py-1 text-[10px] font-mono tracking-wider uppercase bg-slate-900 text-slate-50 rounded-full hover:bg-slate-800 transition-colors"
                               >
                                 Save
                               </button>
@@ -398,13 +398,13 @@ export const PreWeddingKanbanBoard: React.FC<PreWeddingKanbanBoardProps> = ({
                               <button
                                 type="button"
                                 onClick={() => onToggleChecklist(item.id)}
-                                className="text-stone-300 hover:text-stone-700 transition-colors shrink-0 cursor-pointer"
+                                className="text-slate-300 hover:text-slate-700 transition-colors shrink-0 cursor-pointer"
                                 title={item.completed ? 'Mark pending' : 'Mark completed'}
                               >
                                 {item.completed ? (
-                                  <CheckCircle2 className="w-4 h-4 text-stone-700" />
+                                  <CheckCircle2 className="w-4 h-4 text-slate-700" />
                                 ) : (
-                                  <Circle className="w-4 h-4 text-stone-300 hover:text-[#B89230]" />
+                                  <Circle className="w-4 h-4 text-slate-300 hover:text-[#B89230]" />
                                 )}
                               </button>
                             </div>
@@ -412,29 +412,29 @@ export const PreWeddingKanbanBoard: React.FC<PreWeddingKanbanBoardProps> = ({
                             {/* Task Title */}
                             <div>
                               <h4
-                                className={`text-xs font-medium leading-snug group-hover:text-stone-900 transition-colors tracking-tight ${
-                                  item.completed ? 'line-through text-stone-400' : 'text-stone-800'
+                                className={`text-xs font-medium leading-snug group-hover:text-slate-900 transition-colors tracking-tight ${
+                                  item.completed ? 'line-through text-slate-400' : 'text-slate-800'
                                 }`}
                               >
                                 {item.title}
                               </h4>
                               {item.notes && (
-                                <p className="text-[11px] text-stone-500 mt-1 leading-relaxed">
+                                <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">
                                   {item.notes}
                                 </p>
                               )}
                             </div>
 
                             {/* Card Footer: Stage Selector / Toggle & Edit / Delete */}
-                            <div className="flex items-center justify-between pt-1.5 border-t border-stone-100 text-[11px]">
+                            <div className="flex items-center justify-between pt-1.5 border-t border-slate-100 text-[11px]">
                               {groupBy === 'stage' ? (
                                 <button
                                   type="button"
                                   onClick={() => onToggleChecklist(item.id)}
                                   className={`px-2 py-0.5 rounded-full text-[10px] font-mono tracking-wider uppercase transition-colors ${
                                     item.completed
-                                      ? 'bg-stone-100 text-stone-700 border border-stone-200'
-                                      : 'bg-stone-100/70 text-stone-600 hover:bg-stone-200/70'
+                                      ? 'bg-slate-100 text-slate-700 border border-slate-200'
+                                      : 'bg-slate-100/70 text-slate-600 hover:bg-slate-200/70'
                                   }`}
                                 >
                                   {item.completed ? '✓ Locked' : 'Mark Done'}
@@ -444,7 +444,7 @@ export const PreWeddingKanbanBoard: React.FC<PreWeddingKanbanBoardProps> = ({
                                   <select
                                     value={item.stage}
                                     onChange={(e) => onUpdateChecklist(item.id, { stage: e.target.value })}
-                                    className="text-[10px] font-mono tracking-wider uppercase py-0.5 pl-2 pr-5 bg-stone-50 hover:bg-stone-100 border border-stone-200 rounded-full text-stone-700 focus:outline-none cursor-pointer appearance-none max-w-[130px] truncate"
+                                    className="text-[10px] font-mono tracking-wider uppercase py-0.5 pl-2 pr-5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-full text-slate-700 focus:outline-none cursor-pointer appearance-none max-w-[130px] truncate"
                                   >
                                     {STAGES_LIST.map((st) => (
                                       <option key={st} value={st}>
@@ -452,7 +452,7 @@ export const PreWeddingKanbanBoard: React.FC<PreWeddingKanbanBoardProps> = ({
                                       </option>
                                     ))}
                                   </select>
-                                  <ChevronDown className="w-2.5 h-2.5 text-stone-400 absolute right-1.5 top-1.5 pointer-events-none" />
+                                  <ChevronDown className="w-2.5 h-2.5 text-slate-400 absolute right-1.5 top-1.5 pointer-events-none" />
                                 </div>
                               )}
 
@@ -460,7 +460,7 @@ export const PreWeddingKanbanBoard: React.FC<PreWeddingKanbanBoardProps> = ({
                                 <button
                                   type="button"
                                   onClick={() => startEdit(item)}
-                                  className="p-1 text-stone-400 hover:text-stone-800 hover:bg-stone-100 rounded-lg transition-colors cursor-pointer"
+                                  className="p-1 text-slate-400 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
                                   title="Edit task"
                                 >
                                   <Edit3 className="w-3.5 h-3.5" />
@@ -472,7 +472,7 @@ export const PreWeddingKanbanBoard: React.FC<PreWeddingKanbanBoardProps> = ({
                                       onDeleteChecklist(item.id);
                                     }
                                   }}
-                                  className="p-1 text-stone-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
+                                  className="p-1 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
                                   title="Delete task"
                                 >
                                   <Trash2 className="w-3.5 h-3.5" />
@@ -493,7 +493,7 @@ export const PreWeddingKanbanBoard: React.FC<PreWeddingKanbanBoardProps> = ({
                     setQuickAddColumnId(col.id);
                     setQuickAddTitle('');
                   }}
-                  className="w-full py-2 px-3 rounded-xl text-[11px] font-mono uppercase tracking-wider text-stone-500 hover:text-stone-900 hover:bg-white border border-dashed border-stone-200/80 hover:border-stone-300 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                  className="w-full py-2 px-3 rounded-xl text-[11px] font-mono uppercase tracking-wider text-slate-500 hover:text-slate-900 hover:bg-white border border-dashed border-slate-200/80 hover:border-slate-300 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>Add Task</span>

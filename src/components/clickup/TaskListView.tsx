@@ -225,9 +225,9 @@ export const TaskListView: React.FC<TaskListViewProps> = ({
                                 <span
                                   onClick={() => onSelectTask(task)}
                                   className={`font-medium cursor-pointer hover:text-[#9A7B2C] transition-colors truncate text-xs ${
-                                    isCompleted ? 'line-through text-stone-400 font-normal' : 'text-stone-900'
+                                    isCompleted ? 'line-through text-slate-400 font-normal' : 'text-slate-900'
                                   }`}
-                                  title="Click to view full ClickUp task details"
+                                  title={task.title}
                                 >
                                   {task.title}
                                 </span>
@@ -243,8 +243,8 @@ export const TaskListView: React.FC<TaskListViewProps> = ({
                               </div>
 
                               {(task.description || task.notes) && (
-                                <span className="text-[11px] text-stone-400 truncate mt-0.5 font-normal flex items-center gap-1">
-                                  <span className="text-stone-400 font-medium">Desc:</span>
+                                <span className="text-[11px] text-slate-400 truncate mt-0.5 font-normal flex items-center gap-1">
+                                  <span className="text-slate-400 font-medium">Desc:</span>
                                   <span>{task.description || task.notes}</span>
                                 </span>
                               )}
@@ -278,7 +278,7 @@ export const TaskListView: React.FC<TaskListViewProps> = ({
                                 className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border text-[11px] transition-all cursor-pointer shadow-2xs group-hover/date:ring-1 group-hover/date:ring-[#D4AF37]/40 ${
                                   task.dueDate
                                     ? getDateBadgeStyle(task.dueDate, isCompleted)
-                                    : 'bg-stone-100 text-stone-500 border-stone-200/60'
+                                    : 'bg-slate-100 text-slate-500 border-slate-200/60'
                                 }`}
                               >
                                 <Calendar className="w-3 h-3 shrink-0 stroke-[1.5]" />
@@ -302,7 +302,7 @@ export const TaskListView: React.FC<TaskListViewProps> = ({
                               value={task.category}
                               onChange={(e) => onEditTask(task.id, { category: e.target.value as any })}
                               className={`text-[10px] font-sans font-medium px-2 py-0.5 rounded-full border uppercase focus:outline-none focus:ring-1 focus:ring-[#D4AF37] cursor-pointer ${
-                                CATEGORY_CONFIGS[task.category]?.badgeClasses || 'bg-stone-100 text-stone-700 border-stone-200'
+                                CATEGORY_CONFIGS[task.category]?.badgeClasses || 'bg-slate-100 text-slate-700 border-slate-200'
                               }`}
                             >
                               {CATEGORY_LIST.map((c) => (
@@ -337,6 +337,7 @@ export const TaskListView: React.FC<TaskListViewProps> = ({
                                 });
                               }}
                               size="sm"
+                              align="right"
                             />
                           </td>
 
@@ -346,7 +347,7 @@ export const TaskListView: React.FC<TaskListViewProps> = ({
                               <button
                                 type="button"
                                 onClick={() => onSelectTask(task)}
-                                className="p-1 text-stone-400 hover:text-stone-700 hover:bg-stone-100 rounded-lg transition-colors"
+                                className="p-1 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
                                 title="Open ClickUp details modal"
                               >
                                 <Edit3 className="w-3.5 h-3.5 stroke-[1.5]" />
@@ -354,7 +355,7 @@ export const TaskListView: React.FC<TaskListViewProps> = ({
                               <button
                                 type="button"
                                 onClick={() => onDeleteTask(task.id)}
-                                className="p-1 text-stone-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                                className="p-1 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
                                 title="Delete task"
                               >
                                 <Trash2 className="w-3.5 h-3.5 stroke-[1.5]" />
@@ -367,7 +368,7 @@ export const TaskListView: React.FC<TaskListViewProps> = ({
 
                     {/* Quick Add Row inside table */}
                     {isQuickAdding && (
-                      <tr className="bg-stone-50/80">
+                      <tr className="bg-slate-50/80">
                         <td className="py-2.5 pl-4 pr-2 align-middle">
                           <Plus className="w-4 h-4 text-indigo-500 animate-pulse" />
                         </td>

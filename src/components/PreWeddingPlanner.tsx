@@ -304,24 +304,24 @@ export const PreWeddingPlanner: React.FC<PreWeddingPlannerProps> = ({
                         key={item.id}
                         className={`flex items-start justify-between gap-3 p-3.5 rounded-xl border transition-all ${
                           item.completed
-                            ? 'bg-stone-50/60 border-stone-200/60 text-stone-400'
-                            : 'bg-white border-stone-200/70 hover:border-[#D4AF37]/50 shadow-[0_2px_8px_rgba(0,0,0,0.02)]'
+                            ? 'bg-slate-50/60 border-slate-200/60 text-slate-400'
+                            : 'bg-white border-slate-200/70 hover:border-[#D4AF37]/50 shadow-[0_2px_8px_rgba(0,0,0,0.02)]'
                         }`}
                       >
                         <div className="flex items-start gap-2.5 flex-1">
                           <button
                             onClick={() => handleToggleChecklist(item.id)}
-                            className="mt-0.5 text-stone-400 hover:text-emerald-700 transition-colors shrink-0 cursor-pointer"
+                            className="mt-0.5 text-slate-400 hover:text-emerald-700 transition-colors shrink-0 cursor-pointer"
                           >
                             {item.completed ? (
                               <CheckCircle2 className="w-4 h-4 text-emerald-600 fill-emerald-50" />
                             ) : (
-                              <Circle className="w-4 h-4 text-stone-300 hover:text-stone-500" />
+                              <Circle className="w-4 h-4 text-slate-300 hover:text-slate-500" />
                             )}
                           </button>
 
                           <div className="space-y-0.5 flex-1">
-                            <div className={`text-xs font-medium ${item.completed ? 'line-through text-stone-400' : 'text-stone-900'}`}>
+                            <div className={`text-xs font-medium ${item.completed ? 'line-through text-slate-400' : 'text-slate-900'}`}>
                               <EditableText
                                 value={item.title}
                                 onSave={(val) => handleEditChecklist(item.id, { title: val })}
@@ -329,7 +329,7 @@ export const PreWeddingPlanner: React.FC<PreWeddingPlannerProps> = ({
                             </div>
 
                             {item.notes && (
-                              <div className="text-[11px] text-stone-500">
+                              <div className="text-[11px] text-slate-500">
                                 <EditableText
                                   value={item.notes}
                                   onSave={(val) => handleEditChecklist(item.id, { notes: val })}
@@ -341,7 +341,7 @@ export const PreWeddingPlanner: React.FC<PreWeddingPlannerProps> = ({
 
                         <button
                           onClick={() => handleDeleteChecklist(item.id)}
-                          className="text-stone-300 hover:text-rose-600 transition-colors p-1 cursor-pointer"
+                          className="text-slate-300 hover:text-rose-600 transition-colors p-1 cursor-pointer"
                           title="Delete task"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
@@ -361,7 +361,7 @@ export const PreWeddingPlanner: React.FC<PreWeddingPlannerProps> = ({
   return (
     <div className="space-y-6">
       {/* Top Banner Clarifying Distinction */}
-      <div className="bg-[#1C1917] text-stone-100 rounded-3xl p-6 sm:p-8 shadow-[0_16px_50px_rgba(28,25,23,0.18)] border border-stone-800">
+      <div className="bg-[#1C1917] text-slate-100 rounded-3xl p-6 sm:p-8 shadow-[0_16px_50px_rgba(28,25,23,0.18)] border border-slate-800">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
           <div className="space-y-2.5">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-medium bg-white/10 text-[#D4AF37] border border-[#D4AF37]/30 backdrop-blur-xs font-mono tracking-wider">
@@ -370,39 +370,39 @@ export const PreWeddingPlanner: React.FC<PreWeddingPlannerProps> = ({
               <span>•</span>
               <span>Nov / Dec 2026</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-normal font-cormorant tracking-wide text-stone-50">
+            <h1 className="text-2xl sm:text-3xl font-normal font-cormorant tracking-wide text-slate-50">
               Pre-Wedding Photography & Cinematography Planner
             </h1>
-            <p className="text-xs sm:text-sm text-stone-400 max-w-2xl leading-relaxed">
-              <strong className="text-stone-200">Notice:</strong> This couple photoshoot trip is an entirely separate multi-day travel project (2–3 days national or 1 week international), distinct from the Feb 15 home rituals (Randel, Lagan Lakhan, Haldi & Mehndi).
+            <p className="text-xs sm:text-sm text-slate-400 max-w-2xl leading-relaxed">
+              <strong className="text-slate-200">Notice:</strong> This couple photoshoot trip is an entirely separate multi-day travel project (2–3 days national or 1 week international), distinct from the Feb 15 home rituals (Randel, Lagan Lakhan, Haldi & Mehndi).
             </p>
           </div>
 
           {/* Quick Progress Dial */}
-          <div className="bg-stone-900/80 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-stone-800 shrink-0 text-center min-w-[160px]">
-            <div className="text-2xl sm:text-3xl font-light font-cormorant text-stone-50">{completedChecklistCount} / {totalChecklistCount}</div>
+          <div className="bg-slate-900/80 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-slate-800 shrink-0 text-center min-w-[160px]">
+            <div className="text-2xl sm:text-3xl font-light font-cormorant text-slate-50">{completedChecklistCount} / {totalChecklistCount}</div>
             <div className="text-[10px] font-medium text-[#D4AF37] font-mono tracking-wider mt-1 uppercase">Tasks Complete ({checklistPercent}%)</div>
-            <div className="w-full bg-stone-800 h-1.5 rounded-full mt-2.5 overflow-hidden">
+            <div className="w-full bg-slate-800 h-1.5 rounded-full mt-2.5 overflow-hidden">
               <div className="bg-[#D4AF37] h-full rounded-full transition-all duration-300" style={{ width: `${checklistPercent}%` }} />
             </div>
           </div>
         </div>
 
         {/* Preset Trip Scope Switcher */}
-        <div className="mt-6 pt-4 border-t border-stone-800">
+        <div className="mt-6 pt-4 border-t border-slate-800">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <span className="text-[10px] font-semibold text-stone-400 uppercase tracking-widest flex items-center gap-1.5 font-mono">
+            <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest flex items-center gap-1.5 font-mono">
               <Compass className="w-3.5 h-3.5 text-[#D4AF37]" />
               <span>Select Trip Scope & Preset:</span>
             </span>
 
-            <div className="inline-flex flex-wrap items-center bg-black/40 p-1 rounded-xl border border-stone-800 gap-1">
+            <div className="inline-flex flex-wrap items-center bg-black/40 p-1 rounded-xl border border-slate-800 gap-1">
               <button
                 onClick={() => onResetPlanToPreset('NATIONAL')}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
                   plan.tripType === 'NATIONAL'
-                    ? 'bg-stone-50 text-stone-950 shadow-sm font-semibold'
-                    : 'text-stone-400 hover:text-white hover:bg-white/10'
+                    ? 'bg-slate-50 text-slate-950 shadow-sm font-semibold'
+                    : 'text-slate-400 hover:text-white hover:bg-white/10'
                 }`}
               >
                 <span>🇮🇳</span>
@@ -413,8 +413,8 @@ export const PreWeddingPlanner: React.FC<PreWeddingPlannerProps> = ({
                 onClick={() => onResetPlanToPreset('INTERNATIONAL')}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
                   plan.tripType === 'INTERNATIONAL'
-                    ? 'bg-stone-50 text-stone-950 shadow-sm font-semibold'
-                    : 'text-stone-400 hover:text-white hover:bg-white/10'
+                    ? 'bg-slate-50 text-slate-950 shadow-sm font-semibold'
+                    : 'text-slate-400 hover:text-white hover:bg-white/10'
                 }`}
               >
                 <span>✈️</span>
@@ -425,8 +425,8 @@ export const PreWeddingPlanner: React.FC<PreWeddingPlannerProps> = ({
                 onClick={() => onResetPlanToPreset('REGIONAL')}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
                   plan.tripType === 'REGIONAL'
-                    ? 'bg-stone-50 text-stone-950 shadow-sm font-semibold'
-                    : 'text-stone-400 hover:text-white hover:bg-white/10'
+                    ? 'bg-slate-50 text-slate-950 shadow-sm font-semibold'
+                    : 'text-slate-400 hover:text-white hover:bg-white/10'
                 }`}
               >
                 <span>🏛️</span>
@@ -438,21 +438,21 @@ export const PreWeddingPlanner: React.FC<PreWeddingPlannerProps> = ({
       </div>
 
       {/* Pre-Wedding Module Sub-Navigation Tabs */}
-      <div className="bg-white/90 backdrop-blur-md rounded-2xl p-2 sm:p-2.5 border border-stone-200/70 shadow-[0_4px_24px_rgba(0,0,0,0.02)]">
+      <div className="bg-white/90 backdrop-blur-md rounded-2xl p-2 sm:p-2.5 border border-slate-200/70 shadow-[0_4px_24px_rgba(0,0,0,0.02)]">
         <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none pb-1 sm:pb-0">
           <button
             type="button"
             onClick={() => setActiveSubTab('tasks')}
             className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all whitespace-nowrap cursor-pointer ${
               activeSubTab === 'tasks'
-                ? 'bg-stone-900 text-stone-50 shadow-sm'
-                : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100/70'
+                ? 'bg-slate-900 text-slate-50 shadow-sm'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
             }`}
           >
             <CheckCircle2 className="w-4 h-4" />
             <span>📋 Shoot Execution Tasks</span>
             <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
-              activeSubTab === 'tasks' ? 'bg-white/20 text-white' : 'bg-stone-200/60 text-stone-700'
+              activeSubTab === 'tasks' ? 'bg-white/20 text-white' : 'bg-slate-200/60 text-slate-700'
             }`}>
               {plan.checklist.filter(c => !c.completed).length} pending
             </span>
@@ -463,14 +463,14 @@ export const PreWeddingPlanner: React.FC<PreWeddingPlannerProps> = ({
             onClick={() => setActiveSubTab('looks')}
             className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all whitespace-nowrap cursor-pointer ${
               activeSubTab === 'looks'
-                ? 'bg-stone-900 text-stone-50 shadow-sm'
-                : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100/70'
+                ? 'bg-slate-900 text-slate-50 shadow-sm'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
             }`}
           >
             <Shirt className="w-4 h-4" />
             <span>🎬 Wardrobe & Looks</span>
             <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
-              activeSubTab === 'looks' ? 'bg-white/20 text-white' : 'bg-stone-200/60 text-stone-700'
+              activeSubTab === 'looks' ? 'bg-white/20 text-white' : 'bg-slate-200/60 text-slate-700'
             }`}>
               {plan.looks.length} looks
             </span>
@@ -481,8 +481,8 @@ export const PreWeddingPlanner: React.FC<PreWeddingPlannerProps> = ({
             onClick={() => setActiveSubTab('logistics')}
             className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all whitespace-nowrap cursor-pointer ${
               activeSubTab === 'logistics'
-                ? 'bg-stone-900 text-stone-50 shadow-sm'
-                : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100/70'
+                ? 'bg-slate-900 text-slate-50 shadow-sm'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
             }`}
           >
             <MapPin className="w-4 h-4" />
@@ -494,8 +494,8 @@ export const PreWeddingPlanner: React.FC<PreWeddingPlannerProps> = ({
             onClick={() => setActiveSubTab('crew')}
             className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all whitespace-nowrap cursor-pointer ${
               activeSubTab === 'crew'
-                ? 'bg-stone-900 text-stone-50 shadow-sm'
-                : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100/70'
+                ? 'bg-slate-900 text-slate-50 shadow-sm'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
             }`}
           >
             <Film className="w-4 h-4" />
@@ -507,8 +507,8 @@ export const PreWeddingPlanner: React.FC<PreWeddingPlannerProps> = ({
             onClick={() => setActiveSubTab('all')}
             className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all whitespace-nowrap cursor-pointer ${
               activeSubTab === 'all'
-                ? 'bg-stone-900 text-stone-50 shadow-sm'
-                : 'text-stone-500 hover:text-stone-800 hover:bg-stone-100/70'
+                ? 'bg-slate-900 text-slate-50 shadow-sm'
+                : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100/70'
             }`}
           >
             <Compass className="w-4 h-4" />
@@ -634,27 +634,27 @@ export const PreWeddingPlanner: React.FC<PreWeddingPlannerProps> = ({
         </div>
 
         {/* Financials & Budget */}
-        <div className="bg-white/90 backdrop-blur-xs rounded-2xl p-5 border border-stone-200/70 hover:border-[#D4AF37]/50 shadow-[0_4px_20px_rgba(0,0,0,0.02)] transition-all space-y-3.5">
-          <div className="text-xs font-semibold text-stone-700 uppercase tracking-wider flex items-center gap-1.5 font-mono">
+        <div className="bg-white/90 backdrop-blur-xs rounded-2xl p-5 border border-slate-200/70 hover:border-[#D4AF37]/50 shadow-[0_4px_20px_rgba(0,0,0,0.02)] transition-all space-y-3.5">
+          <div className="text-xs font-semibold text-slate-700 uppercase tracking-wider flex items-center gap-1.5 font-mono">
             <IndianRupee className="w-4 h-4 text-[#B89230]" />
             <span>Trip Budget & Payments</span>
           </div>
 
           <div className="space-y-2 text-xs">
             <div className="flex items-center justify-between">
-              <span className="text-stone-500">Estimated Total Cost:</span>
-              <div className="font-medium text-stone-900 font-mono">
+              <span className="text-slate-500">Estimated Total Cost:</span>
+              <div className="font-medium text-slate-900 font-mono">
                 ₹
                 <EditableText
                   value={String(plan.totalEstimatedCost || 0)}
                   onSave={(val) => onUpdatePlan({ totalEstimatedCost: Number(val) || 0 })}
-                  className="font-medium text-stone-900"
+                  className="font-medium text-slate-900"
                 />
               </div>
             </div>
 
             <div className="flex items-center justify-between">
-              <span className="text-stone-500">Advance Paid:</span>
+              <span className="text-slate-500">Advance Paid:</span>
               <div className="font-medium text-emerald-700 font-mono">
                 ₹
                 <EditableText
@@ -665,8 +665,8 @@ export const PreWeddingPlanner: React.FC<PreWeddingPlannerProps> = ({
               </div>
             </div>
 
-            <div className="pt-2 border-t border-stone-200/60 flex items-center justify-between text-xs font-medium">
-              <span className="text-stone-700">Balance Remaining:</span>
+            <div className="pt-2 border-t border-slate-200/60 flex items-center justify-between text-xs font-medium">
+              <span className="text-slate-700">Balance Remaining:</span>
               <span className={`font-mono text-sm ${remainingCost > 0 ? 'text-amber-700' : 'text-emerald-700'}`}>
                 ₹{remainingCost.toLocaleString('en-IN')}
               </span>
@@ -678,23 +678,23 @@ export const PreWeddingPlanner: React.FC<PreWeddingPlannerProps> = ({
 
       {/* Photography & Cinematography Crew Details */}
       {(activeSubTab === 'crew' || activeSubTab === 'all') && (
-      <div className="bg-white/90 backdrop-blur-xs rounded-2xl p-5 border border-stone-200/70 shadow-[0_4px_20px_rgba(0,0,0,0.02)] space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-stone-200/60">
+      <div className="bg-white/90 backdrop-blur-xs rounded-2xl p-5 border border-slate-200/70 shadow-[0_4px_20px_rgba(0,0,0,0.02)] space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-200/60">
           <div>
-            <h2 className="text-sm sm:text-base font-normal font-cormorant text-stone-900 flex items-center gap-2 text-lg">
+            <h2 className="text-sm sm:text-base font-normal font-cormorant text-slate-900 flex items-center gap-2 text-lg">
               <Film className="w-4 h-4 text-[#B89230]" />
               <span>Photography & Cinematography Crew Contract</span>
             </h2>
-            <p className="text-xs text-stone-500 mt-0.5">
+            <p className="text-xs text-slate-500 mt-0.5">
               Agency coordination, deliverables, and turnaround deadlines
             </p>
           </div>
 
           <div className="flex items-center gap-3 text-xs">
-            <div className="flex items-center gap-1.5 text-stone-700 font-mono text-[11px]">
-              <Users className="w-3.5 h-3.5 text-stone-400" />
+            <div className="flex items-center gap-1.5 text-slate-700 font-mono text-[11px]">
+              <Users className="w-3.5 h-3.5 text-slate-400" />
               <span>Crew Size:</span>
-              <span className="font-semibold text-stone-900">
+              <span className="font-semibold text-slate-900">
                 <EditableText
                   value={String(plan.crewCount || 3)}
                   onSave={(val) => onUpdatePlan({ crewCount: Number(val) || 3 })}
@@ -707,8 +707,8 @@ export const PreWeddingPlanner: React.FC<PreWeddingPlannerProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
           <div className="space-y-2.5">
             <div>
-              <span className="font-semibold text-stone-400 uppercase text-[10px] font-mono tracking-wider">Photo & Cinema Agency:</span>
-              <div className="text-sm font-medium text-stone-900 mt-0.5">
+              <span className="font-semibold text-slate-400 uppercase text-[10px] font-mono tracking-wider">Photo & Cinema Agency:</span>
+              <div className="text-sm font-medium text-slate-900 mt-0.5">
                 <EditableText
                   value={plan.photographerAgency}
                   onSave={(val) => onUpdatePlan({ photographerAgency: val })}
@@ -718,8 +718,8 @@ export const PreWeddingPlanner: React.FC<PreWeddingPlannerProps> = ({
 
             <div className="grid grid-cols-2 gap-2 pt-1">
               <div>
-                <span className="font-semibold text-stone-400 uppercase text-[10px] font-mono tracking-wider">Lead Contact:</span>
-                <div className="font-medium text-stone-800 mt-0.5">
+                <span className="font-semibold text-slate-400 uppercase text-[10px] font-mono tracking-wider">Lead Contact:</span>
+                <div className="font-medium text-slate-800 mt-0.5">
                   <EditableText
                     value={plan.contactPerson || 'Enter contact name'}
                     onSave={(val) => onUpdatePlan({ contactPerson: val })}
@@ -727,8 +727,8 @@ export const PreWeddingPlanner: React.FC<PreWeddingPlannerProps> = ({
                 </div>
               </div>
               <div>
-                <span className="font-semibold text-stone-400 uppercase text-[10px] font-mono tracking-wider">Phone Number:</span>
-                <div className="font-mono text-stone-800 mt-0.5">
+                <span className="font-semibold text-slate-400 uppercase text-[10px] font-mono tracking-wider">Phone Number:</span>
+                <div className="font-mono text-slate-800 mt-0.5">
                   <EditableText
                     value={plan.phone || 'Enter phone number'}
                     onSave={(val) => onUpdatePlan({ phone: val })}
@@ -791,7 +791,7 @@ export const PreWeddingPlanner: React.FC<PreWeddingPlannerProps> = ({
                   <span className="w-6 h-6 rounded-full bg-slate-100 border border-slate-200/80 text-slate-800 font-mono text-xs flex items-center justify-center shrink-0">
                     {index + 1}
                   </span>
-                  <div className="font-cormorant text-base sm:text-lg font-medium text-stone-900">
+                  <div className="font-cormorant text-base sm:text-lg font-medium text-slate-900">
                     <EditableText
                       value={look.themeTitle}
                       onSave={(val) => handleUpdateLook(look.id, { themeTitle: val })}
@@ -819,7 +819,7 @@ export const PreWeddingPlanner: React.FC<PreWeddingPlannerProps> = ({
 
                   <button
                     onClick={() => handleDeleteLook(look.id)}
-                    className="p-1 text-stone-400 hover:text-rose-600 rounded-lg transition-colors cursor-pointer"
+                    className="p-1 text-slate-400 hover:text-rose-600 rounded-lg transition-colors cursor-pointer"
                     title="Delete Look"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
@@ -828,9 +828,9 @@ export const PreWeddingPlanner: React.FC<PreWeddingPlannerProps> = ({
               </div>
 
               <div className="space-y-2 text-xs">
-                <div className="flex items-start gap-2 bg-white/90 p-2.5 rounded-xl border border-stone-200/60">
+                <div className="flex items-start gap-2 bg-white/90 p-2.5 rounded-xl border border-slate-200/60">
                   <span className="font-medium text-[#3B6281] shrink-0 text-[11px]">👦 Groom:</span>
-                  <div className="text-stone-700 text-[11px] flex-1">
+                  <div className="text-slate-700 text-[11px] flex-1">
                     <EditableText
                       value={look.groomOutfit}
                       onSave={(val) => handleUpdateLook(look.id, { groomOutfit: val })}
@@ -838,9 +838,9 @@ export const PreWeddingPlanner: React.FC<PreWeddingPlannerProps> = ({
                   </div>
                 </div>
 
-                <div className="flex items-start gap-2 bg-white/90 p-2.5 rounded-xl border border-stone-200/60">
+                <div className="flex items-start gap-2 bg-white/90 p-2.5 rounded-xl border border-slate-200/60">
                   <span className="font-medium text-[#A84A5B] shrink-0 text-[11px]">👧 Bride:</span>
-                  <div className="text-stone-700 text-[11px] flex-1">
+                  <div className="text-slate-700 text-[11px] flex-1">
                     <EditableText
                       value={look.brideOutfit}
                       onSave={(val) => handleUpdateLook(look.id, { brideOutfit: val })}
@@ -848,7 +848,7 @@ export const PreWeddingPlanner: React.FC<PreWeddingPlannerProps> = ({
                   </div>
                 </div>
 
-                <div className="flex items-start gap-2 bg-white/70 p-2 rounded-xl border border-stone-200/60 text-[11px] text-stone-500">
+                <div className="flex items-start gap-2 bg-white/70 p-2 rounded-xl border border-slate-200/60 text-[11px] text-slate-500">
                   <MapPin className="w-3.5 h-3.5 text-[#B89230] shrink-0 mt-0.5" />
                   <div className="flex-1">
                     <EditableText
@@ -957,14 +957,14 @@ export const PreWeddingPlanner: React.FC<PreWeddingPlannerProps> = ({
       {isAddChecklistOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
           <div className="bg-white rounded-3xl shadow-[0_24px_70px_rgba(15,23,42,0.18)] max-w-md w-full p-6 sm:p-7 space-y-4 border border-slate-200/90">
-            <h3 className="font-cormorant text-xl font-normal text-stone-900">Add Pre-Wedding Checklist Task</h3>
+            <h3 className="font-cormorant text-xl font-normal text-slate-900">Add Pre-Wedding Checklist Task</h3>
             <form onSubmit={handleAddChecklist} className="space-y-4 text-xs">
               <div>
-                <label className="block font-medium text-stone-700 mb-1 text-[11px]">Milestone Stage</label>
+                <label className="block font-medium text-slate-700 mb-1 text-[11px]">Milestone Stage</label>
                 <select
                   value={newChecklistStage}
                   onChange={(e) => setNewChecklistStage(e.target.value)}
-                  className="w-full px-3 py-2 border border-stone-200/80 rounded-xl focus:ring-1 focus:ring-[#D4AF37] bg-white text-stone-900 font-medium"
+                  className="w-full px-3 py-2 border border-slate-200/80 rounded-xl focus:ring-1 focus:ring-[#D4AF37] bg-white text-slate-900 font-medium"
                 >
                   {stages.map((st) => (
                     <option key={st} value={st}>{st}</option>
@@ -973,39 +973,39 @@ export const PreWeddingPlanner: React.FC<PreWeddingPlannerProps> = ({
               </div>
 
               <div>
-                <label className="block font-medium text-stone-700 mb-1 text-[11px]">Task Title</label>
+                <label className="block font-medium text-slate-700 mb-1 text-[11px]">Task Title</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Book resort with courtyard photography rights"
                   value={newChecklistTitle}
                   onChange={(e) => setNewChecklistTitle(e.target.value)}
-                  className="w-full px-3 py-2 border border-stone-200/80 rounded-xl focus:ring-1 focus:ring-[#D4AF37] bg-white text-stone-900"
+                  className="w-full px-3 py-2 border border-slate-200/80 rounded-xl focus:ring-1 focus:ring-[#D4AF37] bg-white text-slate-900"
                 />
               </div>
 
               <div>
-                <label className="block font-medium text-stone-700 mb-1 text-[11px]">Operational Notes (Optional)</label>
+                <label className="block font-medium text-slate-700 mb-1 text-[11px]">Operational Notes (Optional)</label>
                 <textarea
                   rows={2}
                   placeholder="Details, contacts, or requirements"
                   value={newChecklistNotes}
                   onChange={(e) => setNewChecklistNotes(e.target.value)}
-                  className="w-full px-3 py-2 border border-stone-200/80 rounded-xl bg-white focus:ring-1 focus:ring-[#D4AF37] text-stone-900"
+                  className="w-full px-3 py-2 border border-slate-200/80 rounded-xl bg-white focus:ring-1 focus:ring-[#D4AF37] text-slate-900"
                 />
               </div>
 
-              <div className="flex justify-end gap-2.5 pt-4 border-t border-stone-200/70">
+              <div className="flex justify-end gap-2.5 pt-4 border-t border-slate-200/70">
                 <button
                   type="button"
                   onClick={() => setIsAddChecklistOpen(false)}
-                  className="px-4 py-2 border border-stone-200/80 rounded-xl text-stone-600 hover:bg-stone-200/60 font-medium cursor-pointer"
+                  className="px-4 py-2 border border-slate-200/80 rounded-xl text-slate-600 hover:bg-slate-200/60 font-medium cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-stone-900 hover:bg-stone-800 text-stone-50 font-medium rounded-xl shadow-sm transition-all hover:-translate-y-0.5 cursor-pointer"
+                  className="px-5 py-2 bg-slate-900 hover:bg-slate-800 text-slate-50 font-medium rounded-xl shadow-sm transition-all hover:-translate-y-0.5 cursor-pointer"
                 >
                   Add Task
                 </button>

@@ -267,8 +267,8 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
               </button>
             </div>
 
-            {/* Center: Tailored Editorial Perspective Switcher */}
-            <div className="flex items-center justify-center">
+            {/* Center: Tailored Editorial Perspective Switcher (Desktop >= lg) */}
+            <div className="hidden lg:flex items-center justify-center">
               <div 
                 role="radiogroup" 
                 aria-label="Wedding perspective view"
@@ -489,8 +489,85 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
 
           </div>
 
-          {/* Row 2: Editorial Navigation Rail & Progress Telemetry */}
-          <div className="flex items-center justify-between h-12 gap-4">
+          {/* Mobile & Tablet Perspective Switcher Bar (< lg) */}
+          <div className="lg:hidden flex items-center justify-center py-2 border-b border-slate-200/60 overflow-x-auto scrollbar-none bg-slate-50/50">
+            <div 
+              role="radiogroup" 
+              aria-label="Wedding perspective view mobile"
+              className="inline-flex items-center p-1 bg-slate-100 rounded-full border border-slate-200/70 shadow-[inset_0_1px_2px_rgba(0,0,0,0.03)] shrink-0"
+            >
+              {/* Joint View */}
+              <button
+                type="button"
+                role="radio"
+                aria-checked={activeSide === 'ALL'}
+                onClick={() => onSideChange('ALL')}
+                className={`px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-[11px] tracking-wider uppercase transition-all duration-200 flex items-center gap-1.5 focus:outline-none ${
+                  activeSide === 'ALL'
+                    ? 'bg-white text-slate-900 font-semibold shadow-xs ring-1 ring-black/[0.04]'
+                    : 'text-slate-500 hover:text-slate-800 font-medium'
+                }`}
+                title="Unified celebration checklist for both Groom & Bride"
+              >
+                <span className={`w-1.5 h-1.5 rounded-full transition-colors ${activeSide === 'ALL' ? 'bg-[#B89230]' : 'bg-slate-300'}`} />
+                <span>Joint</span>
+              </button>
+
+              {/* Groom's Side */}
+              <button
+                type="button"
+                role="radio"
+                aria-checked={activeSide === 'BOY'}
+                onClick={() => onSideChange('BOY')}
+                className={`px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-[11px] tracking-wider uppercase transition-all duration-200 flex items-center gap-1.5 focus:outline-none ${
+                  activeSide === 'BOY'
+                    ? 'bg-white text-slate-900 font-semibold shadow-xs ring-1 ring-black/[0.04]'
+                    : 'text-slate-500 hover:text-slate-800 font-medium'
+                }`}
+                title="Groom's rituals, Jaan & Katargam arrangements"
+              >
+                <span className={`w-1.5 h-1.5 rounded-full transition-colors ${activeSide === 'BOY' ? 'bg-[#3B6281]' : 'bg-slate-300'}`} />
+                <span>Groom</span>
+              </button>
+
+              {/* Bride's Side */}
+              <button
+                type="button"
+                role="radio"
+                aria-checked={activeSide === 'GIRL'}
+                onClick={() => onSideChange('GIRL')}
+                className={`px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-[11px] tracking-wider uppercase transition-all duration-200 flex items-center gap-1.5 focus:outline-none ${
+                  activeSide === 'GIRL'
+                    ? 'bg-white text-slate-900 font-semibold shadow-xs ring-1 ring-black/[0.04]'
+                    : 'text-slate-500 hover:text-slate-800 font-medium'
+                }`}
+                title="Bride's rituals, trousseau & Mandvo arrangements"
+              >
+                <span className={`w-1.5 h-1.5 rounded-full transition-colors ${activeSide === 'GIRL' ? 'bg-[#A84A5B]' : 'bg-slate-300'}`} />
+                <span>Bride</span>
+              </button>
+
+              {/* Family's Side */}
+              <button
+                type="button"
+                role="radio"
+                aria-checked={activeSide === 'FAMILY'}
+                onClick={() => onSideChange('FAMILY')}
+                className={`px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-[11px] tracking-wider uppercase transition-all duration-200 flex items-center gap-1.5 focus:outline-none ${
+                  activeSide === 'FAMILY'
+                    ? 'bg-white text-slate-900 font-semibold shadow-xs ring-1 ring-black/[0.04]'
+                    : 'text-slate-500 hover:text-slate-800 font-medium'
+                }`}
+                title="Family rituals, catering & elders arrangements"
+              >
+                <span className={`w-1.5 h-1.5 rounded-full transition-colors ${activeSide === 'FAMILY' ? 'bg-[#A36A36]' : 'bg-slate-300'}`} />
+                <span>Family</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Row 2: Editorial Navigation Rail & Progress Telemetry (Desktop & Tablet >= sm) */}
+          <div className="hidden sm:flex items-center justify-between h-12 gap-4">
             
             {/* Left: Refined Underline Tabs */}
             <div 
@@ -568,13 +645,19 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
       </header>
 
       {/* Ergonomic Mobile Bottom Action Dock */}
-      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200/80 shadow-lg px-2 py-1 flex items-center justify-around no-print">
+      <div 
+        role="tablist" 
+        aria-label="Mobile navigation dock"
+        className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200/80 shadow-lg px-2 py-1 flex items-center justify-around no-print pb-safe"
+      >
         {navTabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
           return (
             <button
               key={tab.id}
+              role="tab"
+              aria-selected={isActive}
               onClick={() => onTabChange(tab.id)}
               className={`min-w-[48px] min-h-[48px] flex flex-col items-center justify-center text-[10px] tracking-wider uppercase rounded-lg transition-colors ${
                 isActive ? 'text-[#8B6E1F] font-semibold' : 'text-slate-400 hover:text-slate-800'

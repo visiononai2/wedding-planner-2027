@@ -272,11 +272,11 @@ export const TaskKanbanBoard: React.FC<TaskKanbanBoardProps> = ({
               className={`flex-1 min-w-[280px] max-w-[350px] rounded-2xl flex flex-col transition-all duration-200 border ${
                 isDragOver
                   ? 'bg-amber-50/40 border-[#D4AF37] ring-2 ring-[#D4AF37]/20 shadow-md'
-                  : 'bg-slate-50/70 border-slate-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.02)]'
+                  : 'bg-slate-50/50 border-slate-200/70'
               }`}
             >
-              {/* Column Header (Editorial style) */}
-              <div className="px-4 py-3.5 border-b border-slate-200/70 flex items-center justify-between gap-2.5 shrink-0 bg-white/70 rounded-t-2xl">
+              {/* Column Header (Clean style) */}
+              <div className="px-4 py-3 border-b border-slate-200/60 flex items-center justify-between gap-2.5 shrink-0 bg-transparent rounded-t-2xl">
                 <div className="flex items-center gap-2 truncate">
                   {col.accentDot && (
                     <span className={`w-2 h-2 rounded-full ${col.accentDot} shrink-0`} />
@@ -356,16 +356,16 @@ export const TaskKanbanBoard: React.FC<TaskKanbanBoardProps> = ({
                       draggable
                       onDragStart={(e) => handleDragStart(e, task.id)}
                       onClick={() => onSelectTask(task)}
-                      className={`group bg-white rounded-xl p-4 border transition-all duration-200 cursor-pointer shadow-[0_1px_3px_rgba(0,0,0,0.04),0_1px_2px_rgba(0,0,0,0.02)] hover:shadow-md hover:border-[#D4AF37]/60 hover:-translate-y-0.5 relative ${
+                      className={`group bg-white rounded-xl p-4 border transition-all duration-150 cursor-pointer shadow-[0_1px_3px_rgba(0,0,0,0.04),0_1px_2px_rgba(0,0,0,0.02)] hover:shadow-md hover:border-slate-300 hover:z-20 focus-within:z-30 has-[[data-open="true"]]:z-40 relative ${
                         isBeingDragged
                           ? 'opacity-40 border-dashed border-[#D4AF37]'
                           : isCompleted
-                          ? 'bg-slate-50/60 border-slate-200/60 text-slate-400'
+                          ? 'bg-slate-50/50 border-slate-200/60 text-slate-400'
                           : 'border-slate-200/80'
                       }`}
                     >
                       {/* Top Badges Row */}
-                      <div className="flex items-center justify-between gap-1.5 mb-2.5 text-[10px]">
+                      <div className="flex items-center justify-between gap-1.5 mb-2 text-[10px]">
                         <div className="flex flex-wrap items-center gap-1.5 min-w-0">
                           {/* Category Tag */}
                           <span
@@ -379,12 +379,12 @@ export const TaskKanbanBoard: React.FC<TaskKanbanBoardProps> = ({
                           {/* Side Badge */}
                           {task.side === 'Boy' && (
                             <span className="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 border border-blue-200/80 font-semibold">
-                              Groom (Parth)
+                              Groom
                             </span>
                           )}
                           {task.side === 'Girl' && (
                             <span className="px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 border border-rose-200/80 font-semibold">
-                              Bride (Nisha)
+                              Bride
                             </span>
                           )}
                           {task.side === 'Both' && (
@@ -394,38 +394,21 @@ export const TaskKanbanBoard: React.FC<TaskKanbanBoardProps> = ({
                           )}
 
                           {/* Extra Domain Tags */}
-                          {task.tags && task.tags.length > 0 && task.tags.slice(0, 2).map((tg, i) => (
-                            <span key={i} className="px-1.5 py-0.5 rounded-md bg-slate-100 text-slate-600 border border-slate-200/80 font-medium text-[9px] truncate max-w-[120px]">
+                          {task.tags && task.tags.length > 0 && task.tags.slice(0, 1).map((tg, i) => (
+                            <span key={i} className="px-1.5 py-0.5 rounded-md bg-slate-100 text-slate-600 border border-slate-200/80 font-medium text-[9px] truncate max-w-[100px]">
                               {tg}
                             </span>
                           ))}
-
-                          {/* Day-Level Date Badge */}
-                          {task.dueDate ? (
-                            <span
-                              className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] border shadow-2xs transition-colors ${getDateBadgeStyle(
-                                task.dueDate,
-                                isCompleted
-                              )}`}
-                              title={`Due Date: ${formatTaskDate(task.dueDate)} (${milestone?.monthLabel || ''})`}
-                            >
-                              <Calendar className="w-3 h-3 shrink-0" />
-                              <span>{formatTaskDate(task.dueDate)}</span>
-                            </span>
-                          ) : milestone ? (
-                            <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 border border-slate-200 font-medium text-[10px]">
-                              {milestone.monthLabel}
-                            </span>
-                          ) : null}
                         </div>
 
                         {/* Priority Flag */}
-                        <div onClick={(e) => e.stopPropagation()}>
+                        <div className="shrink-0" onClick={(e) => e.stopPropagation()}>
                           <ClickUpPriorityDropdown
                             priority={task.priority}
                             onChange={(p) => onEditTask(task.id, { priority: p })}
                             size="sm"
                             showLabel={task.priority === 'urgent' || task.priority === 'high'}
+                            align="right"
                           />
                         </div>
                       </div>
@@ -435,28 +418,28 @@ export const TaskKanbanBoard: React.FC<TaskKanbanBoardProps> = ({
                         className={`text-xs sm:text-sm font-semibold leading-snug mb-2 group-hover:text-amber-800 transition-colors ${
                           isCompleted ? 'line-through text-slate-400 font-normal' : 'text-slate-900'
                         }`}
+                        title={task.title}
                       >
                         {task.title}
                       </h4>
 
-                      {/* Description Snippet (if any) */}
+                      {/* Description Snippet: Clean unboxed text */}
                       {(task.description || task.notes) && (
-                        <p className="text-[11px] text-slate-500 line-clamp-2 mb-2.5 font-normal bg-slate-50 p-2 rounded-lg border border-slate-100 flex items-start gap-1.5">
-                          <FileText className="w-3.5 h-3.5 text-slate-400 shrink-0 mt-0.5" />
-                          <span className="truncate">{task.description || task.notes}</span>
+                        <p className="text-[11px] text-slate-500 line-clamp-2 mb-3 font-normal leading-relaxed">
+                          {task.description || task.notes}
                         </p>
                       )}
 
                       {/* Subtask checklist progress & Comments count */}
                       {(subtasksCount > 0 || (task.comments && task.comments.length > 0)) && (
-                        <div className="flex items-center justify-between gap-2 mb-2.5 text-[10px] text-slate-500 font-medium">
+                        <div className="flex items-center justify-between gap-2 mb-3 text-[10px] text-slate-500 font-medium">
                           {subtasksCount > 0 ? (
                             <div className="flex items-center gap-1.5 flex-1 min-w-0">
                               <CheckSquare className="w-3 h-3 text-[#B89230] shrink-0" />
                               <span className="shrink-0 font-mono">
                                 {completedSubtasks}/{subtasksCount}
                               </span>
-                              <div className="flex-1 bg-slate-200/80 h-1 rounded-full overflow-hidden max-w-[60px]">
+                              <div className="flex-1 bg-slate-100 h-1 rounded-full overflow-hidden max-w-[60px]">
                                 <div
                                   className="bg-[#B89230] h-full rounded-full"
                                   style={{ width: `${(completedSubtasks / subtasksCount) * 100}%` }}
@@ -477,9 +460,29 @@ export const TaskKanbanBoard: React.FC<TaskKanbanBoardProps> = ({
                         </div>
                       )}
 
-                      {/* Bottom Bar: Checkbox + Status + Assignee */}
-                      <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-1 text-[11px]">
-                        <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
+                      {/* Bottom Bar: Due Date on Left, Status + Avatar on Right */}
+                      <div className="pt-2.5 border-t border-slate-100 flex items-center justify-between gap-2 text-[11px]">
+                        {/* Due Date Indicator */}
+                        <div className="min-w-0">
+                          {task.dueDate ? (
+                            <span
+                              className={`inline-flex items-center gap-1 text-[11px] font-medium ${
+                                isCompleted ? 'text-slate-400' : 'text-slate-600'
+                              }`}
+                              title={`Due Date: ${formatTaskDate(task.dueDate)} (${milestone?.monthLabel || ''})`}
+                            >
+                              <Calendar className="w-3 h-3 text-slate-400 shrink-0" />
+                              <span className="truncate">{formatTaskDate(task.dueDate)}</span>
+                            </span>
+                          ) : milestone ? (
+                            <span className="text-[11px] text-slate-400 font-medium truncate block">
+                              {milestone.monthLabel}
+                            </span>
+                          ) : <div />}
+                        </div>
+
+                        {/* Status + Avatar Controls */}
+                        <div className="flex items-center gap-1.5 shrink-0" onClick={(e) => e.stopPropagation()}>
                           {/* Circular complete checkbox */}
                           <button
                             type="button"
@@ -504,16 +507,16 @@ export const TaskKanbanBoard: React.FC<TaskKanbanBoardProps> = ({
                               });
                             }}
                             size="sm"
+                            align="right"
                           />
-                        </div>
 
-                        {/* Assignee Avatar */}
-                        <div onClick={(e) => e.stopPropagation()}>
+                          {/* Assignee Avatar */}
                           <ClickUpAssigneeDropdown
                             assignedTo={task.assignedTo}
                             onChange={(a) => onEditTask(task.id, { assignedTo: a })}
                             size="sm"
                             showLabel={false}
+                            align="right"
                           />
                         </div>
                       </div>
@@ -523,34 +526,24 @@ export const TaskKanbanBoard: React.FC<TaskKanbanBoardProps> = ({
 
                 {/* Empty State in Column */}
                 {colTasks.length === 0 && !isQuickAdding && (
-                  <div className="py-10 px-4 text-center text-slate-400 text-xs border border-dashed border-slate-200 rounded-xl bg-white/60 flex flex-col items-center justify-center gap-1.5">
+                  <div className="py-8 px-4 text-center text-slate-400 text-xs flex flex-col items-center justify-center">
                     <p className="font-serif italic text-xs text-slate-400">No tasks in this stage</p>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setQuickAddColumnId(col.id);
-                        setQuickAddTitle('');
-                      }}
-                      className="mt-1 text-slate-600 hover:text-slate-900 text-xs font-semibold hover:underline cursor-pointer"
-                    >
-                      + Add a task
-                    </button>
                   </div>
                 )}
               </div>
 
               {/* Column Bottom Add Button */}
               {!isQuickAdding && (
-                <div className="p-2.5 border-t border-slate-200/70 shrink-0 bg-white/40 rounded-b-2xl">
+                <div className="p-2 border-t border-slate-200/60 shrink-0 bg-transparent rounded-b-2xl">
                   <button
                     type="button"
                     onClick={() => {
                       setQuickAddColumnId(col.id);
                       setQuickAddTitle('');
                     }}
-                    className="w-full flex items-center justify-center gap-1.5 py-2 text-xs font-semibold text-slate-500 hover:text-slate-900 hover:bg-white rounded-xl transition-all shadow-2xs cursor-pointer"
+                    className="w-full flex items-center justify-center gap-1.5 py-1.5 text-xs font-semibold text-slate-400 hover:text-slate-800 hover:bg-white/80 rounded-xl transition-all cursor-pointer"
                   >
-                    <Plus className="w-3.5 h-3.5" />
+                    <Plus className="w-3.5 h-3.5 stroke-[1.5]" />
                     <span>Add Task</span>
                   </button>
                 </div>

@@ -4,8 +4,8 @@
 
 :root {
   --color-surface: #ffffff;
-  --color-surface-subtle: #f8fafc;
-  --color-surface-muted: #f1f5f9;
+  --color-surface-subtle: #ffffff;
+  --color-surface-muted: #f8fafc;
   --color-border: #e2e8f0;
   --color-border-subtle: #f1f5f9;
   --color-text-primary: #0f172a;
@@ -20,11 +20,13 @@
 }
 
 @layer base {
-  body {
+  html, body {
     @apply antialiased min-h-screen font-sans;
-    background-color: #f8fafc;
+    background-color: #ffffff;
     color: #0f172a;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    overflow-x: hidden;
+    max-width: 100vw;
   }
 }
 

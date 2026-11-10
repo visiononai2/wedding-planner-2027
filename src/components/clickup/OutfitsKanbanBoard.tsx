@@ -50,8 +50,8 @@ const STATUS_COLUMNS: ColumnDef[] = [
     id: 'Fabric Bought',
     label: 'FABRIC BOUGHT',
     sublabel: 'Raw cloth acquired, ready for master tailor',
-    accentDot: 'bg-stone-400',
-    badgeClasses: 'bg-stone-100 text-stone-700 border border-stone-200/80',
+    accentDot: 'bg-slate-400',
+    badgeClasses: 'bg-slate-100 text-slate-700 border border-slate-200/80',
   },
   {
     id: 'At Tailor',
@@ -98,8 +98,8 @@ const ACTION_COLUMNS: ColumnDef[] = [
     id: 'Buy',
     label: 'PURCHASE OFF-THE-RACK',
     sublabel: 'Direct retail store purchases',
-    accentDot: 'bg-stone-800',
-    badgeClasses: 'bg-stone-100 text-stone-800 border border-stone-200/80',
+    accentDot: 'bg-slate-800',
+    badgeClasses: 'bg-slate-100 text-slate-800 border border-slate-200/80',
   },
   {
     id: 'Tailor / Stitch',
@@ -259,10 +259,10 @@ export const OutfitsKanbanBoard: React.FC<OutfitsKanbanBoardProps> = ({
               }`}
             >
               {/* Column Header */}
-              <div className="p-3.5 border-b border-stone-200/70 flex items-center justify-between gap-2 shrink-0">
+              <div className="p-3.5 border-b border-slate-200/70 flex items-center justify-between gap-2 shrink-0">
                 <div className="flex items-center gap-2 truncate">
                   <span className={`w-2 h-2 rounded-full ${col.accentDot} shrink-0`} />
-                  <h3 className="font-semibold text-xs tracking-wider text-stone-800 truncate uppercase">
+                  <h3 className="font-semibold text-xs tracking-wider text-slate-800 truncate uppercase">
                     {col.label}
                   </h3>
                   <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${col.badgeClasses}`}>
@@ -276,7 +276,7 @@ export const OutfitsKanbanBoard: React.FC<OutfitsKanbanBoardProps> = ({
                     setQuickAddColumnId(isQuickAdding ? null : col.id);
                     setQuickAddGarment('');
                   }}
-                  className="p-1 text-stone-400 hover:text-stone-900 hover:bg-white rounded-lg transition-colors cursor-pointer"
+                  className="p-1 text-slate-400 hover:text-slate-900 hover:bg-white rounded-lg transition-colors cursor-pointer"
                   title={`Add outfit to ${col.label}`}
                 >
                   <Plus className="w-4 h-4" />
@@ -301,19 +301,19 @@ export const OutfitsKanbanBoard: React.FC<OutfitsKanbanBoardProps> = ({
                           setQuickAddColumnId(null);
                         }
                       }}
-                      className="w-full text-xs px-3 py-2 border border-stone-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-[#D4AF37] focus:border-[#D4AF37] font-medium"
+                      className="w-full text-xs px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-[#D4AF37] focus:border-[#D4AF37] font-medium"
                     />
 
                     {groupBy !== 'person' && (
                       <div className="flex items-center gap-1.5 text-[11px]">
-                        <span className="text-stone-400 font-medium">For:</span>
+                        <span className="text-slate-400 font-medium">For:</span>
                         <button
                           type="button"
                           onClick={() => setQuickAddPerson('Groom')}
                           className={`px-2.5 py-0.5 rounded-full text-[10px] font-medium transition-all ${
                             quickAddPerson === 'Groom'
                               ? 'bg-[#3B6281] text-white shadow-2xs'
-                              : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+                              : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                           }`}
                         >
                           👦 Groom
@@ -324,7 +324,7 @@ export const OutfitsKanbanBoard: React.FC<OutfitsKanbanBoardProps> = ({
                           className={`px-2.5 py-0.5 rounded-full text-[10px] font-medium transition-all ${
                             quickAddPerson === 'Bride'
                               ? 'bg-[#A84A5B] text-white shadow-2xs'
-                              : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+                              : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                           }`}
                         >
                           👧 Bride
@@ -332,12 +332,12 @@ export const OutfitsKanbanBoard: React.FC<OutfitsKanbanBoardProps> = ({
                       </div>
                     )}
 
-                    <div className="flex items-center justify-between text-[11px] text-stone-400 pt-1">
+                    <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1">
                       <span className="font-mono text-[10px]">Press Enter ↵ to save</span>
                       <button
                         type="button"
                         onClick={() => handleQuickAddSubmit(col.id)}
-                        className="px-3 py-1 bg-stone-900 text-stone-50 rounded-xl text-[11px] font-medium hover:bg-stone-800 transition-colors"
+                        className="px-3 py-1 bg-slate-900 text-slate-50 rounded-xl text-[11px] font-medium hover:bg-slate-800 transition-colors"
                       >
                         Add
                       </button>
@@ -347,7 +347,7 @@ export const OutfitsKanbanBoard: React.FC<OutfitsKanbanBoardProps> = ({
 
                 {/* Cards List */}
                 {colDresses.length === 0 && !isQuickAdding ? (
-                  <div className="h-24 rounded-2xl border border-dashed border-stone-200/80 flex items-center justify-center text-xs text-stone-400 font-medium">
+                  <div className="h-24 rounded-2xl border border-dashed border-slate-200/80 flex items-center justify-center text-xs text-slate-400 font-medium">
                     Drop outfit here
                   </div>
                 ) : (
@@ -360,7 +360,7 @@ export const OutfitsKanbanBoard: React.FC<OutfitsKanbanBoardProps> = ({
                         key={dress.id}
                         draggable
                         onDragStart={(e) => handleDragStart(e, dress.id)}
-                        className={`bg-white/95 rounded-2xl p-4 border border-stone-200/70 hover:border-[#D4AF37]/50 shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_6px_20px_rgba(212,175,55,0.08)] hover:-translate-y-0.5 transition-all duration-300 cursor-grab active:cursor-grabbing group space-y-3 ${
+                        className={`bg-white/95 rounded-2xl p-4 border border-slate-200/70 hover:border-[#D4AF37]/50 shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_6px_20px_rgba(212,175,55,0.08)] hover:-translate-y-0.5 transition-all duration-300 cursor-grab active:cursor-grabbing group space-y-3 ${
                           draggedDressId === dress.id ? 'opacity-40 scale-95' : ''
                         }`}
                       >
@@ -376,23 +376,23 @@ export const OutfitsKanbanBoard: React.FC<OutfitsKanbanBoardProps> = ({
                             >
                               {isGroom ? '👦 Groom' : '👧 Bride'}
                             </span>
-                            <span className="font-medium text-stone-700 truncate" title={dress.event}>
+                            <span className="font-medium text-slate-700 truncate" title={dress.event}>
                               {dress.event}
                             </span>
                           </div>
 
-                          <span className="text-[10px] text-stone-400 font-mono shrink-0">
+                          <span className="text-[10px] text-slate-400 font-mono shrink-0">
                             {dress.date}
                           </span>
                         </div>
 
                         {/* Garment Title */}
                         <div>
-                          <h4 className="text-sm font-medium text-stone-900 leading-snug group-hover:text-stone-950 transition-colors">
+                          <h4 className="text-sm font-medium text-slate-900 leading-snug group-hover:text-slate-950 transition-colors">
                             {dress.garmentName}
                           </h4>
                           {dress.colorTheme && (
-                            <div className="flex items-center gap-1.5 mt-1 text-[11px] text-stone-500">
+                            <div className="flex items-center gap-1.5 mt-1 text-[11px] text-slate-500">
                               <span className="w-1.5 h-1.5 rounded-full bg-[#B89230] shrink-0" />
                               <span className="truncate">{dress.colorTheme}</span>
                             </div>
@@ -462,7 +462,7 @@ export const OutfitsKanbanBoard: React.FC<OutfitsKanbanBoardProps> = ({
                               <option value="Trial Done">Trial Done</option>
                               <option value="Ready">Ready</option>
                             </select>
-                            <ChevronDown className="w-2.5 h-2.5 text-stone-400 absolute right-1.5 top-2 pointer-events-none" />
+                            <ChevronDown className="w-2.5 h-2.5 text-slate-400 absolute right-1.5 top-2 pointer-events-none" />
                           </div>
 
                           {/* Edit / Delete Buttons */}
@@ -470,7 +470,7 @@ export const OutfitsKanbanBoard: React.FC<OutfitsKanbanBoardProps> = ({
                             <button
                               type="button"
                               onClick={() => onEditDress(dress)}
-                              className="p-1 text-stone-400 hover:text-stone-800 hover:bg-stone-100 rounded-lg transition-colors cursor-pointer"
+                              className="p-1 text-slate-400 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
                               title="Edit outfit details"
                             >
                               <Edit3 className="w-3.5 h-3.5" />
@@ -482,7 +482,7 @@ export const OutfitsKanbanBoard: React.FC<OutfitsKanbanBoardProps> = ({
                                   onDeleteDress(dress.id);
                                 }
                               }}
-                              className="p-1 text-stone-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
+                              className="p-1 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
                               title="Delete outfit"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
@@ -501,7 +501,7 @@ export const OutfitsKanbanBoard: React.FC<OutfitsKanbanBoardProps> = ({
                     setQuickAddColumnId(col.id);
                     setQuickAddGarment('');
                   }}
-                  className="w-full py-2 px-2 rounded-xl text-xs font-medium text-stone-500 hover:text-stone-900 hover:bg-white/80 border border-transparent hover:border-stone-200/70 transition-all flex items-center justify-center gap-1 cursor-pointer"
+                  className="w-full py-2 px-2 rounded-xl text-xs font-medium text-slate-500 hover:text-slate-900 hover:bg-white/80 border border-transparent hover:border-slate-200/70 transition-all flex items-center justify-center gap-1 cursor-pointer"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>Add Outfit</span>

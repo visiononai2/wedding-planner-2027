@@ -242,147 +242,285 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
 
   return (
     <div className="space-y-6">
-      {/* 7-Day Wedding Journey Navigation Bar (Vivah Saptah) */}
-      <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-4">
-        {/* Navigation strip header */}
-        <div className="flex flex-wrap items-center justify-between gap-2 px-1">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#B89230] animate-pulse" />
-            <span className="text-xs sm:text-sm font-serif font-bold tracking-wider uppercase text-slate-900">
-              Vivah Saptah • 7-Day Wedding Journey
-            </span>
-            <span className="hidden sm:inline-block text-[11px] font-mono text-slate-400">
-              (Feb 15 – Feb 21, 2027)
-            </span>
+      {/* Unified Event Schedule Master Hub (7-Day Journey Ribbon + Cues Table) */}
+      <div className="bg-white rounded-3xl border border-slate-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)] overflow-hidden">
+        {/* Navigation strip header & 7-Day Ribbon */}
+        <div className="p-4 sm:p-5 border-b border-slate-100 space-y-4 bg-slate-50/30">
+          {/* Navigation strip header */}
+          <div className="flex flex-wrap items-center justify-between gap-2 px-1">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#B89230] animate-pulse" />
+              <span className="text-xs sm:text-sm font-serif font-bold tracking-wider uppercase text-slate-900">
+                Vivah Saptah • 7-Day Wedding Journey
+              </span>
+              <span className="hidden sm:inline-block text-[11px] font-mono text-slate-400">
+                (Feb 15 – Feb 21, 2027)
+              </span>
+            </div>
+            
+            <div className="flex items-center gap-2">
+              <span className="text-[11px] font-mono px-3 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200/70 font-semibold">
+                {totalWeekCues} Total Cues
+              </span>
+              <button
+                onClick={() => setIsAddModalOpen(true)}
+                className="inline-flex items-center px-4 py-2 bg-slate-900 hover:bg-slate-800 active:bg-black text-white rounded-xl text-xs font-semibold shadow-xs hover:-translate-y-0.5 transition-all cursor-pointer"
+              >
+                <Plus className="w-3.5 h-3.5 mr-1.5" />
+                Add Event Cue
+              </button>
+            </div>
           </div>
-          
-          <div className="flex items-center gap-2">
-            <span className="text-[11px] font-mono px-3 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200/70 font-semibold">
-              {totalWeekCues} Total Cues
-            </span>
-            <button
-              onClick={() => setIsAddModalOpen(true)}
-              className="inline-flex items-center px-4 py-2 bg-slate-900 hover:bg-slate-800 active:bg-black text-white rounded-xl text-xs font-semibold shadow-xs hover:-translate-y-0.5 transition-all cursor-pointer"
-            >
-              <Plus className="w-3.5 h-3.5 mr-1.5" />
-              Add Event Cue
-            </button>
+
+          {/* 7-Day Grid Ribbon */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5 sm:gap-3">
+            {days.map((d, index) => {
+              const isSelected = selectedDayId === d.id;
+              const details = parseDayDetails(d, index);
+
+              return (
+                <button
+                  key={d.id}
+                  type="button"
+                  onClick={() => setSelectedDayId(d.id)}
+                  className={`group relative text-left p-3.5 rounded-xl transition-all duration-200 border flex flex-col justify-between cursor-pointer ${
+                    index === 6 ? 'col-span-2 sm:col-span-1' : ''
+                  } ${
+                    isSelected
+                      ? 'bg-slate-900 text-white border-slate-900 shadow-md ring-2 ring-slate-900/10 -translate-y-0.5'
+                      : 'bg-white border-slate-200/80 hover:border-slate-300 hover:bg-slate-50/70 hover:-translate-y-0.5 shadow-2xs'
+                  }`}
+                >
+                  {/* Active indicator top bar */}
+                  {isSelected && (
+                    <div className="absolute -top-px left-3 right-3 h-[3px] bg-gradient-to-r from-[#B89230] via-[#D4AF37] to-[#B89230] rounded-full shadow-xs" />
+                  )}
+
+                  {/* Day Badge & Date */}
+                  <div>
+                    <div className="flex items-center justify-between gap-1 mb-1.5">
+                      <span className={`text-[10px] font-mono font-bold tracking-wider uppercase px-2 py-0.5 rounded ${
+                        isSelected
+                          ? 'bg-white/20 text-white'
+                          : 'bg-slate-100 text-slate-700 group-hover:bg-slate-200/70'
+                      }`}>
+                        Day 0{details.dayNumber}
+                      </span>
+
+                      <span className={`text-[10px] font-mono font-bold uppercase tracking-wider ${
+                        isSelected ? 'text-[#D4AF37]' : 'text-slate-400'
+                      }`}>
+                        {details.shortWeekday}
+                      </span>
+                    </div>
+
+                    <div className="flex items-baseline gap-1">
+                      <span className={`text-base sm:text-lg font-bold font-serif leading-none ${
+                        isSelected ? 'text-white' : 'text-slate-800'
+                      }`}>
+                        {details.dayNum}
+                      </span>
+                      <span className={`text-[10px] font-mono uppercase ${isSelected ? 'text-slate-300' : 'text-slate-500'}`}>
+                        {details.month}
+                      </span>
+                    </div>
+
+                    {/* Ceremony Title (Readable Title-Case Serif) */}
+                    <div className="mt-2 min-h-[42px] flex items-start">
+                      <h4 className={`text-xs font-serif leading-snug line-clamp-2 transition-colors ${
+                        isSelected ? 'text-white font-bold' : 'text-slate-700 font-semibold group-hover:text-slate-900'
+                      }`}>
+                        {d.title}
+                      </h4>
+                    </div>
+                  </div>
+
+                  {/* Footer: Cues Count + Side Dots */}
+                  <div className={`flex items-center justify-between pt-2 border-t mt-2 ${
+                    isSelected ? 'border-white/20' : 'border-slate-100'
+                  }`}>
+                    <span className={`text-[10px] font-mono font-semibold ${
+                      isSelected ? 'text-amber-300' : 'text-slate-400 group-hover:text-slate-600'
+                    }`}>
+                      {d.items.length} {d.items.length === 1 ? 'cue' : 'cues'}
+                    </span>
+
+                    <div className="flex items-center gap-1">
+                      {details.boyCount > 0 && (
+                        <span className="w-1.5 h-1.5 rounded-full bg-blue-500" title={`${details.boyCount} Groom cues`} />
+                      )}
+                      {details.girlCount > 0 && (
+                        <span className="w-1.5 h-1.5 rounded-full bg-rose-500" title={`${details.girlCount} Bride cues`} />
+                      )}
+                      {details.jointCount > 0 && (
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-500" title={`${details.jointCount} Joint cues`} />
+                      )}
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {/* 7-Day Grid Ribbon */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5 sm:gap-3">
-          {days.map((d, index) => {
-            const isSelected = selectedDayId === d.id;
-            const details = parseDayDetails(d, index);
+        {/* Operational Special Protocol Reminders (Feb 20 Raas Garba sound regulation) */}
+        {selectedDayId === 'feb-20' && (
+          <div className="flex items-start sm:items-center gap-2.5 p-3.5 mx-4 sm:mx-5 my-3 rounded-xl bg-amber-50/90 border border-amber-200 text-xs text-amber-900">
+            <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5 sm:mt-0" />
+            <span className="leading-relaxed">
+              <strong>Raas Garba Sound Regulation:</strong> DJ sound volume strictly monitored by city guidelines. If local police officers visit at 10:00 PM, respectfully reduce volume or conclude DJ sound per regulations; otherwise continue till 12:00 AM.
+            </span>
+          </div>
+        )}
 
-            return (
-              <button
-                key={d.id}
-                type="button"
-                onClick={() => setSelectedDayId(d.id)}
-                className={`group relative text-left p-3.5 rounded-xl transition-all duration-200 border flex flex-col justify-between cursor-pointer ${
-                  isSelected
-                    ? 'bg-slate-900 text-white border-slate-900 shadow-md ring-2 ring-slate-900/10 -translate-y-0.5'
-                    : 'bg-slate-50/70 border-slate-200/80 hover:border-slate-300 hover:bg-white hover:-translate-y-0.5 shadow-2xs'
-                }`}
-              >
-                {/* Active indicator top bar */}
-                {isSelected && (
-                  <div className="absolute -top-px left-3 right-3 h-[3px] bg-gradient-to-r from-[#B89230] via-[#D4AF37] to-[#B89230] rounded-full shadow-xs" />
+        {/* Perspective filter indicator if activeSide filters out items */}
+        {activeSide !== 'ALL' && displayedItems.length !== activeDay.items.length && (
+          <div className="flex items-center justify-between text-xs px-4 py-2 mx-4 sm:mx-5 my-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-600">
+            <span>
+              Showing {displayedItems.length} of {activeDay.items.length} cues for{' '}
+              <strong>{activeSide === 'BOY' ? "Boy's Side" : activeSide === 'GIRL' ? "Girl's Side" : activeSide === 'FAMILY' ? "Family's Side" : "Both Sides"}</strong>.
+            </span>
+            <span className="text-slate-400 font-medium">Switch to "Both Sides" above to view all cues.</span>
+          </div>
+        )}
+
+        {/* Mobile View: Stacked Responsive Cue Cards (sm:hidden) */}
+        <div className="sm:hidden divide-y divide-slate-100 border-t border-slate-100">
+          {displayedItems.length === 0 ? (
+            <div className="py-12 text-center text-slate-400 p-4">
+              <Users className="w-7 h-7 mx-auto mb-2 text-slate-300" />
+              <div className="text-xs font-semibold text-slate-600">No event cues match the current filter</div>
+              <div className="text-[11px] text-slate-400 mt-0.5">Switch perspective above or add a new cue for this day.</div>
+            </div>
+          ) : (
+            displayedItems.map(({ item, originalIndex }, index) => (
+              <div key={item.id} className="p-4 space-y-3 bg-white hover:bg-slate-50/50 transition-colors">
+                {/* Header: #, Time & Side badge */}
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="w-6 h-6 rounded-full bg-slate-100 text-slate-500 font-mono text-[11px] font-bold flex items-center justify-center">
+                      {index + 1}
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-slate-900 text-white font-mono text-xs font-bold tracking-tight shadow-2xs">
+                      {item.time}
+                    </span>
+                  </div>
+                  {renderSideBadge(item.side)}
+                </div>
+
+                {/* Ritual / Event Title */}
+                <div>
+                  <h3 className="font-serif font-bold text-slate-900 text-base leading-snug">
+                    <EditableText
+                      value={item.title}
+                      onSave={(val) => onEditScheduleItem(selectedDayId, item.id, { title: val })}
+                    />
+                  </h3>
+                  {item.gujaratiTitle && (
+                    <div className="text-xs text-slate-500 mt-0.5 font-sans">
+                      <EditableText
+                        value={item.gujaratiTitle}
+                        onSave={(val) => onEditScheduleItem(selectedDayId, item.id, { gujaratiTitle: val })}
+                      />
+                    </div>
+                  )}
+                </div>
+
+                {/* Location */}
+                <div className="flex items-center gap-1.5 text-xs text-slate-600 bg-slate-50 px-2.5 py-1.5 rounded-lg border border-slate-200/60">
+                  <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                  <span className="font-medium">
+                    <EditableText
+                      value={item.location}
+                      onSave={(val) => onEditScheduleItem(selectedDayId, item.id, { location: val })}
+                    />
+                  </span>
+                </div>
+
+                {/* Key Ceremonial Instruction */}
+                <div className="bg-amber-50/40 p-3 rounded-xl border border-amber-200/60 text-slate-900 shadow-2xs">
+                  <div className="flex items-center gap-1 text-[10px] font-mono uppercase tracking-wider font-bold text-[#8B6E1F] mb-1">
+                    <Sparkles className="w-3 h-3 text-[#B89230]" />
+                    <span>Ceremonial Instruction</span>
+                  </div>
+                  <EditableText
+                    value={item.actionNotes}
+                    multiline
+                    onSave={(val) => onEditScheduleItem(selectedDayId, item.id, { actionNotes: val })}
+                    className="text-slate-900 font-medium text-xs leading-relaxed block"
+                  />
+                </div>
+
+                {/* Outfits & Sound Rigs */}
+                {(item.outfitGroom || item.outfitBride || item.soundRig) && (
+                  <div className="grid grid-cols-1 gap-1.5 text-xs pt-1">
+                    {item.outfitGroom && (
+                      <div className="text-[11px] text-blue-900 bg-blue-50/80 px-2.5 py-1 rounded-md border border-blue-100 flex items-center gap-1.5">
+                        <span>🤵</span>
+                        <span className="font-bold">Groom:</span>
+                        <span>{item.outfitGroom}</span>
+                      </div>
+                    )}
+                    {item.outfitBride && (
+                      <div className="text-[11px] text-rose-900 bg-rose-50/80 px-2.5 py-1 rounded-md border border-rose-100 flex items-center gap-1.5">
+                        <span>👰</span>
+                        <span className="font-bold">Bride:</span>
+                        <span>{item.outfitBride}</span>
+                      </div>
+                    )}
+                    {item.soundRig && (
+                      <div className="text-[11px] text-purple-900 bg-purple-50/80 px-2.5 py-1 rounded-md border border-purple-100 flex items-center gap-1.5">
+                        <span>🎵</span>
+                        <span className="font-bold">Sound:</span>
+                        <span>{item.soundRig}</span>
+                      </div>
+                    )}
+                  </div>
                 )}
 
-                {/* Day Badge & Date */}
-                <div>
-                  <div className="flex items-center justify-between gap-1 mb-1.5">
-                    <span className={`text-[10px] font-mono font-bold tracking-wider uppercase px-2 py-0.5 rounded ${
-                      isSelected
-                        ? 'bg-white/20 text-white'
-                        : 'bg-slate-200/70 text-slate-700 group-hover:bg-slate-200'
-                    }`}>
-                      Day 0{details.dayNumber}
-                    </span>
-
-                    <span className={`text-[10px] font-mono font-bold uppercase tracking-wider ${
-                      isSelected ? 'text-[#D4AF37]' : 'text-slate-400'
-                    }`}>
-                      {details.shortWeekday}
-                    </span>
-                  </div>
-
-                  <div className="flex items-baseline gap-1">
-                    <span className={`text-base sm:text-lg font-bold font-serif leading-none ${
-                      isSelected ? 'text-white' : 'text-slate-800'
-                    }`}>
-                      {details.dayNum}
-                    </span>
-                    <span className={`text-[10px] font-mono uppercase ${isSelected ? 'text-slate-300' : 'text-slate-500'}`}>
-                      {details.month}
-                    </span>
-                  </div>
-
-                  {/* Ceremony Title (Readable Title-Case Serif) */}
-                  <div className="mt-2 min-h-[42px] flex items-start">
-                    <h4 className={`text-xs font-serif leading-snug line-clamp-2 transition-colors ${
-                      isSelected ? 'text-white font-bold' : 'text-slate-700 font-semibold group-hover:text-slate-900'
-                    }`}>
-                      {d.title}
-                    </h4>
-                  </div>
-                </div>
-
-                {/* Footer: Cues Count + Side Dots */}
-                <div className={`flex items-center justify-between pt-2 border-t mt-2 ${
-                  isSelected ? 'border-white/20' : 'border-slate-200/60'
-                }`}>
-                  <span className={`text-[10px] font-mono font-semibold ${
-                    isSelected ? 'text-amber-300' : 'text-slate-400 group-hover:text-slate-600'
-                  }`}>
-                    {d.items.length} {d.items.length === 1 ? 'cue' : 'cues'}
-                  </span>
-
+                {/* Actions (Reorder, Edit, Delete) */}
+                <div className="flex items-center justify-between pt-2 border-t border-slate-100">
                   <div className="flex items-center gap-1">
-                    {details.boyCount > 0 && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-blue-500" title={`${details.boyCount} Groom cues`} />
-                    )}
-                    {details.girlCount > 0 && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-rose-500" title={`${details.girlCount} Bride cues`} />
-                    )}
-                    {details.jointCount > 0 && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-amber-500" title={`${details.jointCount} Joint cues`} />
-                    )}
+                    <button
+                      onClick={() => handleMoveUp(originalIndex)}
+                      disabled={originalIndex === 0}
+                      className="p-1.5 text-slate-400 hover:text-slate-700 disabled:opacity-30 rounded-lg hover:bg-slate-100 cursor-pointer"
+                      title="Move cue up"
+                    >
+                      <ChevronUp className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => handleMoveDown(originalIndex)}
+                      disabled={originalIndex === activeDay.items.length - 1}
+                      className="p-1.5 text-slate-400 hover:text-slate-700 disabled:opacity-30 rounded-lg hover:bg-slate-100 cursor-pointer"
+                      title="Move cue down"
+                    >
+                      <ChevronDown className="w-4 h-4" />
+                    </button>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      onClick={() => setEditingItem({ dayId: selectedDayId, item })}
+                      className="px-3 py-1.5 text-slate-700 hover:text-slate-900 text-xs font-semibold rounded-lg hover:bg-slate-100 border border-slate-200 cursor-pointer"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => onDeleteScheduleItem(selectedDayId, item.id)}
+                      className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 cursor-pointer"
+                      title="Delete cue"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                   </div>
                 </div>
-              </button>
-            );
-          })}
+              </div>
+            ))
+          )}
         </div>
-      </div>
 
-      {/* Operational Special Protocol Reminders (Feb 20 Raas Garba sound regulation) */}
-      {selectedDayId === 'feb-20' && (
-        <div className="flex items-start sm:items-center gap-2.5 p-3 rounded-xl bg-amber-50/90 border border-amber-200 text-xs text-amber-900">
-          <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5 sm:mt-0" />
-          <span className="leading-relaxed">
-            <strong>Raas Garba Sound Regulation:</strong> DJ sound volume strictly monitored by city guidelines. If local police officers visit at 10:00 PM, respectfully reduce volume or conclude DJ sound per regulations; otherwise continue till 12:00 AM.
-          </span>
-        </div>
-      )}
-
-      {/* Perspective filter indicator if activeSide filters out items */}
-      {activeSide !== 'ALL' && displayedItems.length !== activeDay.items.length && (
-        <div className="flex items-center justify-between text-xs px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-600">
-          <span>
-            Showing {displayedItems.length} of {activeDay.items.length} cues for{' '}
-            <strong>{activeSide === 'BOY' ? "Boy's Side" : activeSide === 'GIRL' ? "Girl's Side" : activeSide === 'FAMILY' ? "Family's Side" : "Both Sides"}</strong>.
-          </span>
-          <span className="text-slate-400 font-medium">Switch to "Both Sides" above to view all cues.</span>
-        </div>
-      )}
-
-      {/* Cues Table */}
-      <div className="bg-white rounded-2xl border border-slate-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)] overflow-hidden">
-        <div className="overflow-x-auto">
+        {/* Desktop View: Full Table (hidden sm:block) */}
+        <div className="hidden sm:block overflow-x-auto border-t border-slate-100">
           <table className="w-full text-left text-xs">
             <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 font-semibold uppercase tracking-wider text-[10px]">
               <tr>
@@ -499,12 +637,12 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
                     </td>
                     <td className="py-3.5 px-3 text-right whitespace-nowrap align-top pt-4 w-24">
                       <div className="flex items-center justify-end space-x-1">
-                        <div className="flex border border-stone-200 rounded-lg overflow-hidden shrink-0 bg-stone-50 mr-1">
+                        <div className="flex border border-slate-200 rounded-lg overflow-hidden shrink-0 bg-slate-50 mr-1">
                           <button
                             onClick={() => handleMoveUp(originalIndex)}
                             disabled={originalIndex === 0}
                             title="Move earlier"
-                            className="px-1.5 py-1 text-stone-400 hover:text-stone-700 hover:bg-stone-200 disabled:opacity-25 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                            className="px-1.5 py-1 text-slate-400 hover:text-slate-700 hover:bg-slate-200 disabled:opacity-25 disabled:cursor-not-allowed transition-colors cursor-pointer"
                           >
                             <ChevronUp className="w-3.5 h-3.5" />
                           </button>
@@ -512,7 +650,7 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
                             onClick={() => handleMoveDown(originalIndex)}
                             disabled={originalIndex === activeDay.items.length - 1}
                             title="Move later"
-                            className="px-1.5 py-1 text-stone-400 hover:text-stone-700 hover:bg-stone-200 disabled:opacity-25 disabled:cursor-not-allowed transition-colors border-l border-stone-200 cursor-pointer"
+                            className="px-1.5 py-1 text-slate-400 hover:text-slate-700 hover:bg-slate-200 disabled:opacity-25 disabled:cursor-not-allowed transition-colors border-l border-slate-200 cursor-pointer"
                           >
                             <ChevronDown className="w-3.5 h-3.5" />
                           </button>
@@ -520,14 +658,14 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
                         <button
                           onClick={() => setEditingItem({ dayId: selectedDayId, item })}
                           title="Edit"
-                          className="p-1.5 text-stone-400 hover:text-stone-900 hover:bg-stone-100 rounded-lg transition-colors cursor-pointer"
+                          className="p-1.5 text-slate-400 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
                         >
                           <Edit3 className="w-3.5 h-3.5" />
                         </button>
                         <button
                           onClick={() => onDeleteScheduleItem(selectedDayId, item.id)}
                           title="Delete"
-                          className="p-1.5 text-stone-300 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
+                          className="p-1.5 text-slate-300 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>

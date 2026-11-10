@@ -43,13 +43,13 @@ const ToastItem: React.FC<{ toast: ToastMessage; onDismiss: (id: string) => void
   return (
     <div
       role="status"
-      className="pointer-events-auto flex items-center justify-between gap-3 p-3.5 bg-stone-900/95 backdrop-blur-md text-stone-100 rounded-2xl shadow-[0_16px_36px_rgba(0,0,0,0.18)] border border-stone-800 text-xs sm:text-sm animate-in slide-in-from-bottom-3 duration-200"
+      className="pointer-events-auto flex items-center justify-between gap-3 p-3.5 bg-slate-900/95 backdrop-blur-md text-slate-100 rounded-2xl shadow-[0_16px_36px_rgba(0,0,0,0.18)] border border-slate-800 text-xs sm:text-sm animate-in slide-in-from-bottom-3 duration-200"
     >
       <div className="flex items-center gap-2.5 min-w-0 flex-1">
         {toast.type === 'undo' ? (
           <RotateCcw className="w-4 h-4 text-amber-400 shrink-0" />
         ) : toast.type === 'info' ? (
-          <Info className="w-4 h-4 text-stone-400 shrink-0" />
+          <Info className="w-4 h-4 text-slate-400 shrink-0" />
         ) : (
           <CheckCircle2 className="w-4 h-4 text-[#D4AF37] shrink-0" />
         )}
@@ -63,7 +63,7 @@ const ToastItem: React.FC<{ toast: ToastMessage; onDismiss: (id: string) => void
               toast.onUndo?.();
               onDismiss(toast.id);
             }}
-            className="px-3 py-1 bg-stone-100 text-stone-900 hover:bg-white active:scale-95 text-[11px] font-mono tracking-wider uppercase rounded-full shadow-xs transition-all focus-visible:ring-2 focus-visible:ring-stone-400 focus:outline-none"
+            className="px-3 py-1 bg-slate-100 text-slate-900 hover:bg-white active:scale-95 text-[11px] font-mono tracking-wider uppercase rounded-full shadow-xs transition-all focus-visible:ring-2 focus-visible:ring-slate-400 focus:outline-none"
           >
             Undo
           </button>
@@ -71,7 +71,7 @@ const ToastItem: React.FC<{ toast: ToastMessage; onDismiss: (id: string) => void
 
         <button
           onClick={() => onDismiss(toast.id)}
-          className="p-1 text-stone-400 hover:text-stone-100 rounded-lg transition-colors focus-visible:ring-2 focus-visible:ring-stone-400 focus:outline-none"
+          className="p-1 text-slate-400 hover:text-slate-100 rounded-lg transition-colors focus-visible:ring-2 focus-visible:ring-slate-400 focus:outline-none"
           aria-label="Close notification"
         >
           <X className="w-3.5 h-3.5" />

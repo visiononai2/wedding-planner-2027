@@ -87,7 +87,15 @@ export const App: React.FC = () => {
     } catch {}
   }, []);
 
-  const [activeTab, setActiveTab] = useState<TabType>('month-tracker');
+  const [activeTab, setActiveTab] = useState<TabType>(() => {
+    try {
+      const hash = window.location.hash.replace('#', '');
+      if (['month-tracker', 'itinerary', 'decisions', 'notes'].includes(hash)) {
+        return hash as TabType;
+      }
+    } catch {}
+    return 'month-tracker';
+  });
   const [taskSubView, setTaskSubView] = useState<TaskSubView>('checklist');
   const [tasksResetSignal, setTasksResetSignal] = useState<number>(0);
   const [itineraryResetSignal, setItineraryResetSignal] = useState<number>(0);
@@ -95,6 +103,7 @@ export const App: React.FC = () => {
   const handleNavigateTaskSubView = (subView: TaskSubView) => {
     setActiveTab('month-tracker');
     setTaskSubView(subView);
+    window.location.hash = 'month-tracker';
     if (subView === 'checklist') {
       setTasksResetSignal(prev => prev + 1);
     }
@@ -104,21 +113,27 @@ export const App: React.FC = () => {
     if (tab === 'month-tracker') {
       setActiveTab('month-tracker');
       setTaskSubView('checklist');
+      window.location.hash = 'month-tracker';
       setTasksResetSignal(prev => prev + 1);
     } else if (tab === 'itinerary') {
       setActiveTab('itinerary');
+      window.location.hash = 'itinerary';
       setItineraryResetSignal(prev => prev + 1);
     } else if (tab === 'dresses') {
       setActiveTab('month-tracker');
       setTaskSubView('outfits');
+      window.location.hash = 'month-tracker';
     } else if (tab === 'rentals') {
       setActiveTab('month-tracker');
       setTaskSubView('rentals');
+      window.location.hash = 'month-tracker';
     } else if (tab === 'pre-wedding') {
       setActiveTab('month-tracker');
       setTaskSubView('pre-wedding');
+      window.location.hash = 'month-tracker';
     } else {
       setActiveTab(tab);
+      window.location.hash = tab;
     }
   };
 
@@ -640,7 +655,7 @@ export const App: React.FC = () => {
   const notesCount = notes.length;
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#f8fafc] text-slate-900 font-sans pb-24 sm:pb-8">
+    <div className="min-h-screen flex flex-col bg-white text-slate-900 font-sans pb-24 sm:pb-8">
       {/* Precision Global Command Shell */}
       <GlobalHeader
         activeTab={activeTab}
@@ -667,8 +682,8 @@ export const App: React.FC = () => {
         onNavigateToTaskSubView={handleNavigateTaskSubView}
       />
 
-      {/* Main Content Area */}
-      <main className="flex-1 w-full px-4 sm:px-6 lg:px-8 xl:px-10 py-6 sm:py-8">
+      {/* Main Content Area (pb-28 on mobile guarantees content clears fixed bottom dock) */}
+      <main className="flex-1 w-full px-4 sm:px-6 lg:px-8 xl:px-10 py-5 sm:py-8 pb-28 sm:pb-8">
         {(activeTab === 'month-tracker' || activeTab === 'dresses' || activeTab === 'rentals' || activeTab === 'pre-wedding') && (
           <MonthTracker
             milestones={INITIAL_MILESTONES}
