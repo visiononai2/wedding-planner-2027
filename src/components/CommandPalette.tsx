@@ -93,7 +93,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   // Navigation Items
   const navItems = [
     { id: 'month-tracker', label: 'Go to General Tasks', category: 'Navigation', icon: Calendar, action: () => { onTabChange('month-tracker'); onNavigateTaskSubView?.('checklist'); onClose(); } },
-    { id: 'itinerary', label: 'Go to Event Schedule (Feb 15–21 Itinerary)', category: 'Navigation', icon: Clock, action: () => { onTabChange('itinerary'); onClose(); } },
+    { id: 'itinerary', label: 'Go to Event Schedule (Feb 13–21 Itinerary)', category: 'Navigation', icon: Clock, action: () => { onTabChange('itinerary'); onClose(); } },
     { id: 'decisions', label: 'Go to Decisions & Questions Tracker', category: 'Navigation', icon: HelpCircle, action: () => { onTabChange('decisions'); onClose(); } },
     { id: 'notes', label: 'Go to Planning Notes', category: 'Navigation', icon: FileText, action: () => { onTabChange('notes'); onClose(); } },
     { id: 'dresses', label: 'Go to Outfits & Tailoring (in Tasks)', category: 'Tasks Workspaces', icon: ShoppingBag, action: () => { onTabChange('month-tracker'); onNavigateTaskSubView?.('outfits'); onClose(); } },

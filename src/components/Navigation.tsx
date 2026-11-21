@@ -54,7 +54,7 @@ export const Navigation: React.FC<NavigationProps> = ({
     {
       id: 'itinerary' as TabType,
       label: 'Event Schedule',
-      fullLabel: 'Event Schedule (Feb 15–21)',
+      fullLabel: 'Event Schedule (Feb 13–21)',
       icon: Clock,
       countBadge: `${scheduleItemsCount} cues`,
       badgeColor: 'bg-slate-100 text-slate-600 border border-slate-200/60'

@@ -23,6 +23,8 @@ interface EventItineraryProps {
   onEditScheduleItem: (dayId: string, itemId: string, updates: Partial<ScheduleEvent>) => void;
   onDeleteScheduleItem: (dayId: string, itemId: string) => void;
   onReorderScheduleItems: (dayId: string, fromIndex: number, toIndex: number) => void;
+  onAddDay?: (day: EventDaySchedule) => void;
+  onDeleteDay?: (dayId: string) => void;
   resetEventSignal?: number;
 }
 
@@ -58,10 +60,12 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
   onEditScheduleItem,
   onDeleteScheduleItem,
   onReorderScheduleItems,
+  onAddDay,
+  onDeleteDay,
   resetEventSignal
 }) => {
   // Always default to the first event/day in the itinerary
-  const [selectedDayId, setSelectedDayId] = useState<string>(() => days[0]?.id || 'feb-15');
+  const [selectedDayId, setSelectedDayId] = useState<string>(() => days[0]?.id || 'feb-13');
 
   // When event schedule tab is selected, show the first event
   useEffect(() => {
@@ -81,16 +85,42 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
 
   // Add Item Modal
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [targetDayId, setTargetDayId] = useState<string>(() => selectedDayId);
   const [newTime, setNewTime] = useState('');
   const [newTitle, setNewTitle] = useState('');
   const [newGujTitle, setNewGujTitle] = useState('');
-  const [newLocation, setNewLocation] = useState('Silver Farm, Surat');
+  const [newLocation, setNewLocation] = useState('Groom Residence');
   const [newActionNotes, setNewActionNotes] = useState('');
   const [newSide, setNewSide] = useState<EventSide>('Both');
   const [newSoundRig, setNewSoundRig] = useState('');
   const [newOutfitGroom, setNewOutfitGroom] = useState('');
   const [newOutfitBride, setNewOutfitBride] = useState('');
   const [newUrgentRule, setNewUrgentRule] = useState('');
+
+  // Add Day Modal
+  const [isAddDayModalOpen, setIsAddDayModalOpen] = useState(false);
+  const [newDayDate, setNewDayDate] = useState('2027-02-13');
+  const [newDayTitle, setNewDayTitle] = useState('');
+  const [newDayLocation, setNewDayLocation] = useState('Groom Residence');
+
+  // Dynamic date range label and journey title
+  const dateRangeLabel = useMemo(() => {
+    if (!days.length) return '';
+    const first = parseDayDetails(days[0], 0);
+    const last = parseDayDetails(days[days.length - 1], days.length - 1);
+    return `(${first.month} ${first.dayNum} – ${last.month} ${last.dayNum}, 2027)`;
+  }, [days]);
+
+  const journeyTitle = useMemo(() => {
+    return `Vivah Saptah • ${days.length}-Day Wedding Journey`;
+  }, [days]);
+
+  // Keep targetDayId in sync with selectedDayId when modal opens
+  useEffect(() => {
+    if (isAddModalOpen) {
+      setTargetDayId(selectedDayId);
+    }
+  }, [isAddModalOpen, selectedDayId]);
 
   // Edit Item Modal
   const [editingItem, setEditingItem] = useState<{ dayId: string; item: ScheduleEvent } | null>(null);
@@ -106,11 +136,12 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
 
       if (e.key === 'Escape') {
         if (isAddModalOpen) setIsAddModalOpen(false);
+        if (isAddDayModalOpen) setIsAddDayModalOpen(false);
         if (editingItem) setEditingItem(null);
         return;
       }
 
-      if (isInputActive || isAddModalOpen || editingItem !== null) {
+      if (isInputActive || isAddModalOpen || isAddDayModalOpen || editingItem !== null) {
         return;
       }
 
@@ -129,7 +160,7 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [days, selectedDayId, isAddModalOpen, editingItem]);
+  }, [days, selectedDayId, isAddModalOpen, isAddDayModalOpen, editingItem]);
 
   const activeDay = days.find(d => d.id === selectedDayId) || days[0];
 
@@ -169,7 +200,9 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
     e.preventDefault();
     if (!newTime.trim() || !newTitle.trim()) return;
 
-    onAddScheduleItem(selectedDayId, {
+    const chosenDayId = targetDayId || selectedDayId;
+
+    onAddScheduleItem(chosenDayId, {
       id: `s-${Date.now()}`,
       time: newTime.trim(),
       title: newTitle.trim(),
@@ -183,6 +216,7 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
       urgentRule: newUrgentRule.trim() || undefined
     });
 
+    setSelectedDayId(chosenDayId);
     setNewTime('');
     setNewTitle('');
     setNewGujTitle('');
@@ -193,6 +227,38 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
     setNewOutfitBride('');
     setNewUrgentRule('');
     setIsAddModalOpen(false);
+  };
+
+  const handleCreateDay = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newDayTitle.trim() || !newDayDate.trim()) return;
+
+    const dateObj = new Date(newDayDate + 'T00:00:00');
+    const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const weekday = isNaN(dateObj.getTime()) ? 'Saturday' : dayNames[dateObj.getDay()];
+    const dayNum = isNaN(dateObj.getTime()) ? '13' : dateObj.getDate().toString();
+    const month = isNaN(dateObj.getTime()) ? 'Feb' : monthNames[dateObj.getMonth()];
+
+    const dayNameFormatted = `${weekday} / ${dayNum} ${month}`;
+    const dateParts = newDayDate.split('-');
+    const generatedId = `feb-${dateParts[2] || Date.now().toString().slice(-4)}`;
+
+    const newDay: EventDaySchedule = {
+      id: generatedId,
+      dateString: newDayDate,
+      dayName: dayNameFormatted,
+      title: newDayTitle.trim(),
+      location: newDayLocation.trim() || 'Groom Residence',
+      items: []
+    };
+
+    if (onAddDay) {
+      onAddDay(newDay);
+    }
+    setSelectedDayId(generatedId);
+    setIsAddDayModalOpen(false);
+    setNewDayTitle('');
   };
 
   const handleSaveEdit = (e: React.FormEvent) => {
@@ -251,10 +317,10 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-[#B89230] animate-pulse" />
               <span className="text-xs sm:text-sm font-serif font-bold tracking-wider uppercase text-slate-900">
-                Vivah Saptah • 7-Day Wedding Journey
+                {journeyTitle}
               </span>
               <span className="hidden sm:inline-block text-[11px] font-mono text-slate-400">
-                (Feb 15 – Feb 21, 2027)
+                {dateRangeLabel}
               </span>
             </div>
             
@@ -263,6 +329,16 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
                 {totalWeekCues} Total Cues
               </span>
               <button
+                type="button"
+                onClick={() => setIsAddDayModalOpen(true)}
+                className="inline-flex items-center px-3 py-2 bg-white hover:bg-slate-50 active:bg-slate-100 text-slate-700 border border-slate-200/90 rounded-xl text-xs font-semibold shadow-2xs hover:-translate-y-0.5 transition-all cursor-pointer"
+                title="Add a new day to the wedding itinerary"
+              >
+                <Calendar className="w-3.5 h-3.5 mr-1.5 text-indigo-600" />
+                Add Day
+              </button>
+              <button
+                type="button"
                 onClick={() => setIsAddModalOpen(true)}
                 className="inline-flex items-center px-4 py-2 bg-slate-900 hover:bg-slate-800 active:bg-black text-white rounded-xl text-xs font-semibold shadow-xs hover:-translate-y-0.5 transition-all cursor-pointer"
               >
@@ -272,8 +348,8 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
             </div>
           </div>
 
-          {/* 7-Day Grid Ribbon */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5 sm:gap-3">
+          {/* Day Grid Ribbon */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 xl:grid-cols-8 gap-2.5 sm:gap-3">
             {days.map((d, index) => {
               const isSelected = selectedDayId === d.id;
               const details = parseDayDetails(d, index);
@@ -284,8 +360,6 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
                   type="button"
                   onClick={() => setSelectedDayId(d.id)}
                   className={`group relative text-left p-3.5 rounded-xl transition-all duration-200 border flex flex-col justify-between cursor-pointer ${
-                    index === 6 ? 'col-span-2 sm:col-span-1' : ''
-                  } ${
                     isSelected
                       ? 'bg-slate-900 text-white border-slate-900 shadow-md ring-2 ring-slate-900/10 -translate-y-0.5'
                       : 'bg-white border-slate-200/80 hover:border-slate-300 hover:bg-slate-50/70 hover:-translate-y-0.5 shadow-2xs'
@@ -686,9 +760,10 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
                 <Clock className="w-4 h-4 text-indigo-600" />
-                Add Cue to {activeDay.title}
+                Add Event Cue
               </h3>
               <button 
+                type="button"
                 onClick={() => setIsAddModalOpen(false)} 
                 className="text-slate-400 hover:text-slate-700 text-lg leading-none"
               >
@@ -697,6 +772,21 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
             </div>
 
             <form onSubmit={handleCreateItem} className="mt-4 space-y-3.5 text-xs">
+              <div>
+                <label className="block font-semibold text-slate-700 mb-1">Target Day *</label>
+                <select
+                  value={targetDayId}
+                  onChange={(e) => setTargetDayId(e.target.value)}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium text-xs"
+                >
+                  {days.map((d, index) => (
+                    <option key={d.id} value={d.id}>
+                      Day 0{index + 1} ({d.dayName}) – {d.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block font-semibold text-slate-700 mb-1">Time *</label>
@@ -1002,6 +1092,79 @@ export const EventItinerary: React.FC<EventItineraryProps> = ({
                   className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-semibold text-xs shadow-sm transition-colors"
                 >
                   Update Cue
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Add Day Modal */}
+      {isAddDayModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-indigo-600" />
+                Add Event Day to Schedule
+              </h3>
+              <button 
+                type="button"
+                onClick={() => setIsAddDayModalOpen(false)} 
+                className="text-slate-400 hover:text-slate-700 text-lg leading-none"
+              >
+                &times;
+              </button>
+            </div>
+
+            <form onSubmit={handleCreateDay} className="mt-4 space-y-3.5 text-xs">
+              <div>
+                <label className="block font-semibold text-slate-700 mb-1">Date *</label>
+                <input
+                  type="date"
+                  required
+                  value={newDayDate}
+                  onChange={(e) => setNewDayDate(e.target.value)}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium"
+                />
+              </div>
+
+              <div>
+                <label className="block font-semibold text-slate-700 mb-1">Day Title / Ceremony *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Aayrandal Tedwa at Boy's House"
+                  value={newDayTitle}
+                  onChange={(e) => setNewDayTitle(e.target.value)}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium"
+                />
+              </div>
+
+              <div>
+                <label className="block font-semibold text-slate-700 mb-1">Primary Location</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Groom Residence or Silver Farm, Surat"
+                  value={newDayLocation}
+                  onChange={(e) => setNewDayLocation(e.target.value)}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium"
+                />
+              </div>
+
+              <div className="pt-3 flex justify-end space-x-2 border-t border-slate-100">
+                <button 
+                  type="button" 
+                  onClick={() => setIsAddDayModalOpen(false)} 
+                  className="px-4 py-2 text-slate-500 hover:text-slate-700 text-xs font-semibold rounded-xl hover:bg-slate-100 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button 
+                  type="submit" 
+                  className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-semibold text-xs shadow-sm transition-colors"
+                >
+                  Save Day
                 </button>
               </div>
             </form>

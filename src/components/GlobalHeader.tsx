@@ -244,7 +244,7 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
                 type="button"
                 onClick={() => onTabChange('month-tracker')}
                 className="flex items-center gap-3 text-left group focus:outline-none"
-                title="Parth & Nisha Vivah Celebration · Feb 15–21, 2027"
+                title="Parth & Nisha Vivah Celebration · Feb 13–21, 2027"
               >
                 {/* Gold Seal Monogram Crest */}
                 <div className="w-9 h-9 rounded-full bg-white border border-[#D4AF37]/50 shadow-[0_2px_8px_rgba(212,175,55,0.12)] flex items-center justify-center font-cormorant italic text-sm font-semibold text-[#9A7B2C] group-hover:border-[#B89230] group-hover:shadow-[0_2px_12px_rgba(212,175,55,0.22)] group-hover:scale-105 transition-all duration-300">
@@ -261,7 +261,7 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
                     </span>
                   </div>
                   <span className="text-[10px] tracking-[0.18em] uppercase font-sans font-medium text-slate-400">
-                    Feb 15–21, 2027
+                    Feb 13–21, 2027
                   </span>
                 </div>
               </button>

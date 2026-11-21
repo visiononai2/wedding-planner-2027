@@ -492,6 +492,30 @@ export const App: React.FC = () => {
     });
   };
 
+  const handleAddDay = (newDay: EventDaySchedule) => {
+    const nextDays = [...days.filter(d => d.id !== newDay.id), newDay]
+      .sort((a, b) => a.dateString.localeCompare(b.dateString));
+    setDays(nextDays);
+    syncToCloud({ days: nextDays }, true);
+    showToast(`Day "${newDay.title}" added to schedule`, 'success');
+  };
+
+  const handleDeleteDay = (dayId: string) => {
+    const day = days.find(d => d.id === dayId);
+    if (!day) return;
+    const nextDays = days.filter(d => d.id !== dayId);
+    setDays(nextDays);
+    syncToCloud({ days: nextDays }, true);
+    showToast(`Day "${day.title}" removed`, 'undo', () => {
+      setDays(prev => {
+        const restored = [...prev, day].sort((a, b) => a.dateString.localeCompare(b.dateString));
+        syncToCloud({ days: restored }, true);
+        return restored;
+      });
+      showToast('Day restored!', 'success');
+    });
+  };
+
   // Decision Handlers (Synced immediately to Prod Firebase)
   const handleUpdateDecision = (id: string, updates: Partial<DecisionPoint>) => {
     const nextDecisions = decisions.map(d => d.id === id ? { ...d, ...updates } : d);
@@ -718,6 +742,8 @@ export const App: React.FC = () => {
             onEditScheduleItem={handleEditScheduleItem}
             onDeleteScheduleItem={handleDeleteScheduleItem}
             onReorderScheduleItems={handleReorderScheduleItems}
+            onAddDay={handleAddDay}
+            onDeleteDay={handleDeleteDay}
             resetEventSignal={itineraryResetSignal}
           />
         )}
@@ -749,7 +775,7 @@ export const App: React.FC = () => {
               Parth <span className="font-serif italic text-[#B89230]">&</span> Nisha
             </span>
             <span className="text-slate-300">·</span>
-            <span className="font-mono text-[11px] text-[#8B6E1F]">Feb 15–21, 2027</span>
+            <span className="font-mono text-[11px] text-[#8B6E1F]">Feb 13–21, 2027</span>
           </div>
           <div className="text-[11px] text-slate-400 font-sans tracking-wide">
             <span>Ceremonial Planning Suite · Live Cloud Sync · Press <kbd className="px-1.5 py-0.5 bg-slate-50 border border-slate-200 rounded text-[10px] font-mono text-slate-500">⌘K</kbd> for Command Search</span>

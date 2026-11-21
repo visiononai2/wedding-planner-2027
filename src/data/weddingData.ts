@@ -21,8 +21,8 @@ export const INITIAL_MILESTONES: MonthMilestone[] = [
   { id: 'nov-2026', name: 'November 2026', monthLabel: 'Nov 2026', timeframe: '3 Months to Go', badge: 'Nov 2026: Outfits & Makeup' },
   { id: 'dec-2026', name: 'December 2026', monthLabel: 'Dec 2026', timeframe: '2 Months to Go', badge: 'Dec 2026: Catering & Staff' },
   { id: 'jan-2027', name: 'January 2027', monthLabel: 'Jan 2027', timeframe: '1 Month to Go', badge: 'Jan 2027: Chab & Envelopes' },
-  { id: 'feb-prep', name: 'Feb 1 - 14, 2027', monthLabel: 'Feb 1-14', timeframe: 'Wedding Month Prep', badge: 'Feb 1-14: Final Fittings & ICER' },
-  { id: 'feb-days', name: 'Feb 15 - 21, 2027', monthLabel: 'Feb 15-21', timeframe: 'Wedding Week', badge: 'Event Week: Feb 15-21 Celebrations' }
+  { id: 'feb-prep', name: 'Feb 1 - 12, 2027', monthLabel: 'Feb 1-12', timeframe: 'Wedding Month Prep', badge: 'Feb 1-12: Final Fittings & ICER' },
+  { id: 'feb-days', name: 'Feb 13 - 21, 2027', monthLabel: 'Feb 13-21', timeframe: 'Wedding Week', badge: 'Event Week: Feb 13-21 Celebrations' }
 ];
 
 export const INITIAL_TASKS: Task[] = [
@@ -1012,6 +1012,25 @@ export const INITIAL_DRESSES: DressItem[] = [
 
 
 export const INITIAL_DAY_SCHEDULES: EventDaySchedule[] = [
+  {
+    id: 'feb-13',
+    dateString: '2027-02-13',
+    dayName: 'Saturday / 13 Feb',
+    title: "Aayrandal Tedwa at Boy's House",
+    location: 'Groom Residence',
+    items: [
+      {
+        id: 's-13-1',
+        time: '09:00 AM',
+        title: "Aayrandal Tedwa (Boy's House)",
+        gujaratiTitle: 'આયરંદલ તેડવા (છોકરાના ઘરે)',
+        location: 'Groom Residence',
+        actionNotes: "Auspicious Aayrandal Tedwa sthapana and sacred rituals at Groom's residence.",
+        side: 'Boy',
+        outfitGroom: 'Traditional Cotton Kurta'
+      }
+    ]
+  },
   {
     id: 'feb-15',
     dateString: '2027-02-15',
